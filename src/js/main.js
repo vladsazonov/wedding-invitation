@@ -3,37 +3,51 @@ import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
 
 async function loadComponents() {
-  const components = document.querySelectorAll('[data-component]');
+  // Фиксированный массив компонентов для явной сборки лендинга
+  const components = [
+    { id: 'header-component', url: './src/components/header.html' },
+    { id: 'welcome-component', url: './src/components/welcome.html' },
+    { id: 'countdown-component', url: './src/components/countdown.html' },
+    { id: 'rsvp-component', url: './src/components/rsvp.html' }
+  ];
   
-  // Создаем массив промисов для одновременной загрузки всех блоков
-  const promises = Array.from(components).map(async (el) => {
-    const componentName = el.getAttribute('data-component');
-    // Добавлен обработчик пути для корректной работы в подпапках GitHub Pages
-    const basePath = window.location.pathname.includes('/название_репозитория') ? './src/components/' : 'src/components/';
+  // Создаем массив промисов для одновременной асинхронной загрузки всех блоков
+  const promises = components.map(async (component) => {
+    const el = document.getElementById(component.id);
+    
+    // Если на странице нет контейнера под этот компонент, просто пропускаем его
+    if (!el) {
+      console.warn(`Предупреждение: Контейнер с id "${component.id}" не найден в index.html`);
+      return;
+    }
     
     try {
-      const response = await fetch(`${basePath}${componentName}.html`);
-      if (!response.ok) throw new Error(`Не удалось загрузить компонент: ${componentName}`);
+      const response = await fetch(component.url);
+      if (!response.ok) throw new Error(`Не удалось загрузить файл по пути: ${component.url}`);
+      
+      // Встраиваем полученный HTML-код внутрь контейнера
       el.innerHTML = await response.text();
     } catch (err) {
-      console.error('Ошибка сборки UI:', err);
-      el.innerHTML = `<div style="padding:20px; color:red;">Ошибка загрузки блока ${componentName}</div>`;
+      console.error(`Ошибка сборки UI [${component.id}]:`, err);
+      el.innerHTML = `<div style="padding:20px; color:red; text-align:center;">Ошибка загрузки блока ${component.id}</div>`;
     }
   });
 
-  // Строго ждем завершения загрузки ВСЕХ компонентов в DOM
+  // Строго дожидаемся завершения загрузки ВСЕХ компонентов в DOM-дерево
   await Promise.all(promises);
   
-  // Запускаем логику разбора URL (имена гостей)
+  // Инициализируем всю динамическую логику только ПОСЛЕ того, как разметка полностью готова
+  
+  // 1. Парсинг URL и вывод имен гостей
   initDynamicContent();
   
-  // Запускаем обработчик формы
+  // 2. Фоновая отправка RSVP формы
   initRsvpHandler();
 
-  // Инициализируем таймер
+  // 3. Валидный таймер обратного отсчета
   initWeddingTimer();
   
-  // Инициализируем анимацию скролла AOS
+  // 4. Анимация скролла AOS (если библиотека успешно подключена через CDN)
   if (typeof AOS !== 'undefined') {
     AOS.init({
       duration: 800,
@@ -43,7 +57,7 @@ async function loadComponents() {
   }
 }
 
-// Запуск при полной готовности документа
+// Безопасный запуск сборщика в зависимости от состояния готовности документа
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', loadComponents);
 } else {

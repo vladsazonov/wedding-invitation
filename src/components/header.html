@@ -1,17 +1,35 @@
-<header class="header" data-aos="fade-up">
-  <div class="header__image-placeholder">
-    <span class="header__placeholder-text">Место для фотосессии молодоженов</span>
-  </div>
-  <div class="header__content">
-    <h1 class="header__title">Венчание</h1>
-    <p class="header__date">17 | 08 | 2026</p>
-    <p class="header__names">Владислав и Надежда</p>
-    <div class="header__greeting-box">
-      <p class="header__greeting-title" id="guest-greeting-title">Дорогие родные и близкие!</p>
-      <p class="header__greeting-text" id="guest-names-container">Загрузка...</p>
-      <p class="header__invitation-text" id="dynamic-invitation-text">
-        Скоро наступит особенный для нас момент, и мы мечтаем разделить его с теми, кто нам по-настоящему дорог.
-      </p>
+<section class="header" id="header">
+    <div class="header__bg">
+        <picture>
+            <img src="./src/images/header/hero-bg.webp" alt="Владислав и Надежда" class="header__photo" loading="eager">
+        </picture>
+        
+        <div class="header__overlay"></div>
     </div>
-  </div>
-</header>
+    
+    <div class="header__content">
+        <div class="header__top" data-aos="fade-down" data-aos-duration="800">
+            <span class="header__badge">Wedding Day</span>
+        </div>
+        
+        <h1 class="header__title" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
+            <span class="header__name">Владислав</span>
+            <span class="header__ampersand">&</span>
+            <span class="header__name">Надежда</span>
+        </h1>
+        
+        <div class="header__bottom" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+            <div class="header__date-wrapper">
+                <span class="header__date-item">17</span>
+                <span class="header__date-divider">.</span>
+                <span class="header__date-item">08</span>
+                <span class="header__date-divider">.</span>
+                <span class="header__date-item">2026</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="header__scroll-indicator" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
+        <div class="header__scroll-line"></div>
+    </div>
+</section>

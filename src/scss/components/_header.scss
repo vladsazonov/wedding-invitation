@@ -1,0 +1,167 @@
+.header {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: $color-bg-main; // Использование темы
+    color: $color-text-light;
+    text-align: center;
+
+    &__bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    &__photo-placeholder {
+        width: 100%;
+        height: 100%;
+        // Градиент на основе переменных
+        background: linear-gradient(135deg, $color-placeholder-start 0%, $color-placeholder-end 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            font-family: $font-sans;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba($color-text-light, 0.5);
+            padding: 0 20px;
+        }
+    }
+
+    &__photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        // Динамическое подмешивание прозрачности к основному цвету темы
+        background: linear-gradient(to bottom, rgba($color-primary, 0.15) 0%, rgba($color-primary, 0.35) 100%);
+    }
+
+    &__content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 60%;
+        width: 90%;
+        max-width: 500px;
+    }
+
+    &__badge {
+        font-family: $font-sans;
+        font-size: 0.8rem;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        font-weight: 300;
+        display: inline-block;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba($color-text-light, 0.3);
+    }
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+    }
+
+    &__name {
+        font-family: $font-serif;
+        font-size: 3.2rem;
+        font-weight: 300;
+        line-height: 1.1;
+        letter-spacing: 1px;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 4.8rem;
+        }
+    }
+
+    &__ampersand {
+        font-family: $font-serif;
+        font-size: 2.2rem;
+        font-style: italic;
+        margin: 5px 0;
+        opacity: 0.8;
+        font-weight: 300;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 3rem;
+        }
+    }
+
+    &__date-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: $font-sans;
+        font-size: 1.1rem;
+        letter-spacing: 4px;
+        font-weight: 300;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 1.3rem;
+        }
+    }
+
+    &__date-divider {
+        opacity: 0.5;
+    }
+
+    &__scroll-indicator {
+        position: absolute;
+        bottom: 25px;
+        z-index: 2;
+    }
+
+    &__scroll-line {
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(to bottom, $color-text-light, rgba($color-text-light, 0));
+        animation: scrollPulse 2s infinite ease-in-out;
+    }
+}
+
+@keyframes scrollPulse {
+    0% {
+        transform: scaleY(0);
+        transform-origin: top;
+    }
+
+    50% {
+        transform: scaleY(1);
+        transform-origin: top;
+    }
+
+    51% {
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+
+    100% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+}
