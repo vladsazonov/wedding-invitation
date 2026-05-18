@@ -11,6 +11,7 @@ async function loadComponents() {
     { id: 'countdown-component', url: './src/components/countdown.html' },
     { id: 'location-component', url: './src/components/location.html' }, 
     { id: 'map-modal-component', url: './src/components/map-modal.html' },
+    { id: 'timing-component', url: './src/components/timing.html' },
     { id: 'rsvp-component', url: './src/components/rsvp.html' }
   ];
   

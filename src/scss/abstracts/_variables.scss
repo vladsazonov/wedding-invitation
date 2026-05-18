@@ -1,21 +1,17 @@
-// ==========================================================================
-// ДИЗАЙН-СИСТЕМА И ПЕРЕМЕННЫЕ ТЕМЫ (Владислав & Надежда)
-// ==========================================================================
+$color-text-light: #ffffff;
+$color-bg-main: #ebe7df;
+$color-bg-light: #fcfbfa;
+$color-text: #3d3d3d;
+$color-text-main: #2c4333;
+$timing-time-color: rgba(#2c4333, 0.15);
+$timing-line-color: rgba(#2c4333, 0.3);
+$timing-time-size-mob: 3.5rem;
+$timing-time-size-desk: 5rem;
 
-// 1. Цветовая палитра (Теплые, пастельные и благородные тона)
-$color-text-light: #ffffff; // Белый для контрастного текста на фото
-$color-bg-main: #ebe7df; // Базовый пастельно-кремовый фон всего сайта
-$color-bg-light: #fcfbfa; // Нежнейший светлый крем для наезжающих карточек
-$color-text: #3d3d3d; // Мягкий графитовый для основного текста (живой, не бьет по глазам)
-$color-text-main: #2c4333; // Глубокий благородный изумрудный
-
-// Цвета для фото-заглушек (пастельный беж)
 $color-placeholder-start: #c5beb2;
 $color-placeholder-end: #a39b8c;
 
-// 2. Типографика
 $font-serif: 'Cormorant Garamond', serif; // Романтичный премиальный шрифт для имен
 $font-sans: 'Montserrat', sans-serif; // Чистый геометрический шрифт для дат и инфо
 
-// 3. Адаптивная сетка (Брейкпоинты)
 $breakpoint-md: 768px;

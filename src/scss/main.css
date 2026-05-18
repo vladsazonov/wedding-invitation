@@ -480,6 +480,98 @@ select {
   }
 }
 
+.timing {
+  background-color: #fcfbfa;
+  padding: 60px 20px;
+  width: 100%;
+  overflow: hidden;
+}
+.timing__inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.timing__title {
+  font-family: "Cormorant Garamond", serif;
+  color: #2c4333;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  margin-bottom: 50px;
+}
+.timing__list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.timing__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+.timing__row--reverse {
+  flex-direction: row-reverse;
+}
+.timing__col {
+  flex: 1;
+}
+.timing__col--caption {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(44, 67, 51, 0.3);
+}
+.timing__col--time {
+  display: flex;
+  justify-content: flex-start;
+}
+.timing__row:not(.timing__row--reverse) .timing__col--time {
+  justify-content: flex-end;
+}
+.timing__row:not(.timing__row--reverse) .timing__col--caption {
+  text-align: left;
+}
+.timing__row--reverse .timing__col--time {
+  justify-content: flex-start;
+}
+.timing__row--reverse .timing__col--caption {
+  text-align: right;
+}
+.timing__caption {
+  font-family: "Montserrat", sans-serif;
+  color: #3d3d3d;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+.timing__time {
+  font-family: "Cormorant Garamond", serif;
+  color: rgba(44, 67, 51, 0.15);
+  font-size: 3.5rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-weight: 300;
+}
+@media (min-width: 768px) {
+  .timing {
+    padding: 90px 40px;
+  }
+  .timing__inner {
+    max-width: 700px;
+  }
+  .timing__time {
+    font-size: 5rem;
+  }
+  .timing__caption {
+    font-size: 1.15rem;
+  }
+}
+
 .map-modal {
   position: fixed;
   top: 0;

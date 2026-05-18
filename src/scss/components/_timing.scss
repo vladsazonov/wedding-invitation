@@ -1,0 +1,108 @@
+.timing {
+    background-color: $color-bg-light;
+    padding: 60px 20px;
+    width: 100%;
+    overflow: hidden;
+
+    &__inner {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    &__title {
+        font-family: $font-serif;
+        color: $color-text-main;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        margin-bottom: 50px;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 15px;
+
+        &--reverse {
+            flex-direction: row-reverse;
+        }
+    }
+
+    &__col {
+        flex: 1;
+
+        &--caption {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+            padding-bottom: 8px;
+            border-bottom: 1px solid $timing-line-color;
+        }
+
+        &--time {
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+
+    &__row:not(&__row--reverse) &__col--time {
+        justify-content: flex-end;
+    }
+
+    &__row:not(&__row--reverse) &__col--caption {
+        text-align: left;
+    }
+
+    &__row--reverse &__col--time {
+        justify-content: flex-start;
+    }
+
+    &__row--reverse &__col--caption {
+        text-align: right;
+    }
+
+    &__caption {
+        font-family: $font-sans;
+        color: $color-text;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.4;
+        letter-spacing: 0.02em;
+    }
+
+    &__time {
+        font-family: $font-serif;
+        color: $timing-time-color;
+        font-size: $timing-time-size-mob;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        font-weight: 300;
+    }
+
+    // Адаптив под планшеты и десктоп
+    @media (min-width: $breakpoint-md) {
+        padding: 90px 40px;
+
+        &__inner {
+            max-width: 700px;
+        }
+
+        &__time {
+            font-size: $timing-time-size-desk;
+        }
+
+        &__caption {
+            font-size: 1.15rem;
+        }
+    }
+}
