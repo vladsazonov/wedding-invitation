@@ -1,0 +1,83 @@
+.map-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &--active {
+        opacity: 1;
+        pointer-events: auto;
+
+        .map-modal__container {
+            transform: scale(1);
+        }
+    }
+
+    &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba($color-text, 0.5);
+        backdrop-filter: blur(8px);
+    }
+
+    &__container {
+        position: relative;
+        width: 100%;
+        height: 100dvh;
+        background-color: $color-bg-light;
+        transform: scale(0.96);
+        transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 2010;
+        background-color: $color-text-main;
+        color: $color-text-light;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 16px rgba($color-text-main, 0.2);
+        -webkit-appearance: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+
+        &:active {
+            transform: scale(0.9);
+        }
+
+        @media (min-width: $breakpoint-md) {
+            &:hover {
+                transform: scale(1.05);
+                background-color: lighten($color-text-main, 5%);
+            }
+        }
+    }
+
+    &__content {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+}

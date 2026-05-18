@@ -1,0 +1,77 @@
+.location {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 16px;
+    background-color: $color-bg-main;
+
+    &__card {
+        background-color: $color-text-main;
+        color: $color-text-light;
+        border-radius: 40px;
+        padding: 48px 24px;
+        text-align: center;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 16px 40px rgba($color-text-main, 0.25);
+    }
+
+    &__title {
+        font-family: $font-serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    &__name {
+        font-family: $font-sans;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    &__address {
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        opacity: 0.8;
+        margin-bottom: 28px;
+    }
+
+    &__time {
+        font-family: $font-serif;
+        font-size: 3.2rem;
+        font-weight: 400;
+        margin-bottom: 32px;
+    }
+
+    &__button {
+        background-color: $color-text-light;
+        color: $color-text-main;
+        border: none;
+        border-radius: 100px;
+        padding: 16px 32px;
+        font-family: $font-sans;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        max-width: 280px;
+        transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+        -webkit-appearance: none;
+
+        &:active {
+            transform: scale(0.97);
+            background-color: rgba($color-text-light, 0.9);
+        }
+
+        @media (min-width: $breakpoint-md) {
+            &:hover {
+                transform: translateY(-2px);
+                background-color: rgba($color-text-light, 0.95);
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import { initDynamicContent } from './modules/urlParser.js';
 import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
+import { initMapHandler } from './modules/mapHandler.js';
 
 async function loadComponents() {
   // Фиксированный массив компонентов для явной сборки лендинга
@@ -8,6 +9,8 @@ async function loadComponents() {
     { id: 'header-component', url: './src/components/header.html' },
     { id: 'welcome-component', url: './src/components/welcome.html' },
     { id: 'countdown-component', url: './src/components/countdown.html' },
+    { id: 'location-component', url: './src/components/location.html' }, 
+    { id: 'map-modal-component', url: './src/components/map-modal.html' },
     { id: 'rsvp-component', url: './src/components/rsvp.html' }
   ];
   
@@ -46,6 +49,9 @@ async function loadComponents() {
 
   // 3. Валидный таймер обратного отсчета
   initWeddingTimer();
+
+  // 4. Инициализация карты (только после полной загрузки разметки)
+  initMapHandler();
   
   // 4. Анимация скролла AOS (если библиотека успешно подключена через CDN)
   if (typeof AOS !== 'undefined') {
