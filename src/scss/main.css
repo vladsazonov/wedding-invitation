@@ -286,4 +286,90 @@
     transform: scale(1.12);
     opacity: 0.9;
   }
+}
+.countdown {
+  padding: 80px 20px;
+  background-color: #fcfbfa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.countdown__container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+.countdown__subtitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(44, 67, 51, 0.7);
+  margin-bottom: 32px;
+}
+.countdown__timer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+.countdown__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 68px;
+}
+.countdown__digits {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.75rem;
+  font-weight: 300;
+  color: #2c4333;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.12s ease-in-out, transform 0.12s ease-in-out;
+  will-change: opacity, transform;
+}
+.countdown__digits--changing {
+  opacity: 0;
+  transform: scale(0.96);
+}
+.countdown__label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(44, 67, 51, 0.5);
+  margin-top: 8px;
+}
+.countdown__divider {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.75rem;
+  font-weight: 300;
+  color: rgba(44, 67, 51, 0.3);
+  line-height: 1;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+@media (min-width: 768px) {
+  .countdown {
+    padding: 120px 40px;
+  }
+  .countdown__subtitle {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+  .countdown__timer {
+    gap: 16px;
+  }
+  .countdown__item {
+    min-width: 96px;
+  }
+  .countdown__digits, .countdown__divider {
+    font-size: 4.5rem;
+  }
+  .countdown__label {
+    font-size: 0.8125rem;
+    margin-top: 12px;
+  }
 }/*# sourceMappingURL=main.css.map */

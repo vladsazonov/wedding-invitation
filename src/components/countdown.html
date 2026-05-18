@@ -1,29 +1,26 @@
-<section class="countdown" data-aos="fade-up">
-  <div class="countdown__title-box">
-    <p class="countdown__pre-title">Мы скажем</p>
-    <h2 class="countdown__main-title">Да...</h2>
-    <p class="countdown__post-title">через...</p>
-  </div>
-  
-  <div class="countdown__timer" id="wedding-timer">
-    <div class="countdown__item">
-      <span class="countdown__value" id="timer-days">00</span>
-      <span class="countdown__label">дней</span>
+<section class="countdown" id="countdown-component" data-aos="fade-up">
+    <div class="countdown__container">
+        <p class="countdown__subtitle">до торжества осталось</p>
+        <div class="countdown__timer" aria-live="polite">
+            <div class="countdown__item">
+                <span class="countdown__digits" id="timer-days">00</span>
+                <span class="countdown__label">дней</span>
+            </div>
+            <span class="countdown__divider">:</span>
+            <div class="countdown__item">
+                <span class="countdown__digits" id="timer-hours">00</span>
+                <span class="countdown__label">часов</span>
+            </div>
+            <span class="countdown__divider">:</span>
+            <div class="countdown__item">
+                <span class="countdown__digits" id="timer-minutes">00</span>
+                <span class="countdown__label">минут</span>
+            </div>
+            <span class="countdown__divider">:</span>
+            <div class="countdown__item">
+                <span class="countdown__digits" id="timer-seconds">00</span>
+                <span class="countdown__label">секунд</span>
+            </div>
+        </div>
     </div>
-    <div class="countdown__separator">:</div>
-    <div class="countdown__item">
-      <span class="countdown__value" id="timer-hours">00</span>
-      <span class="countdown__label">часов</span>
-    </div>
-    <div class="countdown__separator">:</div>
-    <div class="countdown__item">
-      <span class="countdown__value" id="timer-minutes">00</span>
-      <span class="countdown__label">минут</span>
-    </div>
-    <div class="countdown__separator">:</div>
-    <div class="countdown__item">
-      <span class="countdown__value" id="timer-seconds">00</span>
-      <span class="countdown__label">секунд</span>
-    </div>
-  </div>
 </section>

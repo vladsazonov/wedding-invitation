@@ -1,0 +1,97 @@
+.countdown {
+    padding: 80px 20px;
+    background-color: $color-bg-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__container {
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+    }
+
+    &__subtitle {
+        font-family: $font-sans;
+        font-size: 0.875rem; // 14px
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba($color-text-main, 0.7);
+        margin-bottom: 32px;
+    }
+
+    &__timer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 68px;
+    }
+
+    &__digits {
+        font-family: $font-serif;
+        font-size: 2.75rem; // Адаптивно для мелких экранов iOS/Android
+        font-weight: 300;
+        color: $color-text-main;
+        line-height: 1;
+        font-variant-numeric: tabular-nums; // Стабилизирует ширину глифов при смене цифр
+        transition: opacity 0.12s ease-in-out, transform 0.12s ease-in-out;
+        will-change: opacity, transform;
+
+        &--changing {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+    }
+
+    &__label {
+        font-family: $font-sans;
+        font-size: 0.6875rem; // 11px
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba($color-text-main, 0.5);
+        margin-top: 8px;
+    }
+
+    &__divider {
+        font-family: $font-serif;
+        font-size: 2.75rem;
+        font-weight: 300;
+        color: rgba($color-text-main, 0.3);
+        line-height: 1;
+        user-select: none;
+    }
+
+    @media (min-width: 768px) {
+        padding: 120px 40px;
+
+        &__subtitle {
+            font-size: 1rem; // 16px
+            margin-bottom: 40px;
+        }
+
+        &__timer {
+            gap: 16px;
+        }
+
+        &__item {
+            min-width: 96px;
+        }
+
+        &__digits,
+        &__divider {
+            font-size: 4.5rem; // 72px
+        }
+
+        &__label {
+            font-size: 0.8125rem; // 13px
+            margin-top: 12px;
+        }
+    }
+}

@@ -54,7 +54,7 @@
         width: 100%;
         height: 100%;
         // Динамическое подмешивание прозрачности к основному цвету темы
-        background: linear-gradient(to bottom, rgba($color-primary, 0.15) 0%, rgba($color-primary, 0.35) 100%);
+        background: linear-gradient(to bottom, rgba($color-text-main, 0.15) 0%, rgba($color-text-main, 0.35) 100%);
     }
 
     &__content {
