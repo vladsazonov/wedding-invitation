@@ -1,7 +1,13 @@
+// Принудительный сброс сохранения позиции скролла браузером при перезагрузке
+if (window.history && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 import { initDynamicContent } from './modules/urlParser.js';
 import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
+import { initLayerController } from './modules/layerController.js';
 
 async function loadComponents() {
   // Фиксированный массив компонентов для явной сборки лендинга
@@ -42,19 +48,22 @@ async function loadComponents() {
   
   // Инициализируем всю динамическую логику только ПОСЛЕ того, как разметка полностью готова
   
-  // 1. Парсинг URL и вывод имен гостей
+  // Парсинг URL и вывод имен гостей
   initDynamicContent();
+
+  // Затемнение фона при скролле (эффект слоев)
+  initLayerController()
   
-  // 2. Фоновая отправка RSVP формы
+  // Фоновая отправка RSVP формы
   initRsvpHandler();
 
-  // 3. Валидный таймер обратного отсчета
+  // Валидный таймер обратного отсчета
   initWeddingTimer();
 
-  // 4. Инициализация карты (только после полной загрузки разметки)
+  // Инициализация карты (только после полной загрузки разметки)
   initMapHandler();
   
-  // 4. Анимация скролла AOS (если библиотека успешно подключена через CDN)
+  // Анимация скролла AOS (если библиотека успешно подключена через CDN)
   if (typeof AOS !== 'undefined') {
     AOS.init({
       duration: 800,

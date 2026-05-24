@@ -34,3 +34,12 @@ select {
     -webkit-appearance: none;
     appearance: none;
 }
+
+.countdown,
+.location,
+.timing,
+.rsvp {
+    position: relative;
+    z-index: 10;
+    background-color: $color-bg-main; // Или $color-bg-light в зависимости от дизайна
+}

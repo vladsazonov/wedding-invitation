@@ -1,23 +1,25 @@
-<section class="rsvp" data-aos="fade-up">
+<section class="rsvp">
   <div class="rsvp__container">
     <h2 class="rsvp__title">Я точно буду!</h2>
-    <p class="rsvp__subtitle">Пожалуйста, подтвердите ваше присутствие, чтобы мы могли учесть вас при планировании.</p>
-    
+    <p class="rsvp__subtitle">
+      Пожалуйста, подтвердите ваше присутствие, чтобы мы могли учесть вас при планировании.
+    </p>
+
     <form class="rsvp__form form" id="rsvp-form">
       <div class="form__group">
         <label for="form-name" class="form__label">Ваше имя / имена</label>
-        <input type="text" id="form-name" class="form__input" required placeholder="Иван и Елена">
+        <input type="text" id="form-name" class="form__input" required placeholder="Иван и Елена" />
       </div>
-      
+
       <div class="form__group">
         <label class="form__label">Сможете ли вы присутствовать?</label>
         <div class="form__radio-group">
           <label class="form__radio-label">
-            <input type="radio" name="attendance" value="yes" class="form__radio" checked>
+            <input type="radio" name="attendance" value="yes" class="form__radio" checked />
             <span>Я/Мы придем</span>
           </label>
           <label class="form__radio-label">
-            <input type="radio" name="attendance" value="no" class="form__radio">
+            <input type="radio" name="attendance" value="no" class="form__radio" />
             <span>Не смогу / Не сможем</span>
           </label>
         </div>
@@ -25,7 +27,7 @@
 
       <button type="submit" class="button form__submit" id="submit-btn">
         <span class="button__text">Подтвердить присутствие</span>
-        <span class="button__loader" style="display: none;">Отправка...</span>
+        <span class="button__loader" style="display: none">Отправка...</span>
       </button>
     </form>
 
