@@ -1,0 +1,238 @@
+@import '../abstracts/variables';
+
+.rsvp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 16px;
+    background-color: $color-bg-light;
+    position: relative;
+
+    &__card {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 40px 24px;
+        background: #ffffff;
+        // Закругляем углы карточки и добавляем мягкую воздушную тень
+        border-radius: 24px;
+        box-shadow: 0 12px 40px rgba($color-accent-blue, 0.06);
+        text-align: center;
+
+        @media (min-width: $breakpoint-md) {
+            padding: 50px 40px;
+        }
+    }
+
+    &__title {
+        font-family: $font-serif;
+        font-size: 1.8rem;
+        line-height: 1.4;
+        color: $color-accent-blue;
+        margin-bottom: 12px;
+        font-weight: 400;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 2.2rem;
+        }
+    }
+
+    &__names-highlight {
+        font-style: italic;
+        color: lighten($color-accent-blue, 5%);
+        font-weight: 500;
+    }
+
+    &__subtitle {
+        font-family: $font-sans;
+        font-size: 0.9rem;
+        color: rgba($color-accent-blue, 0.6);
+        line-height: 1.6;
+        margin-bottom: 36px;
+    }
+
+    &__success {
+        padding: 30px 10px;
+        animation: scaleInRsvp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+
+        &--hidden {
+            display: none;
+        }
+
+        &-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        &-title {
+            font-family: $font-serif;
+            font-size: 1.8rem;
+            color: $color-accent-blue;
+            margin-bottom: 10px;
+        }
+
+        &-text {
+            font-family: $font-sans;
+            font-size: 0.95rem;
+            color: rgba($color-accent-blue, 0.75);
+        }
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: left;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__label {
+        font-family: $font-sans;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: rgba($color-accent-blue, 0.8);
+        font-weight: 600;
+        padding-left: 4px;
+    }
+
+    &__input,
+    &__textarea {
+        width: 100%;
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        padding: 14px 18px;
+        background-color: rgba($color-accent-blue, 0.02);
+        border: 1px solid rgba($color-accent-blue, 0.12);
+        // Добавляем плавные скругления полям
+        border-radius: 12px;
+        color: $color-accent-blue;
+        outline: none;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        -webkit-appearance: none;
+        appearance: none;
+
+        &:focus {
+            background-color: #ffffff;
+            border-color: rgba($color-accent-blue, 0.5);
+            box-shadow: 0 0 0 4px rgba($color-accent-blue, 0.06);
+        }
+
+        &::placeholder {
+            color: rgba($color-accent-blue, 0.35);
+        }
+    }
+
+    &__textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    &__radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background-color: rgba($color-accent-blue, 0.01);
+        padding: 8px;
+        border-radius: 14px;
+    }
+
+    &__radio-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        color: $color-accent-blue;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba($color-accent-blue, 0.03);
+        }
+    }
+
+    &__radio {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 1.5px solid rgba($color-accent-blue, 0.3);
+        border-radius: 50%;
+        outline: none;
+        background-color: #ffffff;
+        display: grid;
+        place-content: center;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
+        margin: 0;
+
+        &::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            background-color: #ffffff;
+        }
+
+        &:checked {
+            border-color: $color-accent-blue;
+            background-color: $color-accent-blue;
+
+            &::before {
+                transform: scale(1);
+            }
+        }
+    }
+
+    &__submit {
+        margin-top: 8px;
+        width: 100%;
+        padding: 16px;
+        background-color: $color-accent-blue;
+        color: $color-bg-light;
+        border: none;
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        // Делаем кнопку округлой и аккуратной
+        border-radius: 12px;
+        cursor: pointer;
+        transition: opacity 0.25s ease, transform 0.2s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:active {
+            transform: scale(0.99);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+    }
+}
+
+@keyframes scaleInRsvp {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

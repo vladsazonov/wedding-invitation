@@ -1,39 +1,74 @@
-<section class="rsvp">
-  <div class="rsvp__container">
-    <h2 class="rsvp__title">Я точно буду!</h2>
-    <p class="rsvp__subtitle">
-      Пожалуйста, подтвердите ваше присутствие, чтобы мы могли учесть вас при планировании.
+<section class="rsvp" id="rsvp-component">
+  <div class="rsvp__card" data-aos="fade-up">
+    <h2 class="rsvp__title" id="rsvp-dynamic-title">
+      <span data-content="guest-greeting">Дорогие</span>
+      <span data-content="guest-names" class="rsvp__names-highlight">гости</span>
+      ,
+      <span id="rsvp-title-question">разделите ли вы с нами этот день?</span>
+    </h2>
+
+    <p class="rsvp__subtitle" id="rsvp-subtitle">
+      Пожалуйста, ответьте на несколько вопросов, чтобы мы могли учесть все детали при подготовке.
     </p>
 
-    <form class="rsvp__form form" id="rsvp-form">
-      <div class="form__group">
-        <label for="form-name" class="form__label">Ваше имя / имена</label>
-        <input type="text" id="form-name" class="form__input" required placeholder="Иван и Елена" />
-      </div>
+    <form class="rsvp__form form" id="rsvp-form" autocomplete="off">
+      <input type="hidden" id="form-names-hidden" name="entry_names" value="" />
 
       <div class="form__group">
-        <label class="form__label">Сможете ли вы присутствовать?</label>
+        <label class="form__label" id="attendance-label">Ваш ответ</label>
         <div class="form__radio-group">
           <label class="form__radio-label">
-            <input type="radio" name="attendance" value="yes" class="form__radio" checked />
-            <span>Я/Мы придем</span>
+            <input
+              type="radio"
+              name="attendance"
+              value="Приду/Придем"
+              class="form__radio"
+              checked
+            />
+            <span class="form__radio-text" id="status-yes-text">Да, с большим удовольствием</span>
           </label>
           <label class="form__radio-label">
-            <input type="radio" name="attendance" value="no" class="form__radio" />
-            <span>Не смогу / Не сможем</span>
+            <input type="radio" name="attendance" value="Не смогу/Не сможем" class="form__radio" />
+            <span class="form__radio-text" id="status-no-text">К сожалению, не смогу</span>
+          </label>
+          <label class="form__radio-label">
+            <input type="radio" name="attendance" value="Отвечу позже" class="form__radio" />
+            <span class="form__radio-text">Сообщу точный ответ чуть позже</span>
           </label>
         </div>
       </div>
 
+      <div class="form__group">
+        <label for="form-allergy" class="form__label">Ограничения в еде или аллергии</label>
+        <input
+          type="text"
+          id="form-allergy"
+          name="allergy"
+          class="form__input"
+          placeholder="Например: аллергия на орехи, вегетарианское меню"
+        />
+      </div>
+
+      <div class="form__group">
+        <label for="form-wishes" class="form__label">Пожелания к празднику (необязательно)</label>
+        <textarea
+          id="form-wishes"
+          name="wishes"
+          class="form__textarea"
+          placeholder="Пара слов для нас или ваши любимые треки..."
+        ></textarea>
+      </div>
+
       <button type="submit" class="button form__submit" id="submit-btn">
-        <span class="button__text">Подтвердить присутствие</span>
-        <span class="button__loader" style="display: none">Отправка...</span>
+        <span class="button__text">Отправить ответ</span>
+        <span class="button__loader" style="display: none">Отправка данных...</span>
       </button>
     </form>
 
     <div class="rsvp__success rsvp__success--hidden" id="success-block">
-      <h3 class="rsvp__success-title">Спасибо!</h3>
-      <p class="rsvp__success-text">Ваш ответ успешно сохранен.</p>
+      <div class="rsvp__success-icon">✨</div>
+      <h3 class="rsvp__success-title">Спасибо, ваш ответ принят!</h3>
+      <p class="rsvp__success-text" id="success-dynamic-text">Мы очень ждем встречи с вами!</p>
     </div>
   </div>
 </section>
