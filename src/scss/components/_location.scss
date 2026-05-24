@@ -2,75 +2,177 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 16px;
-    background-color: $color-bg-main;
+    padding: 60px 16px;
+    background-color: $color-bg-light;
 
-    &__card {
-        background-color: $color-text-main;
-        color: $color-text-light;
-        border-radius: 40px;
-        padding: 48px 24px;
-        text-align: center;
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         width: 100%;
         max-width: 420px;
-        box-shadow: 0 16px 40px rgba($color-text-main, 0.25);
+    }
+
+    &__frame {
+        position: relative;
+        width: 100%;
+        padding: 48px 20px 32px;
+        border: 1px solid rgba($color-accent-blue, 0.25);
+        border-radius: 140px 140px 40px 40px; // Изящная геометрия арки
+        background-color: $color-bg-light;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba($color-accent-blue, 0.03);
     }
 
     &__title {
         font-family: $font-serif;
-        font-size: 2.2rem;
+        font-size: 2.6rem;
         font-weight: 400;
-        letter-spacing: 0.12em;
-        margin-bottom: 20px;
-        text-transform: uppercase;
+        color: $color-accent-blue;
+        margin-bottom: 8px;
+    }
+
+    &__divider {
+        width: 50px;
+        height: 1px;
+        background-color: rgba($color-accent-blue, 0.35);
+        margin: 0 auto 20px;
+    }
+
+    &__type {
+        font-family: $font-sans;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: rgba($color-accent-blue, 0.65);
+        margin-bottom: 12px;
     }
 
     &__name {
-        font-family: $font-sans;
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-bottom: 6px;
+        font-family: $font-serif;
+        font-size: 1.8rem;
+        font-weight: 400;
+        color: $color-accent-blue;
+        margin-bottom: 8px;
     }
 
     &__address {
         font-family: $font-sans;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        opacity: 0.8;
-        margin-bottom: 28px;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        color: $color-text;
+        margin-bottom: 24px;
     }
 
-    &__time {
-        font-family: $font-serif;
-        font-size: 3.2rem;
-        font-weight: 400;
+    &__time-badge {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        border-top: 1px solid rgba($color-accent-blue, 0.15);
+        border-bottom: 1px solid rgba($color-accent-blue, 0.15);
+        padding: 8px 28px;
         margin-bottom: 32px;
     }
 
-    &__button {
-        background-color: $color-text-light;
-        color: $color-text-main;
-        border: none;
-        border-radius: 100px;
-        padding: 16px 32px;
+    &__time-label {
+        font-family: $font-sans;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        color: rgba($color-text, 0.5);
+        margin-bottom: 2px;
+    }
+
+    &__time-value {
+        font-family: $font-sans;
+        font-size: 1.35rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        color: $color-accent-blue;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__preview {
+        position: relative;
+        width: 100%;
+        margin-bottom: 32px;
+        border-radius: 24px 24px 16px 16px;
+        overflow: hidden;
+        background-color: $color-placeholder-start;
+    }
+
+    &__image-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 11; // Жесткие пропорции исключают прыжки верстки
+    }
+
+    &__photo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 2;
+        display: block;
+    }
+
+    &__photo-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background: linear-gradient(135deg, $color-placeholder-start 0%, $color-placeholder-end 100%);
+    }
+
+    &__preview-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        padding: 16px;
+        background: linear-gradient(to top, rgba($color-accent-blue, 0.75) 0%, rgba($color-accent-blue, 0) 100%);
+    }
+
+    &__preview-title {
         font-family: $font-sans;
         font-size: 0.9rem;
         font-weight: 500;
+        letter-spacing: 0.25em;
+        color: $color-text-light;
+        text-transform: uppercase;
+        padding-left: 0.25em;
+    }
+
+    &__button {
+        background-color: transparent;
+        color: $color-accent-blue;
+        border: 1px solid $color-accent-blue;
+        border-radius: 100px;
+        padding: 16px 32px;
+        font-family: $font-sans;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
         cursor: pointer;
         width: 100%;
-        max-width: 280px;
-        transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+        max-width: 260px;
+        transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
         -webkit-appearance: none;
 
         &:active {
             transform: scale(0.97);
-            background-color: rgba($color-text-light, 0.9);
         }
 
         @media (min-width: $breakpoint-md) {
             &:hover {
-                transform: translateY(-2px);
-                background-color: rgba($color-text-light, 0.95);
+                background-color: $color-accent-blue;
+                color: $color-text-light;
             }
         }
     }

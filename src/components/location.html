@@ -1,9 +1,44 @@
 <section class="location" id="location-component">
-  <div class="location__card">
-    <h2 class="location__title">ЛОКАЦИЯ</h2>
-    <p class="location__name">«Ресторанчик»</p>
-    <p class="location__address">площадь Ленина, 2, Пятигорск, Ставропольский край</p>
-    <div class="location__time">12:00</div>
-    <button type="button" class="location__button" id="openMapAction">посмотреть на карте</button>
+  <div class="location__container">
+    <div class="location__frame">
+      <h2 class="location__title" data-aos="fade-up">Локация</h2>
+      <div class="location__divider" data-aos="zoom-in"></div>
+
+      <p class="location__type" data-aos="fade-up" data-aos-delay="50">ЦЕРЕМОНИЯ И ТОРЖЕСТВО</p>
+      <p class="location__name" data-aos="fade-up" data-aos-delay="100">«Ресторанчик»</p>
+      <p class="location__address" data-aos="fade-up" data-aos-delay="150">
+        площадь Ленина, 2, Пятигорск,
+        <br />
+        Ставропольский край
+      </p>
+
+      <div class="location__time-badge" data-aos="fade-up" data-aos-delay="200">
+        <span class="location__time-label">НАЧАЛО В</span>
+        <span class="location__time-value">12:00</span>
+      </div>
+
+      <div class="location__preview" data-aos="fade-up" data-aos-delay="250">
+        <div class="location__image-wrapper">
+          <img
+            src="./src/images/location/venue-preview.webp"
+            alt="Место проведения"
+            class="location__photo"
+            loading="lazy"
+          />
+          <div class="location__photo-placeholder"></div>
+        </div>
+        <div class="location__preview-overlay"></div>
+      </div>
+
+      <button
+        type="button"
+        class="location__button"
+        id="openMapAction"
+        data-aos="fade-up"
+        data-aos-delay="300"
+      >
+        Посмотреть на карте
+      </button>
+    </div>
   </div>
 </section>

@@ -427,69 +427,161 @@ select {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 16px;
-  background-color: #ebe7df;
+  padding: 60px 16px;
+  background-color: #fcfbfa;
 }
-.location__card {
-  background-color: #2c4333;
-  color: #ffffff;
-  border-radius: 40px;
-  padding: 48px 24px;
-  text-align: center;
+.location__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 16px 40px rgba(44, 67, 51, 0.25);
+}
+.location__frame {
+  position: relative;
+  width: 100%;
+  padding: 48px 20px 32px;
+  border: 1px solid rgba(28, 61, 90, 0.25);
+  border-radius: 140px 140px 40px 40px;
+  background-color: #fcfbfa;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(28, 61, 90, 0.03);
 }
 .location__title {
   font-family: "Cormorant Garamond", serif;
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 400;
-  letter-spacing: 0.12em;
-  margin-bottom: 20px;
-  text-transform: uppercase;
+  color: #1c3d5a;
+  margin-bottom: 8px;
+}
+.location__divider {
+  width: 50px;
+  height: 1px;
+  background-color: rgba(28, 61, 90, 0.35);
+  margin: 0 auto 20px;
+}
+.location__type {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(28, 61, 90, 0.65);
+  margin-bottom: 12px;
 }
 .location__name {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 6px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #1c3d5a;
+  margin-bottom: 8px;
 }
 .location__address {
   font-family: "Montserrat", sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  opacity: 0.8;
-  margin-bottom: 28px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #3d3d3d;
+  margin-bottom: 24px;
 }
-.location__time {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 3.2rem;
-  font-weight: 400;
+.location__time-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid rgba(28, 61, 90, 0.15);
+  border-bottom: 1px solid rgba(28, 61, 90, 0.15);
+  padding: 8px 28px;
   margin-bottom: 32px;
 }
-.location__button {
-  background-color: #ffffff;
-  color: #2c4333;
-  border: none;
-  border-radius: 100px;
-  padding: 16px 32px;
+.location__time-label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: rgba(61, 61, 61, 0.5);
+  margin-bottom: 2px;
+}
+.location__time-value {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #1c3d5a;
+  font-variant-numeric: tabular-nums;
+}
+.location__preview {
+  position: relative;
+  width: 100%;
+  margin-bottom: 32px;
+  border-radius: 24px 24px 16px 16px;
+  overflow: hidden;
+  background-color: #c5beb2;
+}
+.location__image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/11;
+}
+.location__photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  z-index: 2;
+  display: block;
+}
+.location__photo-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(135deg, #c5beb2 0%, #a39b8c 100%);
+}
+.location__preview-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(28, 61, 90, 0.75) 0%, rgba(28, 61, 90, 0) 100%);
+}
+.location__preview-title {
   font-family: "Montserrat", sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-transform: uppercase;
+  padding-left: 0.25em;
+}
+.location__button {
+  background-color: transparent;
+  color: #1c3d5a;
+  border: 1px solid #1c3d5a;
+  border-radius: 100px;
+  padding: 16px 32px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
   width: 100%;
-  max-width: 280px;
-  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+  max-width: 260px;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
   -webkit-appearance: none;
 }
 .location__button:active {
   transform: scale(0.97);
-  background-color: rgba(255, 255, 255, 0.9);
 }
 @media (min-width: 768px) {
   .location__button:hover {
-    transform: translateY(-2px);
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: #1c3d5a;
+    color: #ffffff;
   }
 }
 
