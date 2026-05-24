@@ -10,10 +10,18 @@
     padding: 20px 24px 60px 24px;
     will-change: transform;
 
+    transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
     @media (min-width: 768px) {
         margin-top: calc(100dvh - 90px);
         border-radius: 60px 60px 0 0;
         padding: 60px 40px 80px 40px;
+    }
+
+    &--docked {
+        border-radius: 0;
+        box-shadow: none;
     }
 
     &__container {
@@ -31,6 +39,11 @@
         background-color: rgba($color-text, 0.2);
         border-radius: 2px;
         margin: 0px auto 34px;
+        transition: opacity 0.3s ease;
+
+        .welcome--docked & {
+            opacity: 0;
+        }
     }
 
     &__title {
