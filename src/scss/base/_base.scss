@@ -6,22 +6,23 @@
     padding: 0;
 }
 
-html {
-    height: 100%;
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100dvh;
+    background-color: $color-bg-light; // Делаем глобальный фон идентичным цвету карточек
+    color: $color-text-main;
+    font-family: $font-sans;
+
+    // Отключаем системный bounce-эффект для десктопов и локализуем его для мобильных
+    overscroll-behavior-y: none;
 }
 
 body {
-    min-height: 100dvh;
-    text-rendering: optimizeSpeed;
-    line-height: 1.5;
-    background-color: $color-bg-light;
-    color: $color-text-main;
-    font-family: $font-sans;
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; // Плавный инерционный скролл для iOS
 }
 
 input,

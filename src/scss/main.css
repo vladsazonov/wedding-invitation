@@ -6,22 +6,21 @@
   padding: 0;
 }
 
-html {
-  height: 100%;
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-
+html,
 body {
+  margin: 0;
+  padding: 0;
   min-height: 100dvh;
-  text-rendering: optimizeSpeed;
-  line-height: 1.5;
   background-color: #fcfbfa;
   color: #2c4333;
   font-family: "Montserrat", sans-serif;
+  overscroll-behavior-y: none;
+}
+
+body {
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 input,
@@ -216,11 +215,16 @@ select {
   z-index: 10;
   margin-top: calc(100dvh - 54px);
   background-color: #fcfbfa;
-  border-radius: 32px 32px 0 0;
-  box-shadow: 0px -15px 40px rgba(28, 61, 90, 0.04), 0px -4px 12px rgba(28, 61, 90, 0.02);
   padding: 16px 24px 0 24px;
-  will-change: transform;
-  transition: border-radius 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.04);
+  transition: border-radius 0.15s ease-out, box-shadow 0.2s ease-out;
+  will-change: border-radius, transform;
+  transform: translateZ(0);
+}
+.welcome--expanded {
+  border-radius: 0;
+  box-shadow: none;
 }
 @media (min-width: 768px) {
   .welcome {
