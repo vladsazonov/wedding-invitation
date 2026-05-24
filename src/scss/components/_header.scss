@@ -1,16 +1,9 @@
 .header {
     position: relative;
-    width: 100%;
-    height: 100vh;
     height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
     overflow: hidden;
-    background-color: $color-bg-main; // Использование темы
-    color: $color-text-light;
-    text-align: center;
+    background-color: $color-placeholder-start;
 
     &__bg {
         position: absolute;
@@ -21,30 +14,12 @@
         z-index: 1;
     }
 
-    &__photo-placeholder {
-        width: 100%;
-        height: 100%;
-        // Градиент на основе переменных
-        background: linear-gradient(135deg, $color-placeholder-start 0%, $color-placeholder-end 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        span {
-            font-family: $font-sans;
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: rgba($color-text-light, 0.5);
-            padding: 0 20px;
-        }
-    }
-
     &__photo {
+        display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center;
+        object-position: center center;
     }
 
     &__overlay {
@@ -53,115 +28,137 @@
         left: 0;
         width: 100%;
         height: 100%;
-        // Динамическое подмешивание прозрачности к основному цвету темы
-        background: linear-gradient(to bottom, rgba($color-text-main, 0.15) 0%, rgba($color-text-main, 0.35) 100%);
+        z-index: 2;
+        background: linear-gradient(to bottom,
+                rgba($color-text-main, 0.5) 0%,
+                rgba($color-text-main, 0.1) 30%,
+                rgba($color-text-main, 0.15) 70%,
+                rgba($color-text-main, 0.8) 100%);
     }
 
-    &__content {
+    // Главная флекс-оболочка хедера
+    &__wrapper {
         position: relative;
-        z-index: 2;
+        z-index: 3;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 60%;
-        width: 90%;
-        max-width: 500px;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 60px 24px 78px;
+        box-sizing: border-box;
+    }
+
+    &__meta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
     }
 
     &__badge {
         font-family: $font-sans;
-        font-size: 0.8rem;
-        letter-spacing: 6px;
+        font-size: 12px;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 0.5em;
+        color: rgba($color-text-light, 0.9);
+        margin: 0;
+        text-indent: 0.5em;
+    }
+
+    &__year {
+        font-family: $font-serif;
+        font-size: 16px;
+        font-style: italic;
+        color: rgba($color-text-light, 0.6);
+        letter-spacing: 0.2em;
+        margin: 0;
+    }
+
+    &__main {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    &__ampersand-layer {
+        position: absolute;
+        font-family: $font-serif;
+        font-size: 160px;
+        font-style: italic;
         font-weight: 300;
-        display: inline-block;
-        padding-bottom: 6px;
-        border-bottom: 1px solid rgba($color-text-light, 0.3);
+        color: rgba($color-text-light, 0.4);
+        line-height: 1;
+        user-select: none;
+        pointer-events: none;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 260px;
+        }
     }
 
     &__title {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 12px;
         margin: 0;
+        position: relative;
+        z-index: 2;
     }
 
     &__name {
         font-family: $font-serif;
-        font-size: 3.2rem;
+        font-size: 48px;
         font-weight: 300;
         line-height: 1.1;
-        letter-spacing: 1px;
+        color: $color-text-light;
+        letter-spacing: 0.03em;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 
         @media (min-width: $breakpoint-md) {
-            font-size: 4.8rem;
+            font-size: 76px;
         }
     }
 
-    &__ampersand {
-        font-family: $font-serif;
-        font-size: 2.2rem;
-        font-style: italic;
-        margin: 5px 0;
-        opacity: 0.8;
-        font-weight: 300;
-
-        @media (min-width: $breakpoint-md) {
-            font-size: 3rem;
-        }
-    }
-
-    &__date-wrapper {
+    &__date-showcase {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        font-family: $font-sans;
-        font-size: 1.1rem;
-        letter-spacing: 4px;
-        font-weight: 300;
+        gap: 16px;
+        backdrop-filter: blur(2px);
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 10px 28px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    &__date-num {
+        font-family: $font-serif;
+        font-size: 28px;
+        font-weight: 400;
+        color: $color-text-light;
+        letter-spacing: 0.05em;
+        font-variant-numeric: tabular-nums;
 
         @media (min-width: $breakpoint-md) {
-            font-size: 1.3rem;
+            font-size: 36px;
         }
     }
 
     &__date-divider {
-        opacity: 0.5;
-    }
-
-    &__scroll-indicator {
-        position: absolute;
-        bottom: 25px;
-        z-index: 2;
-    }
-
-    &__scroll-line {
         width: 1px;
-        height: 40px;
-        background: linear-gradient(to bottom, $color-text-light, rgba($color-text-light, 0));
-        animation: scrollPulse 2s infinite ease-in-out;
-    }
-}
+        height: 24px;
+        background-color: rgba(255, 255, 255, 0.35);
 
-@keyframes scrollPulse {
-    0% {
-        transform: scaleY(0);
-        transform-origin: top;
-    }
-
-    50% {
-        transform: scaleY(1);
-        transform-origin: top;
-    }
-
-    51% {
-        transform: scaleY(1);
-        transform-origin: bottom;
-    }
-
-    100% {
-        transform: scaleY(0);
-        transform-origin: bottom;
+        @media (min-width: $breakpoint-md) {
+            height: 32px;
+        }
     }
 }
