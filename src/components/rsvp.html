@@ -2,11 +2,6 @@
   <div class="rsvp__container" data-aos="fade-up" data-aos-duration="800">
     <div class="rsvp__header">
       <h2 class="rsvp__title">Подтверждение присутствия</h2>
-      <div class="rsvp__personalization">
-        <p class="rsvp__welcome-text">Приглашение для:</p>
-        <p class="rsvp__guest-name" id="guest-rendering-target">Дорогой гость</p>
-      </div>
-      <div class="rsvp__divider" aria-hidden="true"></div>
     </div>
 
     <form class="rsvp__form" id="wedding-form">
@@ -14,8 +9,12 @@
       <input type="hidden" name="entry.1000002" id="google-entry-raw-guests" value="" />
 
       <fieldset class="rsvp__fieldset">
-        <legend class="rsvp__legend">
-          Будем рады видеть вас! Пожалуйста, подтвердите ваше присутствие до 17.07.2026:
+        <legend class="rsvp__legend rsvp__legend--main" id="rsvp-legend-target">
+          Наши дорогие гости!
+          <br />
+          Будем рады видеть вас. Пожалуйста, подтвердите присутствие до
+          <span class="rsvp__highlight-date">17.07.2026</span>
+          :
         </legend>
         <div class="rsvp__options-grid">
           <label class="rsvp__choice">
@@ -39,7 +38,7 @@
               value="Сообщу позже"
               class="rsvp__input-hidden"
             />
-            <div class="rsvp__choice-block">Позже</div>
+            <div class="rsvp__choice-block">Сообщу позже</div>
           </label>
         </div>
       </fieldset>
@@ -79,7 +78,7 @@
             />
             <div class="rsvp__choice-block">Красное вино</div>
           </label>
-          <label class="rsvp__choice rsvp__choice--fullwidth">
+          <label class="rsvp__choice">
             <input
               type="checkbox"
               value="Не пью алкоголь"

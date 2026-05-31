@@ -3,7 +3,6 @@ if (window.history && 'scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
 }
 
-import { initDynamicContent } from './modules/urlParser.js';
 import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
@@ -51,9 +50,6 @@ async function loadComponents() {
   
   // Инициализируем всю динамическую логику только ПОСЛЕ того, как разметка полностью готова
   
-  // Парсинг URL и вывод имен гостей
-  initDynamicContent();
-
   // Затемнение фона при скролле (эффект слоев)
   initLayerController()
   

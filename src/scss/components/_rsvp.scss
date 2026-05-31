@@ -34,39 +34,50 @@
         }
     }
 
-    &__personalization {
-        font-family: $font-sans;
-        color: rgba($color-text-main, 0.7);
-    }
-
-    &__welcome-text {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-bottom: 4px;
-    }
-
-    &__guest-name {
-        font-family: $font-serif;
-        font-size: 20px;
-        font-style: italic;
-        color: $color-text-main;
-    }
-
-    &__divider {
-        width: 40px;
-        height: 1px;
-        background-color: rgba($color-text-main, 0.15);
-        margin: 20px auto 0;
-    }
-
     &__fieldset {
         border: none;
         padding: 0;
         margin: 0 0 32px 0;
     }
 
-    &__legend,
+    &__legend {
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        line-height: 1.4;
+        color: rgba($color-text-main, 0.8);
+        text-align: center;
+        margin-bottom: 20px;
+        width: 100%;
+        display: block; // Лечит баги паддингов в <legend> в некоторых браузерах
+
+        &--main {
+            font-family: $font-serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            color: $color-text-main;
+            margin-bottom: 32px;
+        }
+    }
+
+    &__highlight-name {
+        display: block;
+        font-family: $font-serif;
+        font-size: 1.8rem;
+        font-style: italic;
+        color: $color-accent-blue;
+        margin: 12px 0 16px;
+    }
+
+    &__highlight-date {
+        font-family: $font-sans;
+        font-weight: 600;
+        color: $color-accent-blue;
+        white-space: nowrap;
+    }
+
     &__label {
         font-family: $font-sans;
         font-size: 14px;
@@ -92,10 +103,10 @@
         display: block;
         cursor: pointer;
         position: relative;
-        flex: 1 1 calc(50% - 5px); // Две колонки на мобильных по умолчанию
+        flex: 0 0 calc(50% - 5px); // Отключаем flex-grow, чтобы нечетные элементы не растягивались
 
         &--fullwidth {
-            flex: 1 1 100%;
+            flex: 0 0 100%;
         }
     }
 

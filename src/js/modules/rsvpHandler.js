@@ -2,7 +2,7 @@ import { parseGuestParameters } from './urlParser.js';
 
 export function initRsvpHandler() {
   const form = document.getElementById('wedding-form');
-  const guestUiOutput = document.getElementById('guest-rendering-target');
+  const legendOutput = document.getElementById('rsvp-legend-target');
   const hiddenIdInput = document.getElementById('google-entry-id');
   const hiddenGuestsInput = document.getElementById('google-entry-raw-guests');
   
@@ -11,8 +11,18 @@ export function initRsvpHandler() {
   const params = parseGuestParameters();
 
   // Персонализация текстового узла
-  if (guestUiOutput && params.guests.length > 0) {
-    guestUiOutput.textContent = params.guests.join(' & ');
+  if (legendOutput) {
+    const namesHtml = params.guests.length > 0 
+      ? `<span class="rsvp__highlight-name">${params.formattedNames}</span>` 
+      : '';
+
+    if (params.guests.length === 1) {
+      legendOutput.innerHTML = `Наш дорогой гость,<br>${namesHtml}Будем рады видеть тебя! Пожалуйста, подтверди присутствие до <span class="rsvp__highlight-date">17.07.2026</span>:`;
+    } else if (params.guests.length > 1) {
+      legendOutput.innerHTML = `Наши дорогие гости,<br>${namesHtml}Будем рады видеть вас! Пожалуйста, подтвердите присутствие до <span class="rsvp__highlight-date">17.07.2026</span>:`;
+    } else {
+      legendOutput.innerHTML = `Наши дорогие гости!<br><br>Будем рады видеть вас! Пожалуйста, подтвердите присутствие до <span class="rsvp__highlight-date">17.07.2026</span>:`;
+    }
   }
 
   // Наполнение скрытых инпутов Идентификатором и Сырой строкой гостей

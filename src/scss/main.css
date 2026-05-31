@@ -76,7 +76,7 @@ select {
   width: 100%;
   height: 100%;
   z-index: 2;
-  background: linear-gradient(to bottom, rgba(44, 67, 51, 0.5) 0%, rgba(44, 67, 51, 0.1) 30%, rgba(44, 67, 51, 0.15) 70%, rgba(44, 67, 51, 0.8) 100%);
+  background: linear-gradient(to bottom, rgba(44, 67, 51, 0.6) 0%, rgba(44, 67, 51, 0.25) 30%, rgba(44, 67, 51, 0.25) 70%, rgba(44, 67, 51, 0.75) 100%);
 }
 .header__dimmer {
   position: absolute;
@@ -117,6 +117,7 @@ select {
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
   text-indent: 0.5em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 .header__year {
   font-family: "Cormorant Garamond", serif;
@@ -168,7 +169,7 @@ select {
   line-height: 1.1;
   color: #ffffff;
   letter-spacing: 0.03em;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 @media (min-width: 768px) {
   .header__name {
@@ -185,7 +186,7 @@ select {
   padding: 8px 56px;
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 .header__date-num {
   font-family: "Cormorant Garamond", serif;
@@ -194,6 +195,7 @@ select {
   color: #ffffff;
   letter-spacing: 0.05em;
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 @media (min-width: 768px) {
   .header__date-num {
@@ -975,34 +977,46 @@ select {
     font-size: 34px;
   }
 }
-.rsvp__personalization {
-  font-family: "Montserrat", sans-serif;
-  color: rgba(44, 67, 51, 0.7);
-}
-.rsvp__welcome-text {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 4px;
-}
-.rsvp__guest-name {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 20px;
-  font-style: italic;
-  color: #2c4333;
-}
-.rsvp__divider {
-  width: 40px;
-  height: 1px;
-  background-color: rgba(44, 67, 51, 0.15);
-  margin: 20px auto 0;
-}
 .rsvp__fieldset {
   border: none;
   padding: 0;
   margin: 0 0 32px 0;
 }
-.rsvp__legend, .rsvp__label {
+.rsvp__legend {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: rgba(44, 67, 51, 0.8);
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%;
+  display: block;
+}
+.rsvp__legend--main {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #2c4333;
+  margin-bottom: 32px;
+}
+.rsvp__highlight-name {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.8rem;
+  font-style: italic;
+  color: #1c3d5a;
+  margin: 12px 0 16px;
+}
+.rsvp__highlight-date {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  color: #1c3d5a;
+  white-space: nowrap;
+}
+.rsvp__label {
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   line-height: 1.5;
@@ -1024,10 +1038,10 @@ select {
   display: block;
   cursor: pointer;
   position: relative;
-  flex: 1 1 calc(50% - 5px);
+  flex: 0 0 calc(50% - 5px);
 }
 .rsvp__choice--fullwidth {
-  flex: 1 1 100%;
+  flex: 0 0 100%;
 }
 .rsvp__input-hidden {
   position: absolute;
