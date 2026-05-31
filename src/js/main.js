@@ -20,6 +20,7 @@ async function loadComponents() {
     { id: 'location-component', url: './src/components/location.html' }, 
     { id: 'map-modal-component', url: './src/components/map-modal.html' },
     { id: 'timing-component', url: './src/components/timing.html' },
+    { id: 'info-component', url: './src/components/info.html' },
     { id: 'rsvp-component', url: './src/components/rsvp.html' }
   ];
   
