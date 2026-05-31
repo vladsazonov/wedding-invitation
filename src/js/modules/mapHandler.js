@@ -1,7 +1,7 @@
 // Конфигурация вынесена в единую точку редактирования
 const MAP_CONFIG = {
-    latitude: 44.039828,
-    longitude: 43.070113,
+    latitude: 44.110056,
+    longitude: 43.005946,
     zoom: 16
 };
 
@@ -30,10 +30,11 @@ export function initMapHandler() {
         }
     };
 
-    const injectMap = () => {
+const injectMap = () => {
         if (mapContainer.children.length === 0) {
             const iframe = document.createElement('iframe');
-            iframe.src = `https://yandex.ru/map-widget/v1/?ll=${MAP_CONFIG.longitude}%2C${MAP_CONFIG.latitude}&z=${MAP_CONFIG.zoom}&pt=${MAP_CONFIG.longitude}%2C${MAP_CONFIG.latitude},pm2blm`;
+            // Добавлен параметр &mode=usermashup для скрытия линеек, пробок и лишнего UI
+            iframe.src = `https://yandex.ru/map-widget/v1/?ll=${MAP_CONFIG.longitude}%2C${MAP_CONFIG.latitude}&z=${MAP_CONFIG.zoom}&mode=usermashup&pt=${MAP_CONFIG.longitude}%2C${MAP_CONFIG.latitude},pm2blm`;
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.style.width = '100%';
             iframe.style.height = '100%';

@@ -78,7 +78,6 @@
             &::after {
                 content: '';
                 position: absolute;
-                // Четко фиксируем по центру родительской ячейки 38x38
                 top: 50%;
                 left: 50%;
                 width: 16px;
@@ -86,17 +85,16 @@
                 background-color: $color-accent-blue;
                 border-radius: 16px 16px 0 0;
                 z-index: -1;
-                animation: heartBeat 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             }
 
-            // Левая половинка: центрируем, наклоняем влево и немного сдвигаем влево (-4px), чтобы сформировать ложбинку
+            // Левая половинка: жесткая привязка трансформации к кадрам
             &::before {
-                transform: translate(calc(-50% - 4px), -50%) rotate(-45deg);
+                animation: heartPulseLeft 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
             }
 
-            // Правая половинка: центрируем, наклоняем вправо и сдвигаем вправо (+4px)
+            // Правая половинка: жесткая привязка трансформации к кадрам
             &::after {
-                transform: translate(calc(-50% + 4px), -50%) rotate(45deg);
+                animation: heartPulseRight 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
             }
         }
     }
@@ -136,14 +134,56 @@
     }
 }
 
-@keyframes heartBeat {
+// Анимация для левой половинки с сохранением точных координат центра
+@keyframes heartPulseLeft {
     0% {
-        opacity: 0;
-        scale: 0;
+        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+    }
+
+    14% {
+        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1.12);
+    }
+
+    28% {
+        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+    }
+
+    42% {
+        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1.12);
+    }
+
+    70% {
+        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
     }
 
     100% {
-        opacity: 1;
-        scale: 1;
+        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+    }
+}
+
+// Анимация для правой половинки с сохранением точных координат центра
+@keyframes heartPulseRight {
+    0% {
+        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+    }
+
+    14% {
+        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1.12);
+    }
+
+    28% {
+        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+    }
+
+    42% {
+        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1.12);
+    }
+
+    70% {
+        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+    }
+
+    100% {
+        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
     }
 }

@@ -6,25 +6,33 @@ export function initLayerController() {
 
   let ticking = false;
   let isSnapping = false;
-  let isPointerDown = false; // Единый флаг физического удержания экрана/мыши
+  let isPointerDown = false;
   let scrollTimeout = null;
 
-  // 1. Оптимизированный расчет визуала и плавного затемнения хедера (60 FPS)
+  // Переменные для расчета кинетики свайпа
+  let startY = 0;
+  let startTime = 0;
+  let lastY = 0;
+  let lastTime = 0;
+  let velocityY = 0; // Скорость: пиксели в миллисекунду
+
+  // Пороговые значения для калибровки жестов
+  const VELOCITY_THRESHOLD = 0.5; // Скорость свайпа для триггера (px/ms)
+  const SNAP_DURATION = 180; // Ускоренная анимация (было 220)
+
+  // 1. Расчет визуала и плавного затемнения
   function updateVisuals() {
     const scrollY = window.scrollY;
     const vh = window.innerHeight;
     const triggerPoint = vh - 35;
 
-    // Управление классами шторки
     if (scrollY >= triggerPoint) {
       welcomeLayer.classList.add('welcome--expanded');
     } else {
       welcomeLayer.classList.remove('welcome--expanded');
     }
 
-    // Динамическое управление затемнением фона хедера
     if (headerDimmer) {
-      // Прогресс от 0 до 1 в пределах первого экрана
       const progress = Math.min(scrollY / vh, 1);
       headerDimmer.style.opacity = progress.toFixed(3);
     }
@@ -33,26 +41,31 @@ export function initLayerController() {
   }
 
   // 2. Сверхбыстрая кастомная анимация примагничивания
-  function fastSnapScroll(targetY, duration = 220) {
-    window.scrollTo(0, window.scrollY); // Сброс нативной инерции браузера
+  function fastSnapScroll(targetY, duration = SNAP_DURATION) {
+    if (isSnapping) return;
+    isSnapping = true;
 
-    const startY = window.scrollY;
-    const diff = targetY - startY;
-    let start = null;
+    const startScrollY = window.scrollY;
+    const diff = targetY - startScrollY;
+    let startTimestamp = null;
+
+    // Мгновенно глушим инерцию прерыванием скролла в текущей точке
+    window.scrollTo(0, startScrollY);
 
     window.requestAnimationFrame(function step(timestamp) {
-      if (!start) start = timestamp;
-      const time = timestamp - start;
+      if (!startTimestamp) startTimestamp = timestamp;
+      const time = timestamp - startTimestamp;
       const percent = Math.min(time / duration, 1);
       
-      // Изящная кубическая кривая Ease-Out
+      // Более агрессивная кубическая кривая для мгновенного довода (Ease-Out Cubic)
       const easeProgress = 1 - Math.pow(1 - percent, 3);
 
-      window.scrollTo(0, startY + diff * easeProgress);
+      window.scrollTo(0, startScrollY + diff * easeProgress);
 
       if (time < duration) {
         window.requestAnimationFrame(step);
       } else {
+        window.scrollTo(0, targetY); // Жесткая финальная фиксация точки
         isSnapping = false;
       }
     });
@@ -60,59 +73,110 @@ export function initLayerController() {
 
   // 3. Валидация координат и запуск магнита
   function evaluateSnapTrigger() {
-    // Критически важно: если пользователь всё еще удерживает экран — прерываем автодоводку
     if (isSnapping || isPointerDown) return;
 
     const scrollY = window.scrollY;
     const vh = window.innerHeight;
     const targetTop = vh - 32;
 
-    // Проверяем, застряла ли шторка в промежуточном состоянии
-    if (scrollY > 40 && scrollY < targetTop - 10) {
-      isSnapping = true;
-
-      if (scrollY > vh * 0.45) {
-        fastSnapScroll(targetTop, 220); // Доводка вверх до упора
+    // Если шторка зависла в промежуточном положении без свайпа (медленный скролл)
+    if (scrollY > 30 && scrollY < targetTop - 10) {
+      if (scrollY > vh * 0.4) {
+        fastSnapScroll(targetTop);
       } else {
-        fastSnapScroll(0, 220); // Возврат вниз к исходной позиции
+        fastSnapScroll(0);
       }
     }
   }
 
-  // Скролл-событие: отвечает только за визуальный прогресс и смену классов
+  // Скролл-событие: только отрисовка изменений графики
   window.addEventListener('scroll', () => {
     if (!ticking) {
       window.requestAnimationFrame(updateVisuals);
       ticking = true;
     }
 
-    // Обработка десктопного колеса мыши/трекпада (когда pointerup не вызывается физически)
     if (!isPointerDown) {
       if (scrollTimeout !== null) window.clearTimeout(scrollTimeout);
-      scrollTimeout = window.setTimeout(evaluateSnapTrigger, 60);
+      scrollTimeout = window.setTimeout(evaluateSnapTrigger, 40); // Уменьшен таймаут отклика
     }
   }, { passive: true });
 
-  // 4. Семантический перехват жестов и кликов (Pointer Events API)
-  // touchstart + mousedown
+  // 4. Семантический перехват жестов (Pointer Events API с расчетом вектора скорости)
   window.addEventListener('pointerdown', (event) => {
-    // Игнорируем правый клик мыши
     if (event.pointerType === 'mouse' && event.button !== 0) return; 
+    
     isPointerDown = true;
+    startY = event.clientY;
+    startTime = performance.now();
+    lastY = startY;
+    lastTime = startTime;
+    velocityY = 0;
   }, { passive: true });
 
-  // touchend + mouseup
+  window.addEventListener('pointermove', (event) => {
+    if (!isPointerDown) return;
+
+    const currentY = event.clientY;
+    const currentTime = performance.now();
+    const timeDelta = currentTime - lastTime;
+
+    if (timeDelta > 0) {
+      // Вычисляем мгновенную скорость движения пальца/курсора
+      velocityY = (lastY - currentY) / timeDelta; 
+      lastY = currentY;
+      lastTime = currentTime;
+    }
+  }, { passive: true });
+
   window.addEventListener('pointerup', () => {
     isPointerDown = false;
-    // Пользователь отпустил экран/курсор — мгновенно проверяем необходимость магнита
+    const vh = window.innerHeight;
+    const targetTop = vh - 32;
+
+    // Перехват быстрого свайпа по вектору мгновенной кинетической скорости
+    if (Math.abs(velocityY) > VELOCITY_THRESHOLD) {
+      if (velocityY > 0) {
+        // Быстрый свайп вверх (палец идет вверх, страница листается вниз)
+        fastSnapScroll(targetTop, 160); // Дополнительно ускоряем флик до 160ms
+      } else {
+        // Быстрый свайп вниз (палец идет вниз, страница листается вверх)
+        fastSnapScroll(0, 160);
+      }
+      velocityY = 0; // Сброс вектора
+      return;
+    }
+
     window.requestAnimationFrame(evaluateSnapTrigger);
   }, { passive: true });
 
-  // Страховочный сброс флага, если курсор увели за пределы окна браузера
   window.addEventListener('pointercancel', () => {
     isPointerDown = false;
+    velocityY = 0;
   }, { passive: true });
 
-  // Инициализация при загрузке страницы
+  // 5. Обработка быстрого прокручивания колеса мыши / трекпада Mac (исключает залипания)
+  window.addEventListener('wheel', (event) => {
+    // Если анимация уже идет, полностью блокируем нативную прокрутку wheel
+    if (isSnapping) {
+      event.preventDefault();
+      return;
+    }
+
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const targetTop = vh - 32;
+
+    if (scrollY > 10 && scrollY < targetTop - 10) {
+      if (event.deltaY > 20) {
+        event.preventDefault();
+        fastSnapScroll(targetTop, 180);
+      } else if (event.deltaY < -20) {
+        event.preventDefault();
+        fastSnapScroll(0, 180);
+      }
+    }
+  }, { passive: false }); // Важно: passive: false необходим для прерывания event.preventDefault()
+
   updateVisuals();
 }

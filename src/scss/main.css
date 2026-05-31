@@ -33,6 +33,7 @@ select {
        appearance: none;
 }
 
+.calendar,
 .countdown,
 .location,
 .timing,
@@ -215,98 +216,104 @@ select {
   z-index: 10;
   margin-top: calc(100dvh - 54px);
   background-color: #fcfbfa;
-  padding: 16px 24px 0 24px;
-  border-radius: 24px 24px 0 0;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.04);
-  transition: border-radius 0.15s ease-out, box-shadow 0.2s ease-out;
-  will-change: border-radius, transform;
-  transform: translateZ(0);
-}
-.welcome--expanded {
-  border-radius: 0;
-  box-shadow: none;
-}
-@media (min-width: 768px) {
-  .welcome {
-    margin-top: calc(100dvh - 90px);
-    border-radius: 60px 60px 0 0;
-    padding: 20px 40px 100px 40px;
-  }
+  border-radius: 32px 32px 0 0;
+  box-shadow: 0px -15px 40px rgba(28, 61, 90, 0.04);
+  padding: 16px 16px 40px 16px;
+  will-change: transform, scroll-position;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .welcome--docked {
   border-radius: 0;
   box-shadow: none;
 }
 .welcome__container {
-  max-width: 520px;
+  width: 90%;
+  max-width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
 }
 .welcome__handle {
   width: 36px;
   height: 4px;
   background-color: rgba(28, 61, 90, 0.15);
-  border-radius: 100px;
-  margin: 0 auto 40px;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  border-radius: 2px;
+  margin: 0 auto 28px;
+  transition: opacity 0.3s ease;
 }
 .welcome--docked .welcome__handle {
   opacity: 0;
-  transform: translateY(-4px);
+}
+.welcome__card {
+  width: 100%;
+  padding: 32px 20px;
+  border: 1px solid rgba(28, 61, 90, 0.15);
+  border-radius: 24px;
+  background-color: transparent;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .welcome__card {
+    padding: 44px 32px;
+  }
 }
 .welcome__title {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.8rem;
   font-weight: 400;
-  letter-spacing: 0.04em;
   color: #1c3d5a;
   margin-bottom: 16px;
+  letter-spacing: 0.02em;
 }
 @media (min-width: 768px) {
   .welcome__title {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
   }
 }
-.welcome__ornament {
-  width: 30px;
-  height: 1px;
-  background-color: rgba(28, 61, 90, 0.3);
-  margin-bottom: 32px;
-  position: relative;
+.welcome__line-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 24px;
 }
-.welcome__ornament::after {
+.welcome__line-divider::before, .welcome__line-divider::after {
   content: "";
-  position: absolute;
-  top: -2px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 5px;
-  height: 5px;
-  background-color: rgba(28, 61, 90, 0.4);
+  height: 1px;
+  width: 40px;
+  background-color: rgba(28, 61, 90, 0.25);
+}
+.welcome__line-node {
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(28, 61, 90, 0.5);
+  transform: rotate(45deg);
+  margin: 0 10px;
+  display: inline-block;
 }
 .welcome__content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 48px;
+  gap: 16px;
+  margin-bottom: 32px;
 }
 .welcome__text {
   font-family: "Montserrat", sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 0.9rem;
+  line-height: 1.65;
   color: #3d3d3d;
 }
 @media (min-width: 768px) {
   .welcome__text {
-    font-size: 1.05rem;
+    font-size: 0.98rem;
   }
 }
 .welcome__text--intro {
   font-weight: 300;
-  letter-spacing: -0.01em;
 }
 .welcome__text--action {
   font-weight: 500;
@@ -317,49 +324,205 @@ select {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.05em;
   font-style: italic;
-  font-weight: 400;
   color: #1c3d5a;
+  font-weight: 400;
 }
-.welcome__date-badge {
-  position: relative;
-  width: 100%;
-  max-width: 280px;
-  padding: 24px 16px;
-  border-radius: 80px 80px 20px 20px;
-  background-color: transparent;
-}
-.welcome__date-inner {
+.welcome__date-box {
   display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.welcome__date-border {
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
+  border-top: 1px solid rgba(28, 61, 90, 0.15);
+  padding: 12px 36px;
 }
-.welcome__date-label {
+.welcome__date-header {
   font-family: "Montserrat", sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.2em;
   color: rgba(28, 61, 90, 0.5);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
-.welcome__date-value {
+.welcome__date {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   color: #1c3d5a;
-  margin-bottom: 6px;
   font-variant-numeric: tabular-nums;
+  margin-bottom: 2px;
 }
-.welcome__date-day {
+@media (min-width: 768px) {
+  .welcome__date {
+    font-size: 1.6rem;
+  }
+}
+.welcome__date-footer {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-style: italic;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   color: rgba(61, 61, 61, 0.7);
 }
 
+.calendar {
+  padding: 12px 20px;
+  background-color: #fcfbfa;
+}
+.calendar__container {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: "Montserrat", sans-serif;
+}
+.calendar__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.calendar__month {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #1c3d5a;
+  text-transform: capitalize;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+.calendar__weekdays, .calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+.calendar__weekdays {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(61, 61, 61, 0.4);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border-bottom: 1px solid rgba(28, 61, 90, 0.08);
+  padding-bottom: 8px;
+  width: 100%;
+}
+.calendar__days {
+  row-gap: 14px;
+  margin-bottom: 32px;
+}
+.calendar__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  font-size: 0.95rem;
+  color: #3d3d3d;
+  position: relative;
+  z-index: 1;
+}
+.calendar__day--empty {
+  visibility: hidden;
+}
+.calendar__day--weekend {
+  color: rgba(28, 61, 90, 0.6);
+}
+.calendar__day--highlighted {
+  color: #fcfbfa;
+  font-weight: 600;
+  border-radius: 0 !important;
+}
+.calendar__day--highlighted::before, .calendar__day--highlighted::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 26px;
+  background-color: #1c3d5a;
+  border-radius: 16px 16px 0 0;
+  z-index: -1;
+}
+.calendar__day--highlighted::before {
+  animation: heartPulseLeft 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+}
+.calendar__day--highlighted::after {
+  animation: heartPulseRight 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+}
+.calendar__date-box {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 24px;
+}
+.calendar__date-border {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 36px 54px;
+  width: 90%;
+}
+.calendar__date-header {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(28, 61, 90, 0.5);
+  margin-bottom: 14px;
+}
+.calendar__date {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #1c3d5a;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes heartPulseLeft {
+  0% {
+    transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+  }
+  14% {
+    transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1.12);
+  }
+  28% {
+    transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+  }
+  42% {
+    transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1.12);
+  }
+  70% {
+    transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+  }
+  100% {
+    transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+  }
+}
+@keyframes heartPulseRight {
+  0% {
+    transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+  }
+  14% {
+    transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1.12);
+  }
+  28% {
+    transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+  }
+  42% {
+    transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1.12);
+  }
+  70% {
+    transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+  }
+  100% {
+    transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+  }
+}
 .countdown {
-  padding: 38px 20px 18px;
+  padding: 8px 20px 18px;
   background-color: #fcfbfa;
   display: flex;
   justify-content: center;
@@ -456,8 +619,8 @@ select {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 420px;
+  width: 90%;
+  max-width: 600px;
 }
 .location__frame {
   position: relative;
@@ -741,7 +904,7 @@ select {
 }
 .map-modal__close {
   position: absolute;
-  top: 20px;
+  top: 50px;
   right: 20px;
   z-index: 2010;
   background-color: #2c4333;
@@ -986,5 +1149,167 @@ select {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+.info {
+  position: relative;
+  z-index: 10;
+  background-color: #fcfbfa;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+.info__container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.info__section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.info__title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  color: #1c3d5a;
+  margin-bottom: 24px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.info__text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #3d3d3d;
+  margin-bottom: 16px;
+  max-width: 520px;
+}
+.info__text--center {
+  font-size: 1.1rem;
+  color: #2c4333;
+}
+.info__text--budget {
+  font-style: italic;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  color: #1c3d5a;
+}
+.info__text--sub {
+  margin-bottom: 28px;
+}
+.info__accent-box {
+  background-color: rgba(235, 231, 223, 0.4);
+  border-left: 2px solid #1c3d5a;
+  padding: 16px 20px;
+  margin-top: 12px;
+  border-radius: 0 12px 12px 0;
+  max-width: 480px;
+}
+.info__accent-text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #3d3d3d;
+  text-align: left;
+}
+.info__highlight {
+  color: #1c3d5a;
+  font-weight: 600;
+}
+.info__medium {
+  font-weight: 500;
+  color: #1c3d5a;
+}
+.info__telegram-card {
+  border: 1px dashed rgba(28, 61, 90, 0.3);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 16px;
+  background-color: rgba(252, 251, 250, 0.5);
+  max-width: 480px;
+}
+.info__telegram-text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #3d3d3d;
+  opacity: 0.9;
+}
+.info__divider {
+  width: 60px;
+  height: 1px;
+  background-color: rgba(28, 61, 90, 0.15);
+  margin: 48px 0;
+  position: relative;
+}
+.info__divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 6px;
+  height: 6px;
+  background-color: rgba(28, 61, 90, 0.25);
+}
+.info__contacts-grid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+}
+.info__contact-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid rgba(28, 61, 90, 0.15);
+  border-radius: 14px;
+  text-decoration: none;
+  background-color: #fcfbfa;
+  transition: all 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.info__contact-link:active {
+  background-color: rgba(235, 231, 223, 0.3);
+  transform: scale(0.98);
+}
+.info__contact-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  color: #1c3d5a;
+}
+.info__contact-phone {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: #3d3d3d;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 768px) {
+  .info {
+    padding: 20px 40px;
+  }
+  .info__contacts-grid {
+    flex-direction: row;
+    max-width: 520px;
+  }
+  .info__contact-link {
+    flex: 1;
+    padding: 20px;
+  }
+  .info__contact-link:hover {
+    border-color: #1c3d5a;
+    background-color: rgba(235, 231, 223, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
   }
 }/*# sourceMappingURL=main.css.map */
