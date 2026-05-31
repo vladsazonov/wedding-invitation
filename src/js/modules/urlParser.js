@@ -40,3 +40,15 @@ export function initDynamicContent() {
     }
   }
 }
+
+export function parseGuestParameters() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const rawGuests = urlParams.get('guests');
+  const id = urlParams.get('id');
+
+  return {
+    guests: rawGuests ? rawGuests.split(',').map(name => name.trim()).filter(Boolean) : [],
+    rawGuests: rawGuests || '',
+    id: id || ''
+  };
+}

@@ -1,74 +1,113 @@
-<section class="rsvp" id="rsvp-component">
-  <div class="rsvp__card" data-aos="fade-up">
-    <h2 class="rsvp__title" id="rsvp-dynamic-title">
-      <span data-content="guest-greeting">Дорогие</span>
-      <span data-content="guest-names" class="rsvp__names-highlight">гости</span>
-      ,
-      <span id="rsvp-title-question">разделите ли вы с нами этот день?</span>
-    </h2>
+<section class="rsvp" id="rsvp" data-aos="fade-up">
+  <div class="rsvp__container">
+    <div class="rsvp__header">
+      <h2 class="rsvp__title">Подтверждение присутствия</h2>
+      <div class="rsvp__personalization">
+        <p class="rsvp__welcome-text">Приглашение для:</p>
+        <p class="rsvp__guest-name" id="guest-rendering-target">Дорогой гость</p>
+      </div>
+      <div class="rsvp__divider" aria-hidden="true"></div>
+    </div>
 
-    <p class="rsvp__subtitle" id="rsvp-subtitle">
-      Пожалуйста, ответьте на несколько вопросов, чтобы мы могли учесть все детали при подготовке.
-    </p>
+    <form class="rsvp__form" id="wedding-form">
+      <input type="hidden" name="entry.1000001" id="google-entry-id" value="" />
+      <input type="hidden" name="entry.1000002" id="google-entry-raw-guests" value="" />
 
-    <form class="rsvp__form form" id="rsvp-form" autocomplete="off">
-      <input type="hidden" id="form-names-hidden" name="entry_names" value="" />
-
-      <div class="form__group">
-        <label class="form__label" id="attendance-label">Ваш ответ</label>
-        <div class="form__radio-group">
-          <label class="form__radio-label">
+      <fieldset class="rsvp__fieldset">
+        <legend class="rsvp__legend">
+          Будем рады видеть вас! Пожалуйста, подтвердите ваше присутствие до 17.07.2026:
+        </legend>
+        <div class="rsvp__options-grid">
+          <label class="rsvp__choice">
             <input
               type="radio"
-              name="attendance"
-              value="Приду/Придем"
-              class="form__radio"
-              checked
+              name="entry.2000001"
+              value="Приду"
+              class="rsvp__input-hidden"
+              required
             />
-            <span class="form__radio-text" id="status-yes-text">Да, с большим удовольствием</span>
+            <div class="rsvp__choice-block">Я приду</div>
           </label>
-          <label class="form__radio-label">
-            <input type="radio" name="attendance" value="Не смогу/Не сможем" class="form__radio" />
-            <span class="form__radio-text" id="status-no-text">К сожалению, не смогу</span>
+          <label class="rsvp__choice">
+            <input type="radio" name="entry.2000001" value="Не приду" class="rsvp__input-hidden" />
+            <div class="rsvp__choice-block">Не смогу</div>
           </label>
-          <label class="form__radio-label">
-            <input type="radio" name="attendance" value="Отвечу позже" class="form__radio" />
-            <span class="form__radio-text">Сообщу точный ответ чуть позже</span>
+          <label class="rsvp__choice">
+            <input
+              type="radio"
+              name="entry.2000001"
+              value="Сообщу позже"
+              class="rsvp__input-hidden"
+            />
+            <div class="rsvp__choice-block">Позже</div>
           </label>
         </div>
-      </div>
+      </fieldset>
 
-      <div class="form__group">
-        <label for="form-allergy" class="form__label">Ограничения в еде или аллергии</label>
-        <input
-          type="text"
-          id="form-allergy"
-          name="allergy"
-          class="form__input"
-          placeholder="Например: аллергия на орехи, вегетарианское меню"
-        />
-      </div>
+      <fieldset class="rsvp__fieldset">
+        <legend class="rsvp__legend">Ваши предпочтения в напитках:</legend>
+        <div class="rsvp__options-flex">
+          <label class="rsvp__choice">
+            <input type="checkbox" value="Виски" class="rsvp__input-hidden rsvp-alcohol-item" />
+            <div class="rsvp__choice-block">Виски</div>
+          </label>
+          <label class="rsvp__choice">
+            <input type="checkbox" value="Водка" class="rsvp__input-hidden rsvp-alcohol-item" />
+            <div class="rsvp__choice-block">Водка</div>
+          </label>
+          <label class="rsvp__choice">
+            <input
+              type="checkbox"
+              value="Шампанское"
+              class="rsvp__input-hidden rsvp-alcohol-item"
+            />
+            <div class="rsvp__choice-block">Шампанское</div>
+          </label>
+          <label class="rsvp__choice">
+            <input
+              type="checkbox"
+              value="Белое вино"
+              class="rsvp__input-hidden rsvp-alcohol-item"
+            />
+            <div class="rsvp__choice-block">Белое вино</div>
+          </label>
+          <label class="rsvp__choice">
+            <input
+              type="checkbox"
+              value="Красное вино"
+              class="rsvp__input-hidden rsvp-alcohol-item"
+            />
+            <div class="rsvp__choice-block">Красное вино</div>
+          </label>
+          <label class="rsvp__choice rsvp__choice--fullwidth">
+            <input
+              type="checkbox"
+              value="Не пью алкоголь"
+              class="rsvp__input-hidden rsvp-alcohol-item"
+              id="alcohol-absent"
+            />
+            <div class="rsvp__choice-block">Не пью алкоголь</div>
+          </label>
+        </div>
+      </fieldset>
 
-      <div class="form__group">
-        <label for="form-wishes" class="form__label">Пожелания к празднику (необязательно)</label>
+      <div class="rsvp__field">
+        <label for="rsvp-wishes" class="rsvp__label">Пожелания к празднику (необязательно)</label>
         <textarea
-          id="form-wishes"
-          name="wishes"
-          class="form__textarea"
-          placeholder="Пара слов для нас или ваши любимые треки..."
+          name="entry.3000001"
+          id="rsvp-wishes"
+          class="rsvp__textarea"
+          placeholder="Ваши пожелания..."
         ></textarea>
       </div>
 
-      <button type="submit" class="button form__submit" id="submit-btn">
-        <span class="button__text">Отправить ответ</span>
-        <span class="button__loader" style="display: none">Отправка данных...</span>
-      </button>
+      <button type="submit" class="rsvp__submit" id="submit-btn">Отправить ответ</button>
     </form>
 
-    <div class="rsvp__success rsvp__success--hidden" id="success-block">
-      <div class="rsvp__success-icon">✨</div>
-      <h3 class="rsvp__success-title">Спасибо, ваш ответ принят!</h3>
-      <p class="rsvp__success-text" id="success-dynamic-text">Мы очень ждем встречи с вами!</p>
+    <div class="rsvp__success rsvp__success--hidden" id="success-message">
+      <div class="rsvp__success-icon" aria-hidden="true">✓</div>
+      <h3 class="rsvp__success-title">Ответ отправлен</h3>
+      <p class="rsvp__success-text">Спасибо! До встречи на торжестве.</p>
     </div>
   </div>
 </section>

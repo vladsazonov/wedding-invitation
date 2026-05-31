@@ -1,150 +1,105 @@
+import { parseGuestParameters } from './urlParser.js';
+
 export function initRsvpHandler() {
-  const form = document.getElementById('rsvp-form');
-  const hiddenNameInput = document.getElementById('form-names-hidden');
-  const submitBtn = document.getElementById('submit-btn');
-  const successBlock = document.getElementById('success-block');
+  const form = document.getElementById('wedding-form');
+  const guestUiOutput = document.getElementById('guest-rendering-target');
+  const hiddenIdInput = document.getElementById('google-entry-id');
+  const hiddenGuestsInput = document.getElementById('google-entry-raw-guests');
+  
+  if (!form) return;
 
-  if (!form || !hiddenNameInput || !submitBtn || !successBlock) return;
+  const params = parseGuestParameters();
 
-  // Твои технические заглушки Google Forms (замени entry.XXXXXXXXX при деплое)
-  const GOOGLE_FORM_CONFIG = {
-    url: 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSfXXXXXXXXXXXXX/formResponse',
-    entries: {
-      names: 'entry.XXXXXXXXX',       
-      attendance: 'entry.XXXXXXXXX',  
-      allergy: 'entry.XXXXXXXXX',     
-      wishes: 'entry.XXXXXXXXX'       
-    }
-  };
-
-  function parseAndPersonalizeGreeting() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const guestsParam = urlParams.get('guests');
-    const fmtParam = urlParams.get('fmt');
-
-    const greetingElement = document.querySelector('[data-content="guest-greeting"]');
-    const namesElement = document.querySelector('[data-content="guest-names"]');
-
-    if (!guestsParam) {
-      if (greetingElement) greetingElement.textContent = 'Дорогие';
-      if (namesElement) namesElement.textContent = 'гости';
-      hiddenNameInput.value = 'Дорогие гости';
-      applyGrammar(true, false);
-      return;
-    }
-
-    const guestsArray = guestsParam.split(',').map(name => name.trim()).filter(Boolean);
-    let formattedNames = '';
-
-    if (guestsArray.length > 2) {
-      const lastGuest = guestsArray.pop();
-      formattedNames = `${guestsArray.join(', ')} и ${lastGuest}`;
-    } else {
-      formattedNames = guestsArray.join(' и ');
-    }
-
-    // Сохраняем итоговую строку имён в скрытый инпут для отправки в Google Form
-    hiddenNameInput.value = formattedNames;
-    if (namesElement) namesElement.textContent = formattedNames;
-
-    const isPlural = guestsArray.length > 1 || fmtParam === 'pl';
-    const isFormal = fmtParam === 'formal';
-
-    // Склоняем заголовок-приветствие
-    if (greetingElement) {
-      if (isPlural) {
-        greetingElement.textContent = 'Дорогие';
-      } else if (isFormal) {
-        greetingElement.textContent = 'Уважаемый(-ая)';
-      } else {
-        greetingElement.textContent = 'Дорогой(-ая)';
-      }
-    }
-
-    applyGrammar(isPlural, isFormal);
+  // Персонализация текстового узла
+  if (guestUiOutput && params.guests.length > 0) {
+    guestUiOutput.textContent = params.guests.join(' & ');
   }
 
-  function applyGrammar(isPlural, isFormal) {
-    const titleQuestion = document.getElementById('rsvp-title-question');
-    const subtitle = document.getElementById('rsvp-subtitle');
-    const attendanceLabel = document.getElementById('attendance-label');
-    const statusYes = document.getElementById('status-yes-text');
-    const statusNo = document.getElementById('status-no-text');
-    const successDynamicText = document.getElementById('success-dynamic-text');
+  // Наполнение скрытых инпутов Идентификатором и Сырой строкой гостей
+  if (hiddenIdInput) hiddenIdInput.value = params.id;
+  if (hiddenGuestsInput) hiddenGuestsInput.value = params.rawGuests;
 
-    if (isPlural) {
-      if (titleQuestion) titleQuestion.textContent = 'разделите ли вы с нами этот праздничный день?';
-      if (subtitle) subtitle.textContent = 'Пожалуйста, ответьте на несколько вопросов, чтобы мы могли учесть все детали при подготовке.';
-      if (attendanceLabel) attendanceLabel.textContent = 'Ваш совместный ответ';
-      if (statusYes) statusYes.textContent = 'Да, мы с удовольствием придем';
-      if (statusNo) statusNo.textContent = 'К сожалению, мы не сможем приехать';
-      if (successDynamicText) successDynamicText.textContent = 'Мы очень-очень ждем встречи с вашей прекрасной компанией!';
-    } else {
-      // Единственное число (Ты или официальное Вы)
-      if (titleQuestion) {
-        titleQuestion.textContent = isFormal 
-          ? 'разделите ли Вы с нами этот праздничный день?' 
-          : 'разделишь ли ты с нами этот праздничный день?';
-      }
-      if (subtitle) {
-        subtitle.textContent = isFormal
-          ? 'Пожалуйста, ответьте на несколько вопросов, чтобы мы могли учесть все детали при подготовке.'
-          : 'Пожалуйста, ответь на пару вопросов, это поможет нам при подготовке.';
-      }
-      if (attendanceLabel) attendanceLabel.textContent = 'Твой ответ';
-      if (statusYes) statusYes.textContent = isFormal ? 'Да, я с удовольствием приду' : 'Да, я приду с радостью!';
-      if (statusNo) statusNo.textContent = isFormal ? 'К сожалению, я не смогу присутствовать' : 'К сожалению, не смогу прийти';
-      if (successDynamicText) {
-        successDynamicText.textContent = isFormal 
-          ? 'С нетерпением ждем встречи с Вами!' 
-          : 'С нетерпением ждем встречи с тобой!';
-      }
-    }
-  }
+  setupAlcoholInteractions(form);
 
-  async function submitRsvp(event) {
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
+    submitRsvp(form);
+  });
+}
 
-    const selectedAttendance = form.querySelector('input[name="attendance"]:checked');
-    if (!selectedAttendance) return;
+function setupAlcoholInteractions(form) {
+  const noAlcoholCb = form.querySelector('#alcohol-absent');
+  const itemsCbs = form.querySelectorAll('.rsvp-alcohol-item');
 
-    const allergyInput = document.getElementById('form-allergy');
-    const wishesInput = document.getElementById('form-wishes');
-    const submitText = submitBtn.querySelector('.button__text');
-    const submitLoader = submitBtn.querySelector('.button__loader');
+  if (!noAlcoholCb) return;
 
-    submitBtn.disabled = true;
-    if (submitText) submitText.style.display = 'none';
-    if (submitLoader) submitLoader.style.display = 'inline-block';
-
-    const bodyParams = new URLSearchParams();
-    bodyParams.append(GOOGLE_FORM_CONFIG.entries.names, hiddenNameInput.value);
-    bodyParams.append(GOOGLE_FORM_CONFIG.entries.attendance, selectedAttendance.value);
-    bodyParams.append(GOOGLE_FORM_CONFIG.entries.allergy, allergyInput ? allergyInput.value.trim() : '');
-    bodyParams.append(GOOGLE_FORM_CONFIG.entries.wishes, wishesInput ? wishesInput.value.trim() : '');
-
-    try {
-      await fetch(GOOGLE_FORM_CONFIG.url, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: bodyParams.toString()
+  noAlcoholCb.addEventListener('change', () => {
+    if (noAlcoholCb.checked) {
+      itemsCbs.forEach(cb => {
+        if (cb !== noAlcoholCb) cb.checked = false;
       });
-
-      form.style.display = 'none';
-      successBlock.classList.remove('rsvp__success--hidden');
-    } catch (error) {
-      console.error('Ошибка отправки формы:', error);
-      submitBtn.disabled = false;
-      if (submitText) submitText.style.display = 'inline-block';
-      if (submitLoader) submitLoader.style.display = 'none';
-      alert('Произошла техническая ошибка. Пожалуйста, попробуйте отправить ответ снова.');
     }
+  });
+
+  itemsCbs.forEach(cb => {
+    if (cb !== noAlcoholCb) {
+      cb.addEventListener('change', () => {
+        if (cb.checked && noAlcoholCb.checked) {
+          noAlcoholCb.checked = false;
+        }
+      });
+    }
+  });
+}
+
+function submitRsvp(form) {
+  const submitBtn = document.getElementById('submit-btn');
+  const successMessage = document.getElementById('success-message');
+  if (!submitBtn || !successMessage) return;
+
+  const FORM_ID = '1FAIpQLSfXXXXXXXXXXXXX'; // Замените на реальный хеш вашей Google Формы
+  const actionUrl = `https://docs.google.com/forms/u/0/d/e/${FORM_ID}/formResponse`;
+
+  const formData = new FormData(form);
+  const postData = new URLSearchParams();
+
+  // Собираем массив выбранных напитков в одну строку (Best Practice)
+  const selectedDrinks = [];
+  form.querySelectorAll('.rsvp-alcohol-item:checked').forEach(cb => {
+    selectedDrinks.push(cb.value);
+  });
+  
+  // Перенос стандартных полей из разметки
+  for (const [key, value] of formData.entries()) {
+    if (key) postData.append(key, value);
   }
 
-  // Инициализация
-  parseAndPersonalizeGreeting();
-  form.addEventListener('submit', submitRsvp);
+  // Добавление сформированной строки алкоголя (замените на ваш entry.ID для напитков)
+  postData.append('entry.2000002', selectedDrinks.length > 0 ? selectedDrinks.join(', ') : 'Не указано');
+
+  // Состояние загрузки кнопки
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Отправка...';
+
+  fetch(actionUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: postData.toString()
+  })
+  .then(() => {
+    form.classList.add('rsvp__form--hidden');
+    successMessage.classList.remove('rsvp__success--hidden');
+    form.reset();
+  })
+  .catch(error => {
+    console.error('Ошибка отправки RSVP анкеты:', error);
+    alert('Произошла ошибка сети. Пожалуйста, попробуйте отправить снова.');
+  })
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Отправить ответ';
+  });
 }
