@@ -1,13 +1,12 @@
 <section class="header" id="header">
   <div class="header__bg">
-    <picture>
-      <img
-        src="./src/images/header/hero-bg.webp"
-        alt="Владислав и Надежда"
-        class="header__photo"
-        loading="eager"
-      />
-    </picture>
+    <img
+      src="./src/images/header/hero-bg.webp"
+      alt="Владислав и Надежда"
+      class="header__photo"
+      loading="eager"
+      fetchpriority="high"
+    />
     <div class="header__overlay"></div>
     <div class="header__dimmer"></div>
   </div>
@@ -18,19 +17,37 @@
     </div>
 
     <div class="header__main">
-      <div class="header__ampersand-layer" data-aos="zoom-in" data-aos-delay="300">&</div>
-      <h1 class="header__title" data-aos="fade-up" data-aos-delay="400">
+      <div
+        class="header__ampersand-layer"
+        data-aos="zoom-in"
+        data-aos-delay="300"
+        aria-hidden="true"
+      >
+        &amp;
+      </div>
+      <h1
+        class="header__title"
+        data-aos="fade-up"
+        data-aos-delay="400"
+        aria-label="Свадьба Владислава и Надежды"
+      >
         <span class="header__name">Владислав</span>
         <span class="header__name">Надежда</span>
       </h1>
     </div>
 
-    <div class="header__date-showcase" data-aos="fade-up" data-aos-delay="600">
-      <div class="header__date-num">17</div>
-      <div class="header__date-divider"></div>
-      <div class="header__date-num">08</div>
-      <div class="header__date-divider"></div>
-      <div class="header__date-num">26</div>
-    </div>
+    <time
+      class="header__date-showcase"
+      datetime="2026-08-17"
+      aria-label="17 августа 2026 года"
+      data-aos="fade-up"
+      data-aos-delay="600"
+    >
+      <span class="header__date-num" aria-hidden="true">17</span>
+      <span class="header__date-divider" aria-hidden="true"></span>
+      <span class="header__date-num" aria-hidden="true">08</span>
+      <span class="header__date-divider" aria-hidden="true"></span>
+      <span class="header__date-num" aria-hidden="true">26</span>
+    </time>
   </div>
 </section>

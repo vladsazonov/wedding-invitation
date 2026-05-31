@@ -49,21 +49,22 @@ async function loadComponents() {
   await Promise.all(promises);
   
   // Инициализируем всю динамическую логику только ПОСЛЕ того, как разметка полностью готова
+  const initModules = [
+    { name: 'LayerController', fn: () => initLayerController() },
+    { name: 'RsvpHandler', fn: () => initRsvpHandler() },
+    { name: 'WeddingTimer', fn: () => initWeddingTimer() },
+    { name: 'MapHandler', fn: () => initMapHandler() },
+    { name: 'WeddingCalendar', fn: () => initWeddingCalendar('2026-08-17') }
+  ];
   
-  // Затемнение фона при скролле (эффект слоев)
-  initLayerController()
-  
-  // Фоновая отправка RSVP формы
-  initRsvpHandler();
-
-  // Валидный таймер обратного отсчета
-  initWeddingTimer();
-
-  // Инициализация карты (только после полной загрузки разметки)
-  initMapHandler();
-
-  // Инициализация календаря (только после полной загрузки разметки)
-  initWeddingCalendar('2026-08-17');
+  // Изолируем вызовы модулей: ошибка в одном не сломает остальные
+  initModules.forEach(({ name, fn }) => {
+    try {
+      fn();
+    } catch (err) {
+      console.error(`Ошибка инициализации модуля [${name}]:`, err);
+    }
+  });
   
   // Анимация скролла AOS (если библиотека успешно подключена через CDN)
   if (typeof AOS !== 'undefined') {
