@@ -1,0 +1,149 @@
+@import '../abstracts/variables';
+
+.calendar {
+    padding: 12px 20px;
+    background-color: $color-bg-light;
+
+    &__container {
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: $font-sans;
+    }
+
+    &__header {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    &__month {
+        font-family: $font-serif;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: $color-accent-blue;
+        text-transform: capitalize;
+        letter-spacing: 0.03em;
+        margin: 0;
+    }
+
+    &__weekdays,
+    &__days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        justify-items: center;
+        align-items: center;
+    }
+
+    &__weekdays {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: rgba($color-text, 0.4);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        border-bottom: 1px solid rgba($color-accent-blue, 0.08);
+        padding-bottom: 8px;
+        width: 100%;
+    }
+
+    &__days {
+        row-gap: 14px;
+        margin-bottom: 32px;
+    }
+
+    &__day {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
+        color: $color-text;
+        position: relative;
+        z-index: 1;
+
+        &--empty {
+            visibility: hidden;
+        }
+
+        &--weekend {
+            color: rgba($color-accent-blue, 0.6);
+        }
+
+        &--highlighted {
+            color: $color-bg-light;
+            font-weight: 600;
+            border-radius: 0 !important;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                // Четко фиксируем по центру родительской ячейки 38x38
+                top: 50%;
+                left: 50%;
+                width: 16px;
+                height: 26px;
+                background-color: $color-accent-blue;
+                border-radius: 16px 16px 0 0;
+                z-index: -1;
+                animation: heartBeat 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            }
+
+            // Левая половинка: центрируем, наклоняем влево и немного сдвигаем влево (-4px), чтобы сформировать ложбинку
+            &::before {
+                transform: translate(calc(-50% - 4px), -50%) rotate(-45deg);
+            }
+
+            // Правая половинка: центрируем, наклоняем вправо и сдвигаем вправо (+4px)
+            &::after {
+                transform: translate(calc(-50% + 4px), -50%) rotate(45deg);
+            }
+        }
+    }
+
+    // Новые стили для перенесенного блока даты внутри контейнера календаря
+    &__date-box {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 24px;
+    }
+
+    &__date-border {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 36px 54px;
+        width: 90%;
+    }
+
+    &__date-header {
+        font-family: $font-sans;
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        color: rgba($color-accent-blue, 0.5);
+        margin-bottom: 14px;
+    }
+
+    &__date {
+        font-family: $font-sans;
+        font-size: 2rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: $color-accent-blue;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+@keyframes heartBeat {
+    0% {
+        opacity: 0;
+        scale: 0;
+    }
+
+    100% {
+        opacity: 1;
+        scale: 1;
+    }
+}

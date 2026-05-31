@@ -8,12 +8,14 @@ import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
 import { initLayerController } from './modules/layerController.js';
+import { initWeddingCalendar } from './modules/calendar.js';
 
 async function loadComponents() {
   // Фиксированный массив компонентов для явной сборки лендинга
   const components = [
     { id: 'header-component', url: './src/components/header.html' },
     { id: 'welcome-component', url: './src/components/welcome.html' },
+    { id: 'calendar-component', url: './src/components/calendar.html' },
     { id: 'countdown-component', url: './src/components/countdown.html' },
     { id: 'location-component', url: './src/components/location.html' }, 
     { id: 'map-modal-component', url: './src/components/map-modal.html' },
@@ -62,6 +64,9 @@ async function loadComponents() {
 
   // Инициализация карты (только после полной загрузки разметки)
   initMapHandler();
+
+  // Инициализация календаря (только после полной загрузки разметки)
+  initWeddingCalendar('2026-08-17');
   
   // Анимация скролла AOS (если библиотека успешно подключена через CDN)
   if (typeof AOS !== 'undefined') {
