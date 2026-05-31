@@ -1,6 +1,6 @@
 .timing {
     background-color: $color-bg-light;
-    padding: 0px 20px 48px;
+    padding: 40px 16px;
     width: 100%;
     overflow: hidden;
 
@@ -91,7 +91,7 @@
 
     // Адаптив под планшеты и десктоп
     @media (min-width: $breakpoint-md) {
-        padding: 90px 40px;
+        padding: 60px 40px;
 
         &__inner {
             max-width: 700px;

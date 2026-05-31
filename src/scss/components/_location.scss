@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px 16px;
+    padding: 40px 16px;
     background-color: $color-bg-light;
 
     &__container {
@@ -21,7 +21,7 @@
         border-radius: 140px 140px 40px 40px; // Изящная геометрия арки
         background-color: $color-bg-light;
         text-align: center;
-        box-shadow: 0 10px 30px rgba($color-accent-blue, 0.03);
+        box-shadow: 0 20px 60px rgba($color-accent-blue, 0.08);
     }
 
     &__title {

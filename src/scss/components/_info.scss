@@ -2,7 +2,7 @@
     position: relative;
     z-index: 10;
     background-color: $color-bg-light;
-    padding: 60px 20px;
+    padding: 40px 16px;
     display: flex;
     justify-content: center;
 
@@ -163,7 +163,7 @@
 
 @media (min-width: 768px) {
     .info {
-        padding: 20px 40px;
+        padding: 60px 40px; // Исправлен баг, из-за которого блок на десктопе сужался
 
         &__contacts-grid {
             flex-direction: row;

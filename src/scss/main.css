@@ -218,7 +218,7 @@ select {
   background-color: #fcfbfa;
   border-radius: 32px 32px 0 0;
   box-shadow: 0px -15px 40px rgba(28, 61, 90, 0.04);
-  padding: 16px 16px 40px 16px;
+  padding: 24px 16px 40px;
   will-change: transform, scroll-position;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
@@ -370,7 +370,7 @@ select {
 }
 
 .calendar {
-  padding: 12px 20px;
+  padding: 40px 16px;
   background-color: #fcfbfa;
 }
 .calendar__container {
@@ -455,28 +455,33 @@ select {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 .calendar__date-border {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 36px 54px;
-  width: 90%;
+  padding: 24px 40px;
+  border: 1px solid rgba(28, 61, 90, 0.15);
+  border-radius: 24px;
+  background-color: rgba(28, 61, 90, 0.02);
+  box-shadow: 0 10px 30px rgba(28, 61, 90, 0.04);
 }
 .calendar__date-header {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.35rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
-  color: rgba(28, 61, 90, 0.5);
-  margin-bottom: 14px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(28, 61, 90, 0.6);
+  margin-bottom: 10px;
 }
 .calendar__date {
-  font-family: "Montserrat", sans-serif;
-  font-size: 2rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1;
   color: #1c3d5a;
   font-variant-numeric: tabular-nums;
 }
@@ -522,7 +527,7 @@ select {
   }
 }
 .countdown {
-  padding: 8px 20px 18px;
+  padding: 40px 16px;
   background-color: #fcfbfa;
   display: flex;
   justify-content: center;
@@ -587,7 +592,7 @@ select {
 }
 @media (min-width: 768px) {
   .countdown {
-    padding: 120px 40px;
+    padding: 60px 40px;
   }
   .countdown__subtitle {
     font-size: 1rem;
@@ -612,7 +617,7 @@ select {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 16px;
+  padding: 40px 16px;
   background-color: #fcfbfa;
 }
 .location__container {
@@ -630,7 +635,7 @@ select {
   border-radius: 140px 140px 40px 40px;
   background-color: #fcfbfa;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(28, 61, 90, 0.03);
+  box-shadow: 0 20px 60px rgba(28, 61, 90, 0.08);
 }
 .location__title {
   font-family: "Cormorant Garamond", serif;
@@ -772,7 +777,7 @@ select {
 
 .timing {
   background-color: #fcfbfa;
-  padding: 0px 20px 48px;
+  padding: 40px 16px;
   width: 100%;
   overflow: hidden;
 }
@@ -849,7 +854,7 @@ select {
 }
 @media (min-width: 768px) {
   .timing {
-    padding: 90px 40px;
+    padding: 60px 40px;
   }
   .timing__inner {
     max-width: 700px;
@@ -942,7 +947,7 @@ select {
   position: relative;
   z-index: 10;
   background-color: #ebe7df;
-  padding: 80px 16px;
+  padding: 40px 16px;
 }
 .rsvp__container {
   max-width: 580px;
@@ -950,7 +955,7 @@ select {
   padding: 40px 24px;
   background-color: #fcfbfa;
   border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(44, 67, 51, 0.04);
+  box-shadow: 0 20px 60px rgba(44, 67, 51, 0.08);
 }
 .rsvp__header {
   text-align: center;
@@ -1133,7 +1138,7 @@ select {
   position: relative;
   z-index: 10;
   background-color: #fcfbfa;
-  padding: 60px 20px;
+  padding: 40px 16px;
   display: flex;
   justify-content: center;
 }
@@ -1274,7 +1279,7 @@ select {
 
 @media (min-width: 768px) {
   .info {
-    padding: 20px 40px;
+    padding: 60px 40px;
   }
   .info__contacts-grid {
     flex-direction: row;
