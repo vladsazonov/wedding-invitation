@@ -1,25 +1,36 @@
 <section class="countdown" id="countdown-component">
   <div class="countdown__container">
-    <p class="countdown__subtitle">до торжества осталось</p>
-    <div class="countdown__timer" aria-live="polite">
-      <div class="countdown__item">
-        <span class="countdown__digits" id="timer-days">00</span>
-        <span class="countdown__label">дней</span>
-      </div>
-      <span class="countdown__divider">:</span>
-      <div class="countdown__item">
-        <span class="countdown__digits" id="timer-hours">00</span>
-        <span class="countdown__label">часов</span>
-      </div>
-      <span class="countdown__divider">:</span>
-      <div class="countdown__item">
-        <span class="countdown__digits" id="timer-minutes">00</span>
-        <span class="countdown__label">минут</span>
-      </div>
-      <span class="countdown__divider">:</span>
-      <div class="countdown__item">
-        <span class="countdown__digits" id="timer-seconds">00</span>
-        <span class="countdown__label">секунд</span>
+    <div class="countdown__photo-wrapper" data-aos="fade-up">
+      <img
+        src="./src/images/countdown/couple.webp"
+        alt="Владислав и Надежда"
+        class="countdown__photo"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="countdown__content" data-aos="fade-up" data-aos-delay="100">
+      <p class="countdown__subtitle">разделите с нами этот момент</p>
+      <div class="countdown__timer" aria-live="polite">
+        <div class="countdown__item">
+          <span class="countdown__digits" id="timer-days">00</span>
+          <span class="countdown__label" id="label-days">дней</span>
+        </div>
+        <span class="countdown__divider">:</span>
+        <div class="countdown__item">
+          <span class="countdown__digits" id="timer-hours">00</span>
+          <span class="countdown__label" id="label-hours">часов</span>
+        </div>
+        <span class="countdown__divider">:</span>
+        <div class="countdown__item">
+          <span class="countdown__digits" id="timer-minutes">00</span>
+          <span class="countdown__label" id="label-minutes">минут</span>
+        </div>
+        <span class="countdown__divider">:</span>
+        <div class="countdown__item">
+          <span class="countdown__digits" id="timer-seconds">00</span>
+          <span class="countdown__label" id="label-seconds">секунд</span>
+        </div>
       </div>
     </div>
   </div>

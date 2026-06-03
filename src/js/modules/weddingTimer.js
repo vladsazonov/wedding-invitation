@@ -1,3 +1,5 @@
+import { getPluralForm } from './pluralize.js';
+
 /**
  * Инициализирует независимый от таймзоны пользователя счетчик обратного отсчета.
  * Дата зафиксирована в одном месте через дефолтный параметр.
@@ -14,40 +16,62 @@ export function initWeddingTimer(targetIsoDate = '2026-08-17T12:00:00+03:00') {
         seconds: document.getElementById('timer-seconds')
     };
 
+    const labels = {
+        days: document.getElementById('label-days'),
+        hours: document.getElementById('label-hours'),
+        minutes: document.getElementById('label-minutes'),
+        seconds: document.getElementById('label-seconds')
+    };
+
     if (!nodes.days || !nodes.hours || !nodes.minutes || !nodes.seconds) return;
 
-    function updateDigitNode(node, nextValue) {
-        if (node.textContent === nextValue) return;
+    // Словари склонений для каждой единицы времени
+    const TIME_FORMS = {
+        days: ['день', 'дня', 'дней'],
+        hours: ['час', 'часа', 'часов'],
+        minutes: ['минута', 'минуты', 'минут'],
+        seconds: ['секунда', 'секунды', 'секунд']
+    };
 
-        node.classList.add('countdown__digits--changing');
-        setTimeout(() => {
-            node.textContent = nextValue;
-            node.classList.remove('countdown__digits--changing');
-        }, 120);
+    // Универсальная функция обновления блока (цифры + лейбл)
+    function updateBlock(key, rawValue) {
+        const paddedValue = String(rawValue).padStart(2, '0');
+        const node = nodes[key];
+        const labelNode = labels[key];
+
+        if (node.textContent !== paddedValue) {
+            node.classList.add('countdown__digits--changing');
+            setTimeout(() => {
+                node.textContent = paddedValue;
+                node.classList.remove('countdown__digits--changing');
+            }, 120);
+        }
+
+        if (labelNode) {
+            const pluralLabel = getPluralForm(rawValue, TIME_FORMS[key]);
+            if (labelNode.textContent !== pluralLabel) {
+                labelNode.textContent = pluralLabel;
+            }
+        }
     }
+
+    let intervalId;
 
     function calculateTime() {
         const diff = targetTimestamp - Date.now();
 
         if (diff <= 0) {
-            clearInterval(intervalId);
-            Object.values(nodes).forEach(node => node.textContent = '00');
+            if (intervalId) clearInterval(intervalId);
+            Object.keys(nodes).forEach(key => updateBlock(key, 0));
             return;
         }
 
-        const timeUnits = {
-            days: Math.floor(diff / 86400000),
-            hours: Math.floor((diff % 86400000) / 3600000),
-            minutes: Math.floor((diff % 3600000) / 60000),
-            seconds: Math.floor((diff % 60000) / 1000)
-        };
-
-        updateDigitNode(nodes.days, String(timeUnits.days).padStart(2, '0'));
-        updateDigitNode(nodes.hours, String(timeUnits.hours).padStart(2, '0'));
-        updateDigitNode(nodes.minutes, String(timeUnits.minutes).padStart(2, '0'));
-        updateDigitNode(nodes.seconds, String(timeUnits.seconds).padStart(2, '0'));
+        updateBlock('days', Math.floor(diff / 86400000));
+        updateBlock('hours', Math.floor((diff % 86400000) / 3600000));
+        updateBlock('minutes', Math.floor((diff % 3600000) / 60000));
+        updateBlock('seconds', Math.floor((diff % 60000) / 1000));
     }
 
     calculateTime();
-    const intervalId = setInterval(calculateTime, 1000);
+    intervalId = setInterval(calculateTime, 1000);
 }
