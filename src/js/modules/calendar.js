@@ -14,10 +14,7 @@ export function initWeddingCalendar(targetDateString) {
   // Внутренние функции рендеринга
   const renderHeader = () => {
     const formatter = new Intl.DateTimeFormat('ru-RU', { month: 'long'});
-    const rawDate = formatter.format(targetDate);
-    
-    // Очищаем от " г." на конце строки
-    titleContainer.textContent = rawDate.replace(/\s*г\.?$/, '');
+    titleContainer.textContent = formatter.format(targetDate);
   };
 
   const renderGrid = () => {
@@ -34,18 +31,20 @@ export function initWeddingCalendar(targetDateString) {
     // Генерация пустых ячеек для выравнивания дней недели
     for (let i = 0; i < startOffset; i++) {
       const emptyCell = document.createElement('div');
-      emptyCell.classList.add('calendar__day', 'calendar__day--empty');
+      emptyCell.className = 'calendar__day calendar__day--empty';
       fragment.appendChild(emptyCell);
     }
 
     // Генерация дней месяца
     for (let day = 1; day <= totalDays; day++) {
       const dayCell = document.createElement('div');
-      dayCell.classList.add('calendar__day');
-      dayCell.textContent = day.toString();
+      dayCell.className = 'calendar__day';
+      dayCell.textContent = day;
 
-      const currentDayOfWeek = new Date(year, month, day).getDay();
-      if (currentDayOfWeek === 0 || currentDayOfWeek === 6) {
+      // Вычисляем день недели математически: (сдвиг + день - 1) % 7
+      // Где 5 - Суббота, 6 - Воскресенье (т.к. мы сдвинули начало недели на Пн)
+      const currentDayOfWeek = (startOffset + day - 1) % 7;
+      if (currentDayOfWeek === 5 || currentDayOfWeek === 6) {
         dayCell.classList.add('calendar__day--weekend');
       }
 
@@ -56,8 +55,7 @@ export function initWeddingCalendar(targetDateString) {
       fragment.appendChild(dayCell);
     }
 
-    gridContainer.innerHTML = '';
-    gridContainer.appendChild(fragment);
+    gridContainer.replaceChildren(fragment);
   };
 
   // Вызов рендеринга при инициализации функции

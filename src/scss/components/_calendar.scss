@@ -80,10 +80,10 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                width: 16px;
-                height: 26px;
+                width: 20px;
+                height: 32px;
                 background-color: $color-accent-blue;
-                border-radius: 16px 16px 0 0;
+                border-radius: 20px 20px 0 0;
                 z-index: -1;
             }
 
@@ -142,53 +142,53 @@
 // Анимация для левой половинки с сохранением точных координат центра
 @keyframes heartPulseLeft {
     0% {
-        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+        transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg) scale(1);
     }
 
     14% {
-        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1.12);
+        transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg) scale(1.12);
     }
 
     28% {
-        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+        transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg) scale(1);
     }
 
     42% {
-        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1.12);
+        transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg) scale(1.12);
     }
 
     70% {
-        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+        transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg) scale(1);
     }
 
     100% {
-        transform: translate3d(calc(-50% - 4px), -50%, 0) rotate(-45deg) scale(1);
+        transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg) scale(1);
     }
 }
 
 // Анимация для правой половинки с сохранением точных координат центра
 @keyframes heartPulseRight {
     0% {
-        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+        transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg) scale(1);
     }
 
     14% {
-        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1.12);
+        transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg) scale(1.12);
     }
 
     28% {
-        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+        transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg) scale(1);
     }
 
     42% {
-        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1.12);
+        transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg) scale(1.12);
     }
 
     70% {
-        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+        transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg) scale(1);
     }
 
     100% {
-        transform: translate3d(calc(-50% + 4px), -50%, 0) rotate(45deg) scale(1);
+        transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg) scale(1);
     }
 }
