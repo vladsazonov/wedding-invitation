@@ -3,54 +3,58 @@ import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
 import { initWeddingCalendar } from './modules/calendar.js';
 
+// Фиксированный массив вынесен из функции для экономии памяти (создается единожды)
+const COMPONENTS_CONFIG = [
+  { id: 'header-component', url: './src/components/header.html' },
+  { id: 'welcome-component', url: './src/components/welcome.html' },
+  { id: 'calendar-component', url: './src/components/calendar.html' },
+  { id: 'countdown-component', url: './src/components/countdown.html' },
+  { id: 'location-component', url: './src/components/location.html' }, 
+  { id: 'map-modal-component', url: './src/components/map-modal.html' },
+  { id: 'timing-component', url: './src/components/timing.html' },
+  { id: 'info-component', url: './src/components/info.html' },
+  { id: 'rsvp-component', url: './src/components/rsvp.html' }
+];
+
 async function loadComponents() {
-  // Фиксированный массив компонентов для явной сборки лендинга
-  const components = [
-    { id: 'header-component', url: './src/components/header.html' },
-    { id: 'welcome-component', url: './src/components/welcome.html' },
-    { id: 'calendar-component', url: './src/components/calendar.html' },
-    { id: 'countdown-component', url: './src/components/countdown.html' },
-    { id: 'location-component', url: './src/components/location.html' }, 
-    { id: 'map-modal-component', url: './src/components/map-modal.html' },
-    { id: 'timing-component', url: './src/components/timing.html' },
-    { id: 'info-component', url: './src/components/info.html' },
-    { id: 'rsvp-component', url: './src/components/rsvp.html' }
-  ];
-  
-  // Создаем массив промисов для одновременной асинхронной загрузки всех блоков
-  const promises = components.map(async (component) => {
+  // ЭТАП 1: Параллельная загрузка всех данных без изменения DOM (снижает Layout Thrashing)
+  const fetchPromises = COMPONENTS_CONFIG.map(async (component) => {
     const el = document.getElementById(component.id);
     
-    // Если на странице нет контейнера под этот компонент, просто пропускаем его
     if (!el) {
       console.warn(`Предупреждение: Контейнер с id "${component.id}" не найден в index.html`);
-      return;
+      return null;
     }
     
     try {
       const response = await fetch(component.url);
       if (!response.ok) throw new Error(`Не удалось загрузить файл по пути: ${component.url}`);
-      
-      // Встраиваем полученный HTML-код внутрь контейнера
-      el.innerHTML = await response.text();
+      const html = await response.text();
+      return { el, html };
     } catch (err) {
       console.error(`Ошибка сборки UI [${component.id}]:`, err);
-      el.innerHTML = `<div style="padding:20px; color:red; text-align:center;">Ошибка загрузки блока ${component.id}</div>`;
+      return { 
+        el, 
+        html: `<div style="padding:20px; color:red; text-align:center;">Ошибка загрузки блока ${component.id}</div>` 
+      };
     }
   });
 
-  // Строго дожидаемся завершения загрузки ВСЕХ компонентов в DOM-дерево
-  await Promise.all(promises);
+  const loadedComponents = await Promise.all(fetchPromises);
   
-  // Инициализируем всю динамическую логику только ПОСЛЕ того, как разметка полностью готова
+  // ЭТАП 2: Синхронная пакетная вставка всех блоков разом
+  loadedComponents.forEach(item => {
+    if (item) item.el.innerHTML = item.html;
+  });
+  
+  // Инициализируем логику. Прямые ссылки на функции экономят память
   const initModules = [
-    { name: 'RsvpHandler', fn: () => initRsvpHandler() },
-    { name: 'WeddingTimer', fn: () => initWeddingTimer() },
-    { name: 'MapHandler', fn: () => initMapHandler() },
+    { name: 'RsvpHandler', fn: initRsvpHandler },
+    { name: 'WeddingTimer', fn: initWeddingTimer },
+    { name: 'MapHandler', fn: initMapHandler },
     { name: 'WeddingCalendar', fn: () => initWeddingCalendar('2026-08-17') }
   ];
   
-  // Изолируем вызовы модулей: ошибка в одном не сломает остальные
   initModules.forEach(({ name, fn }) => {
     try {
       fn();
@@ -59,12 +63,15 @@ async function loadComponents() {
     }
   });
   
-  // Анимация скролла AOS (если библиотека успешно подключена через CDN)
+  // ЭТАП 3: Гарантируем, что браузер рассчитал размеры макета перед запуском AOS
   if (typeof AOS !== 'undefined') {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 50
+    requestAnimationFrame(() => {
+      AOS.init({
+        duration: 800,
+        once: false,
+        mirror: true,
+        offset: 50
+      });
     });
   }
 }
