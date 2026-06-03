@@ -1,28 +1,22 @@
 <section class="rsvp" id="rsvp">
   <div class="rsvp__container" data-aos="fade-up" data-aos-duration="800">
-    <div class="rsvp__header">
-      <h2 class="rsvp__title">Подтверждение присутствия</h2>
-    </div>
+    <h2 class="rsvp__title">Подтверждение присутствия</h2>
 
     <form class="rsvp__form" id="wedding-form">
-      <input type="hidden" name="guestId" id="google-entry-id" class="rsvp__hidden-id" value="" />
-      <input
-        type="hidden"
-        name="rawGuests"
-        id="google-entry-raw-guests"
-        class="rsvp__hidden-raw-guests"
-        value=""
-      />
+      <input type="hidden" name="guestId" class="rsvp__hidden-id" value="" />
+      <input type="hidden" name="rawGuests" class="rsvp__hidden-raw-guests" value="" />
 
       <fieldset class="rsvp__fieldset">
         <legend class="rsvp__legend rsvp__legend--main" id="rsvp-legend-target">
           Наши дорогие гости!
           <br />
-          Будем рады видеть вас. Пожалуйста, подтвердите присутствие до
-          <span class="rsvp__highlight-date">17.07.2026</span>
-          :
+          Будем рады видеть вас.
+          <span class="rsvp__deadline">
+            Просьба ответить до
+            <span class="rsvp__highlight-date">17.07.2026</span>
+          </span>
         </legend>
-        <div class="rsvp__options-grid">
+        <div class="rsvp__options rsvp__options--3col">
           <label class="rsvp__choice">
             <input
               type="radio"
@@ -46,7 +40,7 @@
 
       <fieldset class="rsvp__fieldset">
         <legend class="rsvp__legend">Ваши предпочтения в напитках:</legend>
-        <div class="rsvp__options-flex">
+        <div class="rsvp__options rsvp__options--2col">
           <label class="rsvp__choice">
             <input type="checkbox" value="Виски" class="rsvp__input-hidden rsvp-alcohol-item" />
             <div class="rsvp__choice-block">Виски</div>
@@ -97,7 +91,7 @@
           name="wishes"
           id="rsvp-wishes"
           class="rsvp__textarea"
-          placeholder="Ваши пожелания..."
+          placeholder="Например: Аллергии, предпочтения в еде, музыкальные пожелания и т.д."
         ></textarea>
       </div>
 
@@ -107,7 +101,8 @@
     <div class="rsvp__success rsvp__success--hidden" id="success-message">
       <div class="rsvp__success-icon" aria-hidden="true">✓</div>
       <h3 class="rsvp__success-title">Ответ отправлен</h3>
-      <p class="rsvp__success-text">Спасибо! До встречи на торжестве.</p>
+      <p class="rsvp__success-text" id="success-text">Спасибо! До встречи на торжестве.</p>
+      <button type="button" class="rsvp__edit-btn" id="edit-btn">Редактировать ответ</button>
     </div>
   </div>
 </section>

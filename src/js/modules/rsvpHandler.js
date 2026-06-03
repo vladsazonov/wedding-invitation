@@ -12,19 +12,37 @@ const GOOGLE_FORM_CONFIG = {
   }
 };
 
+function escapeHtml(unsafe) {
+  return (unsafe || '').toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export function initRsvpHandler() {
   const form = document.getElementById('wedding-form');
-  const legendOutput = document.getElementById('rsvp-legend-target');
-  
   if (!form) return;
+
+  // ОПТИМИЗАЦИЯ DOM: Единоразово кэшируем узлы, чтобы не дергать document.getElementById при каждом клике
+  const elements = {
+    legendOutput: document.getElementById('rsvp-legend-target'),
+    submitBtn: document.getElementById('submit-btn'),
+    successMessage: document.getElementById('success-message'),
+    successText: document.getElementById('success-text'),
+    editBtn: document.getElementById('edit-btn'),
+    hiddenIdInput: form.querySelector('.rsvp__hidden-id'),
+    hiddenGuestsInput: form.querySelector('.rsvp__hidden-raw-guests'),
+    alcoholCheckboxes: form.querySelectorAll('.rsvp-alcohol-item'),
+    noAlcoholCb: form.querySelector('#alcohol-absent'),
+    wishesTextarea: form.querySelector('#rsvp-wishes')
+  };
 
   const urlParams = new URLSearchParams(window.location.search);
   const rawId = urlParams.get('id');
   const guestId = (rawId !== null && rawId !== undefined && rawId.trim() !== '') ? rawId.trim() : 'anonymous1';
 
-  const hiddenIdInput = form.querySelector('.rsvp__hidden-id');
-  const hiddenGuestsInput = form.querySelector('.rsvp__hidden-raw-guests');
-  
   let params = { guests: [], formattedNames: '', rawGuests: 'Не указано' };
   try {
     // Защита от потенциального падения внешнего парсера
@@ -33,69 +51,79 @@ export function initRsvpHandler() {
     console.warn('Не удалось распарсить параметры гостей, применена заглушка', error);
   }
 
-  if (hiddenIdInput) hiddenIdInput.value = guestId;
-  if (hiddenGuestsInput) hiddenGuestsInput.value = params.rawGuests || 'Не указано';
+  if (elements.hiddenIdInput) elements.hiddenIdInput.value = guestId;
+  if (elements.hiddenGuestsInput) elements.hiddenGuestsInput.value = params.rawGuests || 'Не указано';
 
   // Персонализация текстового узла
-  if (legendOutput && params.guests) {
+  if (elements.legendOutput && params.guests) {
     const namesHtml = params.guests.length > 0
-      ? `<span class="rsvp__highlight-name">${params.formattedNames}</span>` 
+      ? `<span class="rsvp__highlight-name">${escapeHtml(params.formattedNames)}</span>` 
       : '';
 
+    const deadlineBlock = `<span class="rsvp__deadline">Просьба ответить до <span class="rsvp__highlight-date">17.07.2026</span></span>`;
+
     if (params.guests.length === 1) {
-      legendOutput.innerHTML = `Наш дорогой гость,<br>${namesHtml}Будем рады видеть тебя! Пожалуйста, подтверди присутствие до <span class="rsvp__highlight-date">17.07.2026</span>:`;
+      elements.legendOutput.innerHTML = `Наш дорогой гость,<br>${namesHtml}Будем рады видеть тебя!${deadlineBlock}`;
     } else if (params.guests.length > 1) {
-      legendOutput.innerHTML = `Наши дорогие гости,<br>${namesHtml}Будем рады видеть вас! Пожалуйста, подтвердите присутствие до <span class="rsvp__highlight-date">17.07.2026</span>:`;
+      elements.legendOutput.innerHTML = `Наши дорогие гости,<br>${namesHtml}Будем рады видеть вас!${deadlineBlock}`;
     } else {
-      legendOutput.innerHTML = `Наши дорогие гости!<br><br>Будем рады видеть вас! Пожалуйста, подтвердите присутствие до <span class="rsvp__highlight-date">17.07.2026</span>:`;
+      elements.legendOutput.innerHTML = `Наши дорогие гости!<br><br>Будем рады видеть вас!${deadlineBlock}`;
     }
   }
 
-  setupAlcoholInteractions(form);
+  form.addEventListener('change', (event) => {
+    const target = event.target;
+
+    // Логика блокировки: если гость нажал "Не приду"
+    if (target.name === 'attendance') {
+      const isNotComing = target.value === 'Не приду';
+
+      elements.alcoholCheckboxes.forEach(cb => {
+        cb.disabled = isNotComing;
+        if (isNotComing) cb.checked = false;
+      });
+
+      if (elements.wishesTextarea) {
+        elements.wishesTextarea.disabled = isNotComing;
+        if (isNotComing) elements.wishesTextarea.value = '';
+      }
+    }
+
+    // Логика чекбокса "Не пью алкоголь"
+    if (target.classList.contains('rsvp-alcohol-item') && elements.noAlcoholCb) {
+      if (target === elements.noAlcoholCb && target.checked) {
+        elements.alcoholCheckboxes.forEach(cb => {
+          if (cb !== elements.noAlcoholCb) cb.checked = false;
+        });
+      } else if (target !== elements.noAlcoholCb && target.checked) {
+        elements.noAlcoholCb.checked = false;
+      }
+    }
+  });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    processRsvpSubmission(form);
+    processRsvpSubmission(form, elements);
   });
+
+  if (elements.editBtn && elements.successMessage) {
+    elements.editBtn.addEventListener('click', () => {
+      form.classList.remove('rsvp__form--hidden');
+      elements.successMessage.classList.add('rsvp__success--hidden');
+    });
+  }
 }
 
-function setupAlcoholInteractions(form) {
-  const noAlcoholCb = form.querySelector('#alcohol-absent');
-  const itemsCbs = form.querySelectorAll('.rsvp-alcohol-item');
-
-  if (!noAlcoholCb) return;
-
-  noAlcoholCb.addEventListener('change', () => {
-    if (noAlcoholCb.checked) {
-      itemsCbs.forEach(cb => {
-        if (cb !== noAlcoholCb) cb.checked = false;
-      });
-    }
-  });
-
-  itemsCbs.forEach(cb => {
-    if (cb !== noAlcoholCb) {
-      cb.addEventListener('change', () => {
-        if (cb.checked && noAlcoholCb.checked) {
-          noAlcoholCb.checked = false;
-        }
-      });
-    }
-  });
-}
-
-function processRsvpSubmission(form) {
-  const submitBtn = document.getElementById('submit-btn');
-  const successMessage = document.getElementById('success-message');
-  if (!submitBtn || !successMessage) return;
+function processRsvpSubmission(form, elements) {
+  if (!elements.submitBtn || !elements.successMessage) return;
 
   const formData = new FormData(form);
   const postData = new URLSearchParams();
 
-  // Проверка: выбран ли хотя бы один вариант напитков (если вы хотите оставить вопрос обязательным)
-  const checkedAlcohol = form.querySelectorAll('.rsvp-alcohol-item:checked');
+  const checkedAlcoholList = Array.from(elements.alcoholCheckboxes).filter(cb => cb.checked);
   const attendanceValue = formData.get('attendance');
-  if (checkedAlcohol.length === 0 && attendanceValue === 'Приду') {
+  
+  if (checkedAlcoholList.length === 0 && attendanceValue === 'Приду') {
     alert('Пожалуйста, выберите ваши предпочтения в напитках (или пункт "Не пью алкоголь")');
     return; // Останавливаем отправку
   }
@@ -109,15 +137,18 @@ function processRsvpSubmission(form) {
   }
 
   // Для Google Форм чекбоксы (множественный выбор) нужно передавать отдельными параметрами с одним и тем же ключом
-  checkedAlcohol.forEach(cb => {
-    if (cb.value && cb.value.trim() !== '') {
-      postData.append(GOOGLE_FORM_CONFIG.entries.alcohol, cb.value.trim());
-    }
-  });
+  const alcoholEntryKey = GOOGLE_FORM_CONFIG.entries.alcohol;
+  if (alcoholEntryKey) {
+    checkedAlcoholList.forEach(cb => {
+      if (cb.value && cb.value.trim() !== '') {
+        postData.append(alcoholEntryKey, cb.value.trim());
+      }
+    });
+  }
 
   // Состояние загрузки кнопки
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Отправка...';
+  elements.submitBtn.disabled = true;
+  elements.submitBtn.textContent = 'Отправка...';
 
   fetch(GOOGLE_FORM_CONFIG.actionUrl, {
     method: 'POST',
@@ -129,23 +160,19 @@ function processRsvpSubmission(form) {
   })
   .then(() => {
     form.classList.add('rsvp__form--hidden');
-    successMessage.classList.remove('rsvp__success--hidden');
-    form.reset();
-
-    // Повторное заполнение скрытого поля идентификатором после сброса формы
-    const hiddenIdInput = form.querySelector('.rsvp__hidden-id');
-    if (hiddenIdInput) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const rawId = urlParams.get('id');
-      hiddenIdInput.value = (rawId !== null && rawId !== undefined && rawId.trim() !== '') ? rawId.trim() : 'anonymous';
+    
+    if (elements.successText) {
+      elements.successText.style.display = attendanceValue === 'Не приду' ? 'none' : '';
     }
+    
+    elements.successMessage.classList.remove('rsvp__success--hidden');
   })
   .catch(error => {
     console.error('Ошибка отправки RSVP анкеты:', error);
     alert('Произошла ошибка сети. Пожалуйста, проверьте подключение к интернету и попробуйте отправить снова.');
   })
   .finally(() => {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Отправить ответ';
+    elements.submitBtn.disabled = false;
+    elements.submitBtn.textContent = 'Отправить ответ';
   });
 }
