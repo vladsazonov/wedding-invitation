@@ -1332,6 +1332,27 @@ select {
   color: #1c3d5a;
   margin-bottom: 12px;
 }
+.rsvp__photo-wrapper {
+  width: 100%;
+  max-width: 420px;
+  margin: 24px auto;
+  position: relative;
+  border-radius: 24px;
+  border: 1px solid rgba(28, 61, 90, 0.15);
+  padding: 8px;
+  background-color: rgba(28, 61, 90, 0.02);
+  box-shadow: 0 10px 30px rgba(28, 61, 90, 0.04);
+  animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.rsvp__photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3/4;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
 .rsvp__success-text {
   font-family: "Montserrat", sans-serif;
   font-size: 0.95rem;
@@ -1359,6 +1380,16 @@ select {
   border-color: #1c3d5a;
 }
 
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 .info {
   position: relative;
   z-index: 10;

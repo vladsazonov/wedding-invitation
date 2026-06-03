@@ -25,15 +25,15 @@
               class="rsvp__input-hidden"
               required
             />
-            <div class="rsvp__choice-block">Я приду</div>
+            <div class="rsvp__choice-block" id="label-attend-yes">Я приду</div>
           </label>
           <label class="rsvp__choice">
             <input type="radio" name="attendance" value="Не приду" class="rsvp__input-hidden" />
-            <div class="rsvp__choice-block">Не смогу</div>
+            <div class="rsvp__choice-block" id="label-attend-no">Не смогу</div>
           </label>
           <label class="rsvp__choice">
             <input type="radio" name="attendance" value="Сообщу позже" class="rsvp__input-hidden" />
-            <div class="rsvp__choice-block">Сообщу позже</div>
+            <div class="rsvp__choice-block" id="label-attend-maybe">Сообщу позже</div>
           </label>
         </div>
       </fieldset>
@@ -101,6 +101,16 @@
     <div class="rsvp__success rsvp__success--hidden" id="success-message">
       <div class="rsvp__success-icon" aria-hidden="true">✓</div>
       <h3 class="rsvp__success-title">Ответ отправлен</h3>
+
+      <div class="rsvp__photo-wrapper" id="success-photo-wrapper">
+        <img
+          src="./src/images/rsvp/final.webp"
+          alt="Владислав и Надежда"
+          class="rsvp__photo"
+          loading="lazy"
+        />
+      </div>
+
       <p class="rsvp__success-text" id="success-text">Спасибо! До встречи на торжестве.</p>
       <button type="button" class="rsvp__edit-btn" id="edit-btn">Редактировать ответ</button>
     </div>

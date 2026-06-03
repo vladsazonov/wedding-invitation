@@ -31,12 +31,16 @@ export function initRsvpHandler() {
     submitBtn: document.getElementById('submit-btn'),
     successMessage: document.getElementById('success-message'),
     successText: document.getElementById('success-text'),
+    successPhoto: document.getElementById('success-photo-wrapper'),
     editBtn: document.getElementById('edit-btn'),
     hiddenIdInput: form.querySelector('.rsvp__hidden-id'),
     hiddenGuestsInput: form.querySelector('.rsvp__hidden-raw-guests'),
     alcoholCheckboxes: form.querySelectorAll('.rsvp-alcohol-item'),
     noAlcoholCb: form.querySelector('#alcohol-absent'),
-    wishesTextarea: form.querySelector('#rsvp-wishes')
+    wishesTextarea: form.querySelector('#rsvp-wishes'),
+    labelAttendYes: document.getElementById('label-attend-yes'),
+    labelAttendNo: document.getElementById('label-attend-no'),
+    labelAttendMaybe: document.getElementById('label-attend-maybe')
   };
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -68,6 +72,13 @@ export function initRsvpHandler() {
       elements.legendOutput.innerHTML = `Наши дорогие гости,<br>${namesHtml}Будем рады видеть вас!${deadlineBlock}`;
     } else {
       elements.legendOutput.innerHTML = `Наши дорогие гости!<br><br>Будем рады видеть вас!${deadlineBlock}`;
+    }
+
+    // Множественное число для вариантов присутствия, если гостей 2 и больше
+    if (params.guests.length > 1) {
+      if (elements.labelAttendYes) elements.labelAttendYes.textContent = 'Мы придем';
+      if (elements.labelAttendNo) elements.labelAttendNo.textContent = 'Не сможем';
+      if (elements.labelAttendMaybe) elements.labelAttendMaybe.textContent = 'Сообщим позже';
     }
   }
 
@@ -163,6 +174,9 @@ function processRsvpSubmission(form, elements) {
     
     if (elements.successText) {
       elements.successText.style.display = attendanceValue === 'Не приду' ? 'none' : '';
+    }
+    if (elements.successPhoto) {
+      elements.successPhoto.style.display = attendanceValue === 'Не приду' ? 'none' : '';
     }
     
     elements.successMessage.classList.remove('rsvp__success--hidden');
