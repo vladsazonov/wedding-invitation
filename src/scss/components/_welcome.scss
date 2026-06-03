@@ -6,7 +6,7 @@
     margin-top: calc(100dvh - 54px);
     background-color: $color-bg-light;
     border-radius: 32px 32px 0 0;
-    box-shadow: 0px -15px 40px rgba($color-accent-blue, 0.04);
+    box-shadow: 0 -20px 40px rgba($color-text-main, 0.15);
     padding: 24px 16px 40px; // Чуть больше сверху для "ручки" шторки, и стандартные 40px снизу
 
     // Оптимизация рендеринга для предотвращения лагов скролла

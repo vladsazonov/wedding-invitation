@@ -3,6 +3,63 @@ import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
 import { initWeddingCalendar } from './modules/calendar.js';
 
+function initHeaderParallax() {
+  const header = document.getElementById('header');
+  const welcome = document.getElementById('welcome-block');
+  const dimmer = header ? header.querySelector('.header__dimmer') : null;
+  const photo = header ? header.querySelector('.header__photo') : null;
+
+  if (!header || !welcome || !dimmer || !photo) return;
+
+  // Принудительно ограничиваем вылет картинки при увеличении (на случай если нет в CSS)
+  header.style.overflow = 'hidden';
+
+  // Подготавливаем слои для аппаратного ускорения и стилизации эффекта
+  dimmer.style.position = 'absolute';
+  dimmer.style.inset = '0';
+  dimmer.style.backgroundColor = '#000';
+  dimmer.style.pointerEvents = 'none';
+  dimmer.style.zIndex = '2';
+  dimmer.style.willChange = 'opacity';
+
+  photo.style.willChange = 'transform';
+  photo.style.transformOrigin = 'center';
+
+  let ticking = false;
+
+  const updateParallax = () => {
+    const scrollY = window.scrollY;
+    
+    if (scrollY < 0) {
+      // Эксклюзивный эффект для iOS: пружинящее увеличение при оверскролле (тянем вниз)
+      const scale = 1 + Math.abs(scrollY) / 500;
+      photo.style.transform = `scale(${scale}) translateZ(0)`;
+      dimmer.style.opacity = '0';
+    } else {
+      // Точка максимального скролла - верхняя граница компонента welcome
+      const maxScroll = welcome.offsetTop || window.innerHeight;
+      // Нормализуем прогресс строго от 0 до 1
+      const progress = Math.min(scrollY / maxScroll, 1);
+      
+      // Применяем эффекты: затемнение до 70%, увеличение масштаба фото до 1.15
+      dimmer.style.opacity = (progress * 0.7).toString();
+      photo.style.transform = `scale(${1 + progress * 0.15}) translateZ(0)`;
+    }
+    
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Вызов при старте для установки начальных значений
+  updateParallax();
+}
+
 // Фиксированный массив вынесен из функции для экономии памяти (создается единожды)
 const COMPONENTS_CONFIG = [
   { id: 'header-component', url: './src/components/header.html' },
@@ -52,7 +109,8 @@ async function loadComponents() {
     { name: 'RsvpHandler', fn: initRsvpHandler },
     { name: 'WeddingTimer', fn: initWeddingTimer },
     { name: 'MapHandler', fn: initMapHandler },
-    { name: 'WeddingCalendar', fn: () => initWeddingCalendar('2026-08-17') }
+    { name: 'WeddingCalendar', fn: () => initWeddingCalendar('2026-08-17') },
+    { name: 'HeaderParallax', fn: initHeaderParallax }
   ];
   
   initModules.forEach(({ name, fn }) => {

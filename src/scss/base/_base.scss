@@ -12,7 +12,7 @@ body {
     padding: 0;
     min-height: 100dvh;
     background-color: $color-bg-light; // Делаем глобальный фон идентичным цвету карточек
-    color: $color-text-main;
+    color: $color-text;
     font-family: $font-sans;
 }
 
@@ -33,10 +33,15 @@ select {
 
 .calendar,
 .countdown,
-.location,
 .timing,
 .rsvp {
     position: relative;
-    z-index: 10;
+    z-index: $z-content;
+    background-color: $color-bg-light;
+}
+
+.location {
+    position: relative;
+    z-index: $z-elevated;
     background-color: $color-bg-light;
 }

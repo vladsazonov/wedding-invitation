@@ -29,11 +29,11 @@
         font-size: 2.6rem;
         font-weight: 400;
         color: $color-accent-blue;
-        margin-bottom: 8px;
+        margin-bottom: 16px;
     }
 
     &__divider {
-        width: 50px;
+        width: 50%;
         height: 1px;
         background-color: rgba($color-accent-blue, 0.35);
         margin: 0 auto 20px;

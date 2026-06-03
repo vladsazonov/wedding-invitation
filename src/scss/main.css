@@ -12,7 +12,7 @@ body {
   padding: 0;
   min-height: 100dvh;
   background-color: #fcfbfa;
-  color: #2c4333;
+  color: #3d3d3d;
   font-family: "Montserrat", sans-serif;
 }
 
@@ -34,11 +34,16 @@ select {
 
 .calendar,
 .countdown,
-.location,
 .timing,
 .rsvp {
   position: relative;
   z-index: 10;
+  background-color: #fcfbfa;
+}
+
+.location {
+  position: relative;
+  z-index: 20;
   background-color: #fcfbfa;
 }
 
@@ -219,7 +224,7 @@ select {
   margin-top: calc(100dvh - 54px);
   background-color: #fcfbfa;
   border-radius: 32px 32px 0 0;
-  box-shadow: 0px -15px 40px rgba(28, 61, 90, 0.04);
+  box-shadow: 0 -20px 40px rgba(44, 67, 51, 0.15);
   padding: 24px 16px 40px;
   will-change: transform, scroll-position;
   transform: translate3d(0, 0, 0);
@@ -644,10 +649,10 @@ select {
   font-size: 2.6rem;
   font-weight: 400;
   color: #1c3d5a;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 .location__divider {
-  width: 50px;
+  width: 50%;
   height: 1px;
   background-color: rgba(28, 61, 90, 0.35);
   margin: 0 auto 20px;
@@ -948,7 +953,7 @@ select {
 .rsvp {
   position: relative;
   z-index: 10;
-  background-color: #ebe7df;
+  background-color: #fcfbfa;
   padding: 24px 16px;
 }
 @media (min-width: 768px) {
@@ -962,8 +967,8 @@ select {
   padding: 32px 16px;
   background-color: #fcfbfa;
   border-radius: 32px;
-  box-shadow: 0 15px 40px rgba(44, 67, 51, 0.04);
-  border: 1px solid rgba(44, 67, 51, 0.03);
+  box-shadow: 0 15px 40px rgba(28, 61, 90, 0.04);
+  border: 1px solid rgba(28, 61, 90, 0.08);
 }
 @media (min-width: 768px) {
   .rsvp__container {
@@ -976,7 +981,7 @@ select {
   font-size: 28px;
   font-weight: 400;
   line-height: 1.2;
-  color: #2c4333;
+  color: #1c3d5a;
   letter-spacing: 0.05em;
   margin-bottom: 32px;
 }
@@ -1006,7 +1011,7 @@ select {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   line-height: 1.4;
-  color: rgba(44, 67, 51, 0.5);
+  color: rgba(28, 61, 90, 0.6);
   text-align: center;
   margin-bottom: 16px;
   width: 100%;
@@ -1023,7 +1028,7 @@ select {
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
-  color: #2c4333;
+  color: #1c3d5a;
   margin-bottom: 24px;
 }
 @media (min-width: 768px) {
@@ -1037,7 +1042,7 @@ select {
   font-size: 1.8rem;
   line-height: 1.1;
   font-style: italic;
-  color: #2c4333;
+  color: #1c3d5a;
   margin: 8px 0 12px;
 }
 @media (min-width: 768px) {
@@ -1050,12 +1055,12 @@ select {
   display: block;
   margin: 20px auto 0;
   padding: 10px 16px;
-  border: 1px solid rgba(44, 67, 51, 0.12);
+  border: 1px solid rgba(28, 61, 90, 0.15);
   border-radius: 20px;
   font-family: "Montserrat", sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
-  color: rgba(44, 67, 51, 0.7);
+  color: rgba(61, 61, 61, 0.7);
   letter-spacing: 0.05em;
   width: -moz-fit-content;
   width: fit-content;
@@ -1069,7 +1074,7 @@ select {
 .rsvp__highlight-date {
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #2c4333;
+  color: #1c3d5a;
   margin-left: 4px;
 }
 .rsvp__label {
@@ -1079,7 +1084,7 @@ select {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   line-height: 1.5;
-  color: rgba(44, 67, 51, 0.5);
+  color: rgba(28, 61, 90, 0.6);
   margin-bottom: 12px;
   display: block;
 }
@@ -1131,12 +1136,12 @@ select {
   align-items: center;
   justify-content: center;
   padding: 12px 8px;
-  background-color: rgba(44, 67, 51, 0.02);
-  border: 1px solid rgba(44, 67, 51, 0.12);
+  background-color: rgba(28, 61, 90, 0.02);
+  border: 1px solid rgba(28, 61, 90, 0.15);
   border-radius: 16px;
   font-family: "Montserrat", sans-serif;
   font-size: 0.8rem;
-  color: #2c4333;
+  color: #3d3d3d;
   text-align: center;
   min-height: 44px;
   height: 100%;
@@ -1150,24 +1155,24 @@ select {
   }
 }
 .rsvp__choice-block:hover {
-  background-color: rgba(44, 67, 51, 0.03);
-  border-color: rgba(44, 67, 51, 0.25);
+  background-color: rgba(28, 61, 90, 0.04);
+  border-color: rgba(28, 61, 90, 0.3);
 }
 .rsvp__input-hidden:checked + .rsvp__choice-block {
-  background-color: #2c4333;
-  border-color: #2c4333;
-  color: #fcfbfa;
-  box-shadow: 0 8px 24px rgba(44, 67, 51, 0.2);
+  background-color: #1c3d5a;
+  border-color: #1c3d5a;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(28, 61, 90, 0.2);
 }
 .rsvp__input-hidden:focus-visible + .rsvp__choice-block {
-  outline: 2px solid #2c4333;
+  outline: 2px solid #1c3d5a;
   outline-offset: 2px;
 }
 .rsvp__input-hidden:disabled + .rsvp__choice-block {
   opacity: 0.4;
   pointer-events: none;
-  background-color: rgba(44, 67, 51, 0.02);
-  border-color: rgba(44, 67, 51, 0.05);
+  background-color: rgba(28, 61, 90, 0.02);
+  border-color: rgba(28, 61, 90, 0.05);
 }
 .rsvp__field {
   margin-bottom: 32px;
@@ -1181,12 +1186,12 @@ select {
   width: 100%;
   min-height: 70px;
   padding: 14px;
-  background-color: rgba(44, 67, 51, 0.02);
-  border: 1px solid rgba(44, 67, 51, 0.12);
+  background-color: rgba(28, 61, 90, 0.02);
+  border: 1px solid rgba(28, 61, 90, 0.15);
   border-radius: 16px;
   font-family: "Montserrat", sans-serif;
   font-size: 0.95rem;
-  color: #2c4333;
+  color: #3d3d3d;
   line-height: 1.5;
   resize: vertical;
   outline: none;
@@ -1202,33 +1207,33 @@ select {
   }
 }
 .rsvp__textarea:hover {
-  background-color: rgba(44, 67, 51, 0.03);
-  border-color: rgba(44, 67, 51, 0.25);
+  background-color: rgba(28, 61, 90, 0.04);
+  border-color: rgba(28, 61, 90, 0.3);
 }
 .rsvp__textarea:focus {
   background-color: transparent;
-  border-color: #2c4333;
+  border-color: #1c3d5a;
 }
 .rsvp__textarea::-moz-placeholder {
-  color: rgba(44, 67, 51, 0.3);
+  color: rgba(61, 61, 61, 0.4);
   font-size: 0.9rem;
 }
 .rsvp__textarea::placeholder {
-  color: rgba(44, 67, 51, 0.3);
+  color: rgba(61, 61, 61, 0.4);
   font-size: 0.9rem;
 }
 .rsvp__textarea:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  background-color: rgba(44, 67, 51, 0.02);
-  border-color: rgba(44, 67, 51, 0.05);
+  background-color: rgba(28, 61, 90, 0.02);
+  border-color: rgba(28, 61, 90, 0.05);
 }
 .rsvp__submit {
   display: block;
   width: 100%;
   padding: 16px;
-  background-color: #2c4333;
-  color: #fcfbfa;
+  background-color: #1c3d5a;
+  color: #ffffff;
   border: none;
   border-radius: 16px;
   font-family: "Montserrat", sans-serif;
@@ -1248,10 +1253,10 @@ select {
   }
 }
 .rsvp__submit:hover:not(:disabled) {
-  background-color: rgba(44, 67, 51, 0.85);
+  background-color: rgba(28, 61, 90, 0.85);
 }
 .rsvp__submit:disabled {
-  background-color: rgba(44, 67, 51, 0.3);
+  background-color: rgba(28, 61, 90, 0.3);
   cursor: not-allowed;
 }
 .rsvp__success {
@@ -1269,31 +1274,31 @@ select {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background-color: rgba(44, 67, 51, 0.04);
-  border: 1px solid rgba(44, 67, 51, 0.1);
-  color: #2c4333;
+  background-color: rgba(28, 61, 90, 0.04);
+  border: 1px solid rgba(28, 61, 90, 0.15);
+  color: #1c3d5a;
   font-size: 28px;
   margin-bottom: 20px;
 }
 .rsvp__success-title {
   font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
-  color: #2c4333;
+  color: #1c3d5a;
   margin-bottom: 12px;
 }
 .rsvp__success-text {
   font-family: "Montserrat", sans-serif;
   font-size: 0.95rem;
   line-height: 1.5;
-  color: rgba(44, 67, 51, 0.6);
+  color: rgba(61, 61, 61, 0.7);
   margin-bottom: 32px;
 }
 .rsvp__edit-btn {
   display: inline-block;
   padding: 14px 28px;
   background-color: transparent;
-  color: #2c4333;
-  border: 1px solid rgba(44, 67, 51, 0.2);
+  color: #1c3d5a;
+  border: 1px solid rgba(28, 61, 90, 0.25);
   border-radius: 16px;
   font-family: "Montserrat", sans-serif;
   font-size: 0.8rem;
@@ -1304,8 +1309,8 @@ select {
   transition: all 0.2s ease;
 }
 .rsvp__edit-btn:hover {
-  background-color: rgba(44, 67, 51, 0.03);
-  border-color: #2c4333;
+  background-color: rgba(28, 61, 90, 0.04);
+  border-color: #1c3d5a;
 }
 
 .info {
@@ -1467,6 +1472,6 @@ select {
     border-color: #1c3d5a;
     background-color: rgba(235, 231, 223, 0.15);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 8px 24px rgba(28, 61, 90, 0.06);
   }
 }/*# sourceMappingURL=main.css.map */

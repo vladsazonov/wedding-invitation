@@ -1,6 +1,6 @@
 .info {
     position: relative;
-    z-index: 10;
+    z-index: $z-content;
     background-color: $color-bg-light;
     padding: 40px 16px;
     display: flex;
@@ -178,7 +178,7 @@
                 border-color: $color-accent-blue;
                 background-color: rgba($color-bg-main, 0.15);
                 transform: translateY(-2px);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+                box-shadow: 0 8px 24px rgba($color-accent-blue, 0.06);
             }
         }
     }

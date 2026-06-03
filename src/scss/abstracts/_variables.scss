@@ -13,7 +13,13 @@ $color-accent: #bfa38a;
 $color-placeholder-start: #c5beb2;
 $color-placeholder-end: #a39b8c;
 
-$font-serif: 'Cormorant Garamond', serif; // Романтичный премиальный шрифт для имен
-$font-sans: 'Montserrat', sans-serif; // Чистый геометрический шрифт для дат и инфо
+$font-serif: 'Cormorant Garamond', serif;
+$font-sans: 'Montserrat', sans-serif;
 
 $breakpoint-md: 768px;
+
+$z-base: 1;
+$z-content: 10; // Стандартный контентный слой (для обычных блоков)
+$z-elevated: 20; // Приподнятые элементы (например, блоки с тенью поверх соседних)
+$z-header: 50; // Шапка, навигация
+$z-modal: 100; // Модальные окна (карты, попапы)
