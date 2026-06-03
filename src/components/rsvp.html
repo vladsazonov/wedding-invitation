@@ -5,8 +5,14 @@
     </div>
 
     <form class="rsvp__form" id="wedding-form">
-      <input type="hidden" name="entry.1000001" id="google-entry-id" value="" />
-      <input type="hidden" name="entry.1000002" id="google-entry-raw-guests" value="" />
+      <input type="hidden" name="guestId" id="google-entry-id" class="rsvp__hidden-id" value="" />
+      <input
+        type="hidden"
+        name="rawGuests"
+        id="google-entry-raw-guests"
+        class="rsvp__hidden-raw-guests"
+        value=""
+      />
 
       <fieldset class="rsvp__fieldset">
         <legend class="rsvp__legend rsvp__legend--main" id="rsvp-legend-target">
@@ -20,7 +26,7 @@
           <label class="rsvp__choice">
             <input
               type="radio"
-              name="entry.2000001"
+              name="attendance"
               value="Приду"
               class="rsvp__input-hidden"
               required
@@ -28,16 +34,11 @@
             <div class="rsvp__choice-block">Я приду</div>
           </label>
           <label class="rsvp__choice">
-            <input type="radio" name="entry.2000001" value="Не приду" class="rsvp__input-hidden" />
+            <input type="radio" name="attendance" value="Не приду" class="rsvp__input-hidden" />
             <div class="rsvp__choice-block">Не смогу</div>
           </label>
           <label class="rsvp__choice">
-            <input
-              type="radio"
-              name="entry.2000001"
-              value="Сообщу позже"
-              class="rsvp__input-hidden"
-            />
+            <input type="radio" name="attendance" value="Сообщу позже" class="rsvp__input-hidden" />
             <div class="rsvp__choice-block">Сообщу позже</div>
           </label>
         </div>
@@ -93,7 +94,7 @@
       <div class="rsvp__field">
         <label for="rsvp-wishes" class="rsvp__label">Пожелания к празднику (необязательно)</label>
         <textarea
-          name="entry.3000001"
+          name="wishes"
           id="rsvp-wishes"
           class="rsvp__textarea"
           placeholder="Ваши пожелания..."

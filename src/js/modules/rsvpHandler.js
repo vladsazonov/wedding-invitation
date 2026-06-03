@@ -1,18 +1,44 @@
 import { parseGuestParameters } from './urlParser.js';
 
+// Изолированная конфигурация Google Forms
+const GOOGLE_FORM_CONFIG = {
+  actionUrl: 'https://docs.google.com/forms/u/0/d/e/1FAIpQLScfi_YfaFSIoGJ5Xmc5rsSbrVAnmAU3RLdt7PAk5eczxwkntg/formResponse',
+  entries: {
+    guestId: 'entry.651581186',
+    rawGuests: 'entry.624073897',
+    attendance: 'entry.1213632584',
+    alcohol: 'entry.1758539678',
+    wishes: 'entry.158108047'
+  }
+};
+
 export function initRsvpHandler() {
   const form = document.getElementById('wedding-form');
   const legendOutput = document.getElementById('rsvp-legend-target');
-  const hiddenIdInput = document.getElementById('google-entry-id');
-  const hiddenGuestsInput = document.getElementById('google-entry-raw-guests');
   
   if (!form) return;
 
-  const params = parseGuestParameters();
+  const urlParams = new URLSearchParams(window.location.search);
+  const rawId = urlParams.get('id');
+  const guestId = (rawId !== null && rawId !== undefined && rawId.trim() !== '') ? rawId.trim() : 'anonymous1';
+
+  const hiddenIdInput = form.querySelector('.rsvp__hidden-id');
+  const hiddenGuestsInput = form.querySelector('.rsvp__hidden-raw-guests');
+  
+  let params = { guests: [], formattedNames: '', rawGuests: 'Не указано' };
+  try {
+    // Защита от потенциального падения внешнего парсера
+    params = parseGuestParameters() || params;
+  } catch (error) {
+    console.warn('Не удалось распарсить параметры гостей, применена заглушка', error);
+  }
+
+  if (hiddenIdInput) hiddenIdInput.value = guestId;
+  if (hiddenGuestsInput) hiddenGuestsInput.value = params.rawGuests || 'Не указано';
 
   // Персонализация текстового узла
-  if (legendOutput) {
-    const namesHtml = params.guests.length > 0 
+  if (legendOutput && params.guests) {
+    const namesHtml = params.guests.length > 0
       ? `<span class="rsvp__highlight-name">${params.formattedNames}</span>` 
       : '';
 
@@ -25,15 +51,11 @@ export function initRsvpHandler() {
     }
   }
 
-  // Наполнение скрытых инпутов Идентификатором и Сырой строкой гостей
-  if (hiddenIdInput) hiddenIdInput.value = params.id;
-  if (hiddenGuestsInput) hiddenGuestsInput.value = params.rawGuests;
-
   setupAlcoholInteractions(form);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    submitRsvp(form);
+    processRsvpSubmission(form);
   });
 }
 
@@ -62,36 +84,42 @@ function setupAlcoholInteractions(form) {
   });
 }
 
-function submitRsvp(form) {
+function processRsvpSubmission(form) {
   const submitBtn = document.getElementById('submit-btn');
   const successMessage = document.getElementById('success-message');
   if (!submitBtn || !successMessage) return;
 
-  const FORM_ID = '1FAIpQLSfXXXXXXXXXXXXX'; // Замените на реальный хеш вашей Google Формы
-  const actionUrl = `https://docs.google.com/forms/u/0/d/e/${FORM_ID}/formResponse`;
-
   const formData = new FormData(form);
   const postData = new URLSearchParams();
 
-  // Собираем массив выбранных напитков в одну строку (Best Practice)
-  const selectedDrinks = [];
-  form.querySelectorAll('.rsvp-alcohol-item:checked').forEach(cb => {
-    selectedDrinks.push(cb.value);
-  });
-  
-  // Перенос стандартных полей из разметки
-  for (const [key, value] of formData.entries()) {
-    if (key) postData.append(key, value);
+  // Проверка: выбран ли хотя бы один вариант напитков (если вы хотите оставить вопрос обязательным)
+  const checkedAlcohol = form.querySelectorAll('.rsvp-alcohol-item:checked');
+  const attendanceValue = formData.get('attendance');
+  if (checkedAlcohol.length === 0 && attendanceValue === 'Приду') {
+    alert('Пожалуйста, выберите ваши предпочтения в напитках (или пункт "Не пью алкоголь")');
+    return; // Останавливаем отправку
   }
 
-  // Добавление сформированной строки алкоголя (замените на ваш entry.ID для напитков)
-  postData.append('entry.2000002', selectedDrinks.length > 0 ? selectedDrinks.join(', ') : 'Не указано');
+  // Динамический маппинг стандартных полей из конфигурации (name="id" -> entry.XXXXXX)
+  for (const [key, value] of formData.entries()) {
+    const entryKey = GOOGLE_FORM_CONFIG.entries[key];
+    if (entryKey && value && value.trim() !== '') {
+      postData.append(entryKey, value.trim());
+    }
+  }
+
+  // Для Google Форм чекбоксы (множественный выбор) нужно передавать отдельными параметрами с одним и тем же ключом
+  checkedAlcohol.forEach(cb => {
+    if (cb.value && cb.value.trim() !== '') {
+      postData.append(GOOGLE_FORM_CONFIG.entries.alcohol, cb.value.trim());
+    }
+  });
 
   // Состояние загрузки кнопки
   submitBtn.disabled = true;
   submitBtn.textContent = 'Отправка...';
 
-  fetch(actionUrl, {
+  fetch(GOOGLE_FORM_CONFIG.actionUrl, {
     method: 'POST',
     mode: 'no-cors',
     headers: {
@@ -103,10 +131,18 @@ function submitRsvp(form) {
     form.classList.add('rsvp__form--hidden');
     successMessage.classList.remove('rsvp__success--hidden');
     form.reset();
+
+    // Повторное заполнение скрытого поля идентификатором после сброса формы
+    const hiddenIdInput = form.querySelector('.rsvp__hidden-id');
+    if (hiddenIdInput) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawId = urlParams.get('id');
+      hiddenIdInput.value = (rawId !== null && rawId !== undefined && rawId.trim() !== '') ? rawId.trim() : 'anonymous';
+    }
   })
   .catch(error => {
     console.error('Ошибка отправки RSVP анкеты:', error);
-    alert('Произошла ошибка сети. Пожалуйста, попробуйте отправить снова.');
+    alert('Произошла ошибка сети. Пожалуйста, проверьте подключение к интернету и попробуйте отправить снова.');
   })
   .finally(() => {
     submitBtn.disabled = false;
