@@ -1,10 +1,14 @@
 <div class="map-modal" id="mapModalComponent" aria-hidden="true">
-    <div class="map-modal__overlay" id="closeMapOverlayAction"></div>
-    <div class="map-modal__container">
-        <button type="button" class="map-modal__close" id="closeMapButtonAction" aria-label="Закрыть карту">
-            &times;
-        </button>
-        <div class="map-modal__content" id="mapContainer">
-            </div>
-    </div>
+  <div class="map-modal__overlay" id="closeMapOverlayAction"></div>
+  <div class="map-modal__container" role="dialog" aria-modal="true" aria-label="Место проведения">
+    <button
+      type="button"
+      class="map-modal__close"
+      id="closeMapButtonAction"
+      aria-label="Закрыть карту"
+    >
+      &times;
+    </button>
+    <div class="map-modal__content" id="mapContainer"></div>
+  </div>
 </div>

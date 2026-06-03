@@ -30,12 +30,14 @@ export function initMapHandler() {
         }
     };
 
-const injectMap = () => {
+    const injectMap = () => {
         if (mapContainer.children.length === 0) {
             const iframe = document.createElement('iframe');
             // Добавлен параметр &mode=usermashup для скрытия линеек, пробок и лишнего UI
             iframe.src = `https://yandex.ru/map-widget/v1/?ll=${MAP_CONFIG.longitude}%2C${MAP_CONFIG.latitude}&z=${MAP_CONFIG.zoom}&mode=usermashup&pt=${MAP_CONFIG.longitude}%2C${MAP_CONFIG.latitude},pm2blm`;
             iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('title', 'Интерактивная карта');
+            iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
             iframe.style.width = '100%';
             iframe.style.height = '100%';
             iframe.style.border = 'none';
@@ -44,10 +46,17 @@ const injectMap = () => {
     };
 
     const clearMap = () => {
-        mapContainer.innerHTML = ''; // Сброс содержимого для разгрузки ОЗУ смартфона
+        mapContainer.replaceChildren(); // Более безопасный и быстрый метод очистки DOM
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('map-modal--active')) {
+            toggleModal(false);
+        }
     };
 
     openBtn.addEventListener('click', () => toggleModal(true));
     closeBtn.addEventListener('click', () => toggleModal(false));
     overlay.addEventListener('click', () => toggleModal(false));
+    document.addEventListener('keydown', handleKeyDown);
 }
