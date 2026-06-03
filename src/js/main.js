@@ -1,12 +1,6 @@
-// Принудительный сброс сохранения позиции скролла браузером при перезагрузке
-if (window.history && 'scrollRestoration' in window.history) {
-  window.history.scrollRestoration = 'manual';
-}
-
 import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
-import { initLayerController } from './modules/layerController.js';
 import { initWeddingCalendar } from './modules/calendar.js';
 
 async function loadComponents() {
@@ -50,7 +44,6 @@ async function loadComponents() {
   
   // Инициализируем всю динамическую логику только ПОСЛЕ того, как разметка полностью готова
   const initModules = [
-    { name: 'LayerController', fn: () => initLayerController() },
     { name: 'RsvpHandler', fn: () => initRsvpHandler() },
     { name: 'WeddingTimer', fn: () => initWeddingTimer() },
     { name: 'MapHandler', fn: () => initMapHandler() },

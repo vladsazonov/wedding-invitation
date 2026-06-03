@@ -14,9 +14,6 @@ body {
     background-color: $color-bg-light; // Делаем глобальный фон идентичным цвету карточек
     color: $color-text-main;
     font-family: $font-sans;
-
-    // Отключаем системный bounce-эффект для десктопов и локализуем его для мобильных
-    overscroll-behavior-y: none;
 }
 
 body {
