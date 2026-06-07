@@ -144,12 +144,15 @@ async function loadComponents() {
   // ЭТАП 3: Гарантируем, что браузер рассчитал размеры макета перед запуском AOS
   if (typeof AOS !== 'undefined') {
     requestAnimationFrame(() => {
-      AOS.init({
-        duration: 800,
-        once: false,
-        mirror: true,
-        offset: 50
-      });
+      const startScreen = document.getElementById('start-screen-component');
+      if (!startScreen) {
+        AOS.init({
+          duration: 800,
+          once: false,
+          mirror: true,
+          offset: 50
+        });
+      }
     });
   }
 }

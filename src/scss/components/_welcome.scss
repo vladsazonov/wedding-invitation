@@ -53,13 +53,13 @@
 
         &::before {
             transform-origin: right center;
-            transform: rotate(20deg); // Левая половинка наклонена вниз
+            transform: rotate(-20deg); // Левая половинка наклонена вверх
             margin-right: -2px; // Прячем внутреннее скругление для монолитности
         }
 
         &::after {
             transform-origin: left center;
-            transform: rotate(-20deg); // Правая половинка наклонена вниз
+            transform: rotate(20deg); // Правая половинка наклонена вверх
             margin-left: -2px; // Прячем внутреннее скругление для монолитности
         }
 
@@ -218,6 +218,6 @@
     }
 
     50% {
-        transform: translateY(6px);
+        transform: translateY(-6px);
     }
 }

@@ -1,14 +1,36 @@
-<div class="intro" role="dialog" aria-modal="true" aria-label="Стартовый экран">
-  <div class="intro__content">
-    <p class="intro__subtitle">Приглашение на свадьбу</p>
-    <h1 class="intro__title">
-      <span class="intro__name">Владислав</span>
-      <span class="intro__ampersand">&amp;</span>
-      <span class="intro__name">Надежда</span>
-    </h1>
-  </div>
+<div
+  class="intro-overlay"
+  id="start-screen-component"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Стартовый экран"
+>
+  <div class="intro-envelope">
+    <div class="intro-envelope__back"></div>
 
-  <button class="intro__btn" id="open-invitation-btn" aria-label="Открыть приглашение">
-    Открыть приглашение
-  </button>
+    <div class="intro-envelope__flap intro-envelope__flap--left"></div>
+    <div class="intro-envelope__flap intro-envelope__flap--right"></div>
+    <div class="intro-envelope__flap intro-envelope__flap--bottom">
+      <span class="intro-envelope__bottom-text">Владислав &amp; Надежда</span>
+    </div>
+    <div class="intro-envelope__flap intro-envelope__flap--top"></div>
+
+    <div class="intro-envelope__cta">
+      <button type="button" class="intro-envelope__seal-ring" aria-label="Открыть приглашение">
+        <svg
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          width="24"
+          height="24"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </button>
+      <p class="intro-envelope__text">Приглашение на свадьбу</p>
+    </div>
+  </div>
 </div>

@@ -7,10 +7,9 @@ export function initStartScreen() {
     return;
   }
 
-  const intro = container.querySelector('.intro');
-  const openBtn = container.querySelector('#open-invitation-btn');
+  const envelope = container.querySelector('.intro-envelope');
 
-  if (!intro || !openBtn) {
+  if (!envelope) {
     console.warn('Start screen inner elements not found, removing empty container.');
     container.remove();
     document.body.style.overflow = '';
@@ -20,16 +19,50 @@ export function initStartScreen() {
   document.body.style.overflow = 'hidden';
   window.scrollTo(0, 0);
 
-  const toggleIntro = () => {
-    intro.classList.add('intro--hidden');
-    
+  let isOpened = false;
+
+  const openEnvelope = () => {
+    if (isOpened) return;
+    isOpened = true;
+
+    envelope.classList.add('intro-envelope--opened');
+
     document.body.style.overflow = '';
 
-    setTimeout(() => {
-      container.remove();
-      if (typeof AOS !== 'undefined') AOS.refresh();
-    }, 600); // 600ms match with CSS transition duration
+    // Запускаем анимации страницы почти сразу, пока конверт еще разъезжается
+    if (typeof AOS !== 'undefined') {
+      setTimeout(() => {
+        AOS.init({
+          duration: 800,
+          once: false,
+          mirror: true,
+          offset: 50
+        });
+      }, 150); // 150ms задержки для идеальной синхронизации
+    }
+
+    // Safely start audio playback within the click's Promise context
+    const audioTrack = document.querySelector('[data-audio-element="track"]');
+    if (audioTrack && audioTrack.paused) {
+      audioTrack.muted = false;
+      const playPromise = audioTrack.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => console.warn('Audio play prevented:', error));
+      }
+    }
+
+    // Clean up DOM on transition end to prevent memory leaks and blocking
+    const topFlap = envelope.querySelector('.intro-envelope__flap--top');
+    if (topFlap) {
+      const onTransitionEnd = (e) => {
+        if (e.propertyName === 'transform') {
+          topFlap.removeEventListener('transitionend', onTransitionEnd);
+          container.remove();
+        }
+      };
+      topFlap.addEventListener('transitionend', onTransitionEnd);
+    }
   };
 
-  openBtn.addEventListener('click', toggleIntro);
+  container.addEventListener('click', openEnvelope);
 }
