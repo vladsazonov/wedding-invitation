@@ -1,0 +1,88 @@
+@import '../abstracts/variables';
+
+.audio-control {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 150;
+    pointer-events: auto;
+    will-change: transform;
+
+    &__button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border: 1px solid rgba($color-text-main, 0.12);
+        border-radius: 50%;
+        background-color: $color-bg-light;
+        color: $color-text-main;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba($color-text-main, 0.4);
+            pointer-events: none;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        @media (hover: hover) {
+            &:hover {
+                transform: scale(1.06);
+                background-color: rgba($color-bg-light, 0.98);
+            }
+        }
+
+        &:active {
+            transform: scale(0.94);
+        }
+    }
+
+    &__icon {
+        width: 18px;
+        height: 18px;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+
+        &--pause {
+            display: none;
+        }
+    }
+
+    &--playing {
+        .audio-control__icon--play {
+            display: none;
+        }
+
+        .audio-control__icon--pause {
+            display: block;
+        }
+
+        .audio-control__button::after {
+            animation: audioGlowRipple 2.5s infinite cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    }
+}
+
+@keyframes audioGlowRipple {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}

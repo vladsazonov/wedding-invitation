@@ -2,6 +2,8 @@ import { initRsvpHandler } from './modules/rsvpHandler.js';
 import { initWeddingTimer } from './modules/weddingTimer.js';
 import { initMapHandler } from './modules/mapHandler.js';
 import { initWeddingCalendar } from './modules/calendar.js';
+import { initAudioPlayer } from './modules/audioPlayer.js';
+import { initStartScreen } from './modules/startScreen.js';
 
 function initHeaderParallax() {
   const header = document.getElementById('header');
@@ -30,6 +32,13 @@ function initHeaderParallax() {
   const updateParallax = () => {
     const scrollY = window.scrollY;
     
+    // Управление состоянием индикатора скролла
+    if (scrollY > 10) {
+      welcome.classList.add('welcome--scrolled');
+    } else {
+      welcome.classList.remove('welcome--scrolled');
+    }
+
     if (scrollY < 0) {
       // Эксклюзивный эффект для iOS: пружинящее увеличение при оверскролле (тянем вниз)
       const scale = 1 + Math.abs(scrollY) / 500;
@@ -62,6 +71,7 @@ function initHeaderParallax() {
 
 // Фиксированный массив вынесен из функции для экономии памяти (создается единожды)
 const COMPONENTS_CONFIG = [
+  { id: 'start-screen-component', url: './src/components/start-screen.html' },
   { id: 'header-component', url: './src/components/header.html' },
   { id: 'welcome-component', url: './src/components/welcome.html' },
   { id: 'calendar-component', url: './src/components/calendar.html' },
@@ -70,17 +80,25 @@ const COMPONENTS_CONFIG = [
   { id: 'map-modal-component', url: './src/components/map-modal.html' },
   { id: 'timing-component', url: './src/components/timing.html' },
   { id: 'info-component', url: './src/components/info.html' },
-  { id: 'rsvp-component', url: './src/components/rsvp.html' }
+  { id: 'rsvp-component', url: './src/components/rsvp.html' },
+  { id: 'audio-component', url: './src/components/audio.html' }
 ];
 
 async function loadComponents() {
   // ЭТАП 1: Параллельная загрузка всех данных без изменения DOM (снижает Layout Thrashing)
   const fetchPromises = COMPONENTS_CONFIG.map(async (component) => {
-    const el = document.getElementById(component.id);
+    let el = document.getElementById(component.id);
     
     if (!el) {
-      console.warn(`Предупреждение: Контейнер с id "${component.id}" не найден в index.html`);
-      return null;
+      // Автоматически создаем контейнер стартового экрана, чтобы не менять index.html
+      if (component.id === 'start-screen-component') {
+        el = document.createElement('div');
+        el.id = 'start-screen-component';
+        document.body.prepend(el);
+      } else {
+        console.warn(`Предупреждение: Контейнер с id "${component.id}" не найден в index.html`);
+        return null;
+      }
     }
     
     try {
@@ -106,6 +124,8 @@ async function loadComponents() {
   
   // Инициализируем логику. Прямые ссылки на функции экономят память
   const initModules = [
+    { name: 'StartScreen', fn: initStartScreen },
+    { name: 'AudioPlayer', fn: initAudioPlayer },
     { name: 'RsvpHandler', fn: initRsvpHandler },
     { name: 'WeddingTimer', fn: initWeddingTimer },
     { name: 'MapHandler', fn: initMapHandler },

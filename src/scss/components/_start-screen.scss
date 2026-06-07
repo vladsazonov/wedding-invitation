@@ -1,0 +1,101 @@
+@import '../abstracts/variables';
+
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-bg-light;
+    color: $color-text-main;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+    visibility: visible;
+    opacity: 1;
+
+    &--hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    &__content {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    &__subtitle {
+        font-family: $font-sans;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        margin-bottom: 32px;
+        color: rgba($color-text-main, 0.7);
+    }
+
+    &__title {
+        font-family: $font-serif;
+        font-size: 3rem;
+        font-weight: 400;
+        line-height: 1.1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 4.5rem;
+        }
+    }
+
+    &__name {
+        display: block;
+    }
+
+    &__ampersand {
+        font-size: 0.6em;
+        font-style: italic;
+        color: $color-accent-blue;
+    }
+
+    &__btn {
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        color: $color-text-main;
+        border: 1px solid $color-text-main;
+        padding: 16px 40px;
+        border-radius: 50px;
+        font-family: $font-sans;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        cursor: pointer;
+        transition: background-color 0.4s ease, color 0.4s ease, transform 0.4s ease;
+        animation: introFadeIn 1s ease-in forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
+
+        &:hover,
+        &:focus {
+            background-color: $color-text-main;
+            color: $color-bg-light;
+            transform: translateY(-2px);
+        }
+    }
+}
+
+@keyframes introFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

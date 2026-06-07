@@ -1,0 +1,35 @@
+<div class="audio-control">
+  <button
+    class="audio-control__button"
+    aria-label="Включить или выключить музыкальное сопровождение"
+    aria-pressed="false"
+    data-audio-action="toggle"
+  >
+    <svg
+      class="audio-control__icon audio-control__icon--play"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d="M8 5v14l11-7z" />
+    </svg>
+    <svg
+      class="audio-control__icon audio-control__icon--pause"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+    </svg>
+  </button>
+  <audio
+    class="audio-control__player"
+    src="./src/assets/audio/wedding-ambient.mp3"
+    preload="auto"
+    loop
+    muted
+    data-audio-element="track"
+  ></audio>
+</div>
