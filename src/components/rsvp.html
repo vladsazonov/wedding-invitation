@@ -6,16 +6,18 @@
       <input type="hidden" name="guestId" class="rsvp__hidden-id" value="" />
       <input type="hidden" name="rawGuests" class="rsvp__hidden-raw-guests" value="" />
 
+      <div class="rsvp__intro">
+        <span class="rsvp__intro-title" id="rsvp-intro-title">Наши дорогие гости</span>
+        <span class="rsvp__highlight-name" id="rsvp-guest-names"></span>
+        <p class="rsvp__intro-desc">Будем рады встрече!</p>
+        <span class="rsvp__deadline">
+          Просьба ответить до
+          <span class="rsvp__highlight-date">17.07.2026</span>
+        </span>
+      </div>
+
       <fieldset class="rsvp__fieldset">
-        <legend class="rsvp__legend rsvp__legend--main" id="rsvp-legend-target">
-          Наши дорогие гости!
-          <br />
-          Будем рады видеть вас.
-          <span class="rsvp__deadline">
-            Просьба ответить до
-            <span class="rsvp__highlight-date">17.07.2026</span>
-          </span>
-        </legend>
+        <legend class="rsvp__legend rsvp__legend--hidden">Ваше присутствие</legend>
         <div class="rsvp__options rsvp__options--3col">
           <label class="rsvp__choice">
             <input
@@ -41,15 +43,15 @@
       <fieldset class="rsvp__fieldset">
         <legend class="rsvp__legend">Ваши предпочтения в напитках:</legend>
         <div class="rsvp__options rsvp__options--2col">
-          <label class="rsvp__choice">
+          <label class="rsvp__choice rsvp__choice--alcohol">
             <input type="checkbox" value="Виски" class="rsvp__input-hidden rsvp-alcohol-item" />
             <div class="rsvp__choice-block">Виски</div>
           </label>
-          <label class="rsvp__choice">
+          <label class="rsvp__choice rsvp__choice--alcohol">
             <input type="checkbox" value="Водка" class="rsvp__input-hidden rsvp-alcohol-item" />
             <div class="rsvp__choice-block">Водка</div>
           </label>
-          <label class="rsvp__choice">
+          <label class="rsvp__choice rsvp__choice--alcohol">
             <input
               type="checkbox"
               value="Шампанское"
@@ -57,7 +59,7 @@
             />
             <div class="rsvp__choice-block">Шампанское</div>
           </label>
-          <label class="rsvp__choice">
+          <label class="rsvp__choice rsvp__choice--alcohol">
             <input
               type="checkbox"
               value="Белое вино"
@@ -65,7 +67,7 @@
             />
             <div class="rsvp__choice-block">Белое вино</div>
           </label>
-          <label class="rsvp__choice">
+          <label class="rsvp__choice rsvp__choice--alcohol">
             <input
               type="checkbox"
               value="Красное вино"
@@ -73,7 +75,7 @@
             />
             <div class="rsvp__choice-block">Красное вино</div>
           </label>
-          <label class="rsvp__choice">
+          <label class="rsvp__choice rsvp__choice--alcohol">
             <input
               type="checkbox"
               value="Не пью алкоголь"
@@ -98,21 +100,29 @@
       <button type="submit" class="rsvp__submit" id="submit-btn">Отправить ответ</button>
     </form>
 
-    <div class="rsvp__success rsvp__success--hidden" id="success-message">
-      <div class="rsvp__success-icon" aria-hidden="true">✓</div>
-      <h3 class="rsvp__success-title">Ответ отправлен</h3>
+    <div class="rsvp__success-wrapper rsvp__success--hidden" id="success-message">
+      <div class="rsvp__success">
+        <svg class="rsvp__success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <h3 class="rsvp__success-title">Ответ отправлен</h3>
 
-      <div class="rsvp__photo-wrapper" id="success-photo-wrapper">
-        <img
-          src="./src/images/rsvp/final.webp"
-          alt="Владислав и Надежда"
-          class="rsvp__photo"
-          loading="lazy"
-        />
+        <div class="rsvp__photo-wrapper" id="success-photo-wrapper">
+          <img
+            src="./src/images/rsvp/final.webp"
+            alt="Владислав и Надежда"
+            class="rsvp__photo"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="rsvp__success-message-block" id="success-text">
+          <span class="rsvp__success-meet">До скорой встречи!</span>
+          <span class="rsvp__success-signature">С любовью, Владислав и Надежда</span>
+        </div>
+
+        <button type="button" class="rsvp__edit-btn" id="edit-btn">Редактировать ответ</button>
       </div>
-
-      <p class="rsvp__success-text" id="success-text">Спасибо! До встречи на торжестве.</p>
-      <button type="button" class="rsvp__edit-btn" id="edit-btn">Редактировать ответ</button>
     </div>
   </div>
 </section>

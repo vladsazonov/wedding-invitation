@@ -41,14 +41,19 @@
         align-items: center;
         position: relative;
         cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
         
         // Увеличенная область клика для тач-устройств
         padding: 20px 0;
         margin-top: -20px;
         margin-bottom: 4px;
 
-        transition: opacity 0.3s ease;
+        transition: scale 0.1s ease, opacity 0.3s ease;
         animation: handleBounce 2s infinite ease-in-out;
+
+        &:active {
+            scale: 0.85;
+        }
 
         &::before,
         &::after {
@@ -232,5 +237,56 @@
 
     50% {
         transform: translateY(-6px);
+    }
+}
+
+@keyframes welcomeDock {
+    to {
+        border-radius: 0;
+        box-shadow: 0 0 0 transparent;
+    }
+}
+
+@keyframes handleFade {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes handleFlattenLeft {
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes handleFlattenRight {
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@supports (animation-timeline: scroll()) {
+    .welcome {
+        animation: welcomeDock linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 calc(var(--vh-height, 100vh) - 54px);
+
+        &__handle {
+            animation: handleFade linear both;
+            animation-timeline: scroll(root);
+            animation-range: 0 calc(var(--vh-height, 100vh) - 54px);
+
+            &::before {
+                animation: handleFlattenLeft linear both;
+                animation-timeline: scroll(root);
+                animation-range: 0 40px;
+            }
+
+            &::after {
+                animation: handleFlattenRight linear both;
+                animation-timeline: scroll(root);
+                animation-range: 0 40px;
+            }
+        }
     }
 }

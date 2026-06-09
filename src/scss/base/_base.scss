@@ -19,7 +19,6 @@ body {
 body {
     overflow-x: hidden;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; // Плавный инерционный скролл для iOS
 }
 
 input,
@@ -32,7 +31,6 @@ select {
 }
 
 .calendar,
-.countdown,
 .timing,
 .rsvp {
     position: relative;
@@ -43,5 +41,11 @@ select {
 .location {
     position: relative;
     z-index: $z-elevated;
+    background-color: $color-bg-light;
+}
+
+.countdown {
+    position: relative;
+    z-index: $z-elevated + 10;
     background-color: $color-bg-light;
 }

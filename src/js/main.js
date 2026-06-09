@@ -5,11 +5,20 @@ import { initWeddingCalendar } from './modules/calendar.js';
 import { initAudioPlayer } from './modules/audioPlayer.js';
 import { initStartScreen } from './modules/startScreen.js';
 
+let lastWidth = window.innerWidth;
 const updateViewportHeight = () => {
+  const currentWidth = window.innerWidth;
+  if (currentWidth !== lastWidth) {
+    document.documentElement.style.setProperty('--vh-height', `${window.innerHeight}px`);
+    lastWidth = currentWidth;
+  }
+};
+
+const initViewportHeight = () => {
   document.documentElement.style.setProperty('--vh-height', `${window.innerHeight}px`);
 };
 
-updateViewportHeight();
+initViewportHeight();
 window.addEventListener('resize', updateViewportHeight, { passive: true });
 
 const initHeaderParallax = () => {
@@ -31,11 +40,16 @@ const initHeaderParallax = () => {
     welcomeHandle.addEventListener('click', expandWelcomeBlock);
   }
 
-  // Кэшируем высоту скролла для предотвращения Layout Thrashing (вызова offsetTop на каждом кадре)
+  // Кэшируем высоту скролла для предотвращения Layout Thrashing
   let maxScroll = welcome.offsetTop || window.innerHeight;
+  let lastWidthForParallax = window.innerWidth;
 
   const updateDimensions = () => {
-    maxScroll = welcome.offsetTop || window.innerHeight;
+    const currentWidth = window.innerWidth;
+    if (currentWidth !== lastWidthForParallax) {
+      maxScroll = welcome.offsetTop || window.innerHeight;
+      lastWidthForParallax = currentWidth;
+    }
   };
   window.addEventListener('resize', updateDimensions, { passive: true });
 
@@ -43,25 +57,9 @@ const initHeaderParallax = () => {
   const supportsScrollAnimations = window.CSS && CSS.supports('animation-timeline', 'scroll()');
 
   if (supportsScrollAnimations) {
-    // В браузерах с поддержкой CSS-анимаций скролла обновляем только класс состояния
-    const updateScrollState = () => {
-      const scrollY = window.scrollY;
-      
-      if (scrollY > 10) {
-        welcome.classList.add('welcome--scrolled');
-      } else {
-        welcome.classList.remove('welcome--scrolled');
-      }
-
-      if (scrollY >= maxScroll - 10) {
-        welcome.classList.add('welcome--docked');
-      } else {
-        welcome.classList.remove('welcome--docked');
-      }
-    };
-
-    window.addEventListener('scroll', updateScrollState, { passive: true });
-    updateScrollState();
+    // В браузерах с поддержкой CSS scroll-timeline все эффекты скролла (масштабирование, 
+    // затемнение, докинг карточки, скрытие ручки и самого хедера) выполняются аппаратно.
+    // Нам не нужно регистрировать JS-слушатель скролла!
     return;
   }
 
@@ -78,8 +76,6 @@ const initHeaderParallax = () => {
   photo.style.willChange = 'transform';
   photo.style.transformOrigin = 'center';
 
-
-
   let ticking = false;
 
   const updateParallax = () => {
@@ -95,6 +91,15 @@ const initHeaderParallax = () => {
       welcome.classList.add('welcome--docked');
     } else {
       welcome.classList.remove('welcome--docked');
+    }
+
+    // Скрываем хедер, чтобы при оверскролле в самом низу страницы под формой RSVP не проглядывало темное фото
+    if (scrollY >= maxScroll) {
+      header.style.visibility = 'hidden';
+      header.style.transform = 'translateY(-100%)';
+    } else {
+      header.style.visibility = 'visible';
+      header.style.transform = 'none';
     }
 
     if (scrollY < 0) {

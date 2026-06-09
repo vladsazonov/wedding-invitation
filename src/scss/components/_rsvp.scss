@@ -13,7 +13,7 @@
     &__container {
         max-width: 600px;
         margin: 0 auto;
-        padding: 32px 16px;
+        padding: 24px 16px;
         background-color: $color-bg-light;
         border-radius: 32px;
         box-shadow: 0 15px 40px rgba($color-accent-blue, 0.04);
@@ -27,16 +27,16 @@
     &__title {
         text-align: center;
         font-family: $font-serif;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: 400;
         line-height: 1.2;
         color: $color-accent-blue;
         letter-spacing: 0.05em;
-        margin-bottom: 32px;
+        margin-bottom: 20px;
 
         @media (min-width: 768px) {
             font-size: 36px;
-            margin-bottom: 44px;
+            margin-bottom: 36px;
         }
     }
 
@@ -46,13 +46,52 @@
         }
     }
 
+    &__intro {
+        text-align: center;
+        margin-bottom: 20px;
+
+        @media (min-width: 768px) {
+            margin-bottom: 32px;
+        }
+    }
+
+    &__intro-title {
+        display: block;
+        font-family: $font-serif;
+        font-size: 1.05rem;
+        font-weight: 400;
+        line-height: 1.3;
+        color: rgba($color-accent-blue, 0.7);
+        margin-bottom: 4px;
+
+        @media (min-width: 768px) {
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+        }
+    }
+
+    &__intro-desc {
+        font-family: $font-serif;
+        font-size: 0.95rem;
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.4;
+        color: rgba($color-text, 0.65);
+        margin: 6px 0 12px;
+
+        @media (min-width: 768px) {
+            font-size: 1.1rem;
+            margin: 10px 0 16px;
+        }
+    }
+
     &__fieldset {
         border: none;
         padding: 0;
-        margin: 0 0 32px 0;
+        margin: 0 0 20px 0;
 
         @media (min-width: 768px) {
-            margin: 0 0 48px 0;
+            margin: 0 0 36px 0;
         }
     }
 
@@ -65,12 +104,24 @@
         line-height: 1.4;
         color: rgba($color-accent-blue, 0.6);
         text-align: center;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         width: 100%;
         display: block;
 
         @media (min-width: 768px) {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+        }
+
+        &--hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         &--main {
@@ -91,40 +142,43 @@
     &__highlight-name {
         display: block;
         font-family: $font-serif;
-        font-size: 1.8rem;
-        line-height: 1.1;
+        font-size: 1.5rem;
+        line-height: 1.2;
         font-style: italic;
+        font-weight: 500;
         color: $color-accent-blue;
-        margin: 8px 0 12px;
+        margin: 4px 0 8px;
 
         @media (min-width: 768px) {
-            font-size: 2.1rem;
-            margin: 12px 0 16px;
+            font-size: 2rem;
+            margin: 8px 0 12px;
         }
     }
 
     &__deadline {
         display: block;
-        margin: 20px auto 0;
-        padding: 10px 16px;
-        border: 1px solid rgba($color-accent-blue, 0.15);
-        border-radius: 20px;
+        margin: 12px auto 0;
+        padding: 8px 14px;
+        border: 1px solid rgba($color-accent-blue, 0.12);
+        border-radius: 16px;
         font-family: $font-sans;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 500;
         color: rgba($color-text, 0.7);
         letter-spacing: 0.05em;
         width: fit-content;
 
         @media (min-width: 768px) {
-            margin-top: 32px;
-            padding: 14px 24px;
+            margin-top: 24px;
+            padding: 12px 20px;
+            font-size: 0.8rem;
+            border-radius: 20px;
         }
     }
 
     &__highlight-date {
         font-weight: 700;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         color: $color-accent-blue;
         margin-left: 4px;
     }
@@ -142,7 +196,7 @@
         text-align: center;
 
         @media (min-width: 768px) {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
     }
 
@@ -168,6 +222,11 @@
         cursor: pointer;
         position: relative;
         height: 100%;
+        -webkit-tap-highlight-color: transparent;
+
+        &:active .rsvp__choice-block {
+            transform: scale(0.96);
+        }
 
         &:has(.rsvp__input-hidden:disabled) {
             cursor: not-allowed;
@@ -175,6 +234,22 @@
 
         &--fullwidth {
             grid-column: 1 / -1;
+        }
+
+        &--alcohol {
+            .rsvp__choice-block {
+                padding: 9px 6px;
+                min-height: 38px;
+                font-size: 0.75rem;
+                border-radius: 12px;
+
+                @media (min-width: 768px) {
+                    padding: 16px 12px;
+                    min-height: 54px;
+                    font-size: 0.9rem;
+                    border-radius: 16px;
+                }
+            }
         }
     }
 
@@ -204,7 +279,8 @@
         text-align: center;
         min-height: 44px;
         height: 100%;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 
         @media (min-width: 768px) {
             padding: 16px 12px;
@@ -238,10 +314,32 @@
     }
 
     &__field {
-        margin-bottom: 32px;
+        margin-bottom: 24px;
 
         @media (min-width: 768px) {
-            margin-bottom: 48px;
+            margin-bottom: 36px;
+        }
+    }
+
+    &__input-text {
+        width: 100%;
+        height: 40px;
+        padding: 8px 0;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid rgba($color-accent-blue, 0.15);
+        font-family: $font-sans;
+        font-size: 0.95rem;
+        color: $color-text;
+        outline: none;
+        transition: border-bottom-color 0.3s ease;
+
+        &:focus {
+            border-bottom-color: $color-accent-blue;
+        }
+
+        &::placeholder {
+            color: rgba($color-text, 0.4);
         }
     }
 
@@ -306,7 +404,8 @@
         cursor: pointer;
         appearance: none;
         -webkit-appearance: none;
-        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 
         @media (min-width: 768px) {
             padding: 18px;
@@ -316,71 +415,155 @@
             background-color: rgba($color-accent-blue, 0.85);
         }
 
+        &:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
         &:disabled {
             background-color: rgba($color-accent-blue, 0.3);
             cursor: not-allowed;
         }
     }
 
-    &__success {
-        text-align: center;
-        padding: 30px 0;
-        transition: opacity 0.3s ease;
+    &__success-wrapper {
+        min-height: 360px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
 
-        &--hidden {
+        @media (min-width: 768px) {
+            min-height: 440px;
+        }
+
+        &.rsvp__success--hidden {
             display: none;
         }
     }
 
-    &__success-icon {
-        display: inline-flex;
+    &__success {
+        width: 100%;
+        height: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background-color: rgba($color-accent-blue, 0.04);
-        border: 1px solid rgba($color-accent-blue, 0.15);
-        color: $color-accent-blue;
-        font-size: 28px;
-        margin-bottom: 20px;
+        opacity: 0;
+        animation: rsvpFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    &__success-icon {
+        display: block;
+        width: 32px;
+        height: 32px;
+        color: rgba($color-accent-blue, 0.7);
+        margin: 0 auto 12px;
+        stroke-dasharray: 50;
+        stroke-dashoffset: 50;
+        animation: rsvpStroke 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        flex-shrink: 0;
+
+        @media (min-width: 768px) {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 16px;
+        }
     }
 
     &__success-title {
-        font-family: $font-serif;
-        font-size: 2rem;
-        color: $color-accent-blue;
-        margin-bottom: 12px;
+        font-family: $font-sans;
+        font-size: 0.7rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba($color-accent-blue, 0.5);
+        margin-bottom: 16px;
+        text-align: center;
+        flex-shrink: 0;
+
+        @media (min-width: 768px) {
+            font-size: 0.75rem;
+            margin-bottom: 24px;
+        }
     }
 
     &__photo-wrapper {
         width: 100%;
-        max-width: 420px;
-        margin: 24px auto;
+        max-width: 300px;
+        height: auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        min-height: 180px;
+        margin: 16px auto;
         position: relative;
-        border-radius: 24px;
-        border: 1px solid rgba($color-accent-blue, 0.15);
-        padding: 8px;
+        border-radius: 16px;
+        border: 1px solid rgba($color-accent-blue, 0.12);
+        padding: 4px;
         background-color: rgba($color-accent-blue, 0.02);
-        box-shadow: 0 10px 30px rgba($color-accent-blue, 0.04);
+        box-shadow: 0 8px 24px rgba($color-accent-blue, 0.03);
+        overflow: hidden;
         animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+        @media (min-width: 768px) {
+            max-width: 420px;
+            min-height: 240px;
+            border-radius: 24px;
+            padding: 8px;
+            margin: 24px auto;
+        }
     }
 
     &__photo {
         width: 100%;
-        height: auto;
-        aspect-ratio: 3 / 4;
+        height: 100%;
         object-fit: cover;
-        border-radius: 16px;
+        border-radius: 12px;
         display: block;
+
+        @media (min-width: 768px) {
+            aspect-ratio: auto;
+            height: 100%;
+            border-radius: 16px;
+        }
     }
 
-    &__success-text {
-        font-family: $font-sans;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        color: rgba($color-text, 0.7);
-        margin-bottom: 32px;
+    &__success-message-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 24px;
+
+        @media (min-width: 768px) {
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+    }
+
+    &__success-meet {
+        font-family: $font-serif;
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: $color-accent-blue;
+        line-height: 1.2;
+
+        @media (min-width: 768px) {
+            font-size: 2.1rem;
+        }
+    }
+
+    &__success-signature {
+        font-family: $font-serif;
+        font-style: italic;
+        font-size: 1rem;
+        font-weight: 400;
+        color: rgba($color-accent, 0.95);
+        line-height: 1.3;
+
+        @media (min-width: 768px) {
+            font-size: 1.25rem;
+        }
     }
 
     &__edit-btn {
@@ -396,22 +579,43 @@
         letter-spacing: 0.05em;
         text-transform: uppercase;
         cursor: pointer;
-        transition: all 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.1s ease, background-color 0.2s ease, border-color 0.2s ease;
 
         &:hover {
             background-color: rgba($color-accent-blue, 0.04);
             border-color: $color-accent-blue;
         }
+
+        &:active {
+            transform: scale(0.97);
+        }
     }
 }
 
-// Анимация плавного появления фотографии при успешной отправке
+// Анимации
+@keyframes rsvpStroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes rsvpFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes fadeInScale {
     0% {
         opacity: 0;
         transform: scale(0.95);
     }
-
     100% {
         opacity: 1;
         transform: scale(1);

@@ -27,7 +27,8 @@ export function initRsvpHandler() {
 
   // ОПТИМИЗАЦИЯ DOM: Единоразово кэшируем узлы, чтобы не дергать document.getElementById при каждом клике
   const elements = {
-    legendOutput: document.getElementById('rsvp-legend-target'),
+    introTitle: document.getElementById('rsvp-intro-title'),
+    guestNames: document.getElementById('rsvp-guest-names'),
     submitBtn: document.getElementById('submit-btn'),
     successMessage: document.getElementById('success-message'),
     successText: document.getElementById('success-text'),
@@ -59,19 +60,18 @@ export function initRsvpHandler() {
   if (elements.hiddenGuestsInput) elements.hiddenGuestsInput.value = params.rawGuests || 'Не указано';
 
   // Персонализация текстового узла
-  if (elements.legendOutput && params.guests) {
-    const namesHtml = params.guests.length > 0
-      ? `<span class="rsvp__highlight-name">${escapeHtml(params.formattedNames)}</span>` 
-      : '';
+  if (params.guests) {
+    if (elements.guestNames) {
+      elements.guestNames.textContent = params.formattedNames || '';
+      elements.guestNames.style.display = params.guests.length > 0 ? '' : 'none';
+    }
 
-    const deadlineBlock = `<span class="rsvp__deadline">Просьба ответить до <span class="rsvp__highlight-date">17.07.2026</span></span>`;
-
-    if (params.guests.length === 1) {
-      elements.legendOutput.innerHTML = `Наш дорогой гость,<br>${namesHtml}Будем рады видеть тебя!${deadlineBlock}`;
-    } else if (params.guests.length > 1) {
-      elements.legendOutput.innerHTML = `Наши дорогие гости,<br>${namesHtml}Будем рады видеть вас!${deadlineBlock}`;
-    } else {
-      elements.legendOutput.innerHTML = `Наши дорогие гости!<br><br>Будем рады видеть вас!${deadlineBlock}`;
+    if (elements.introTitle) {
+      if (params.guests.length === 1) {
+        elements.introTitle.textContent = 'Наш дорогой гость';
+      } else {
+        elements.introTitle.textContent = 'Наши дорогие гости';
+      }
     }
 
     // Множественное число для вариантов присутствия, если гостей 2 и больше
@@ -121,6 +121,7 @@ export function initRsvpHandler() {
     elements.editBtn.addEventListener('click', () => {
       form.classList.remove('rsvp__form--hidden');
       elements.successMessage.classList.add('rsvp__success--hidden');
+      elements.successMessage.style.minHeight = '';
     });
   }
 }
@@ -161,6 +162,8 @@ function processRsvpSubmission(form, elements) {
   elements.submitBtn.disabled = true;
   elements.submitBtn.textContent = 'Отправка...';
 
+  const formHeight = form.offsetHeight;
+
   fetch(GOOGLE_FORM_CONFIG.actionUrl, {
     method: 'POST',
     mode: 'no-cors',
@@ -177,6 +180,14 @@ function processRsvpSubmission(form, elements) {
     }
     if (elements.successPhoto) {
       elements.successPhoto.style.display = attendanceValue === 'Не приду' ? 'none' : '';
+    }
+    
+    if (elements.successMessage) {
+      if (attendanceValue !== 'Не приду') {
+        elements.successMessage.style.minHeight = `${formHeight}px`;
+      } else {
+        elements.successMessage.style.minHeight = '';
+      }
     }
     
     elements.successMessage.classList.remove('rsvp__success--hidden');
