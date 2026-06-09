@@ -12,18 +12,11 @@ export const initAudioPlayer = () => {
     return () => {};
   }
 
-  console.log('Audio track found, src:', audioTrack.src);
-  
-  // Переустанавливаем src для принудительной загрузки медиа (важно после innerHTML)
-  const audioSrc = audioTrack.src;
-  audioTrack.src = '';
-  audioTrack.src = audioSrc;
+  // Принудительная загрузка аудио
   audioTrack.load();
   
-  // Устанавливаем громкость на 30%
+  // Устанавливаем комфортную фоновую громкость на 30%
   audioTrack.volume = 0.3;
-  
-  console.log('Audio loaded, canPlayType:', audioTrack.canPlayType('audio/mpeg'));
 
   let isInteracted = false;
   let isPlaybackProcessing = false;
@@ -42,33 +35,27 @@ export const initAudioPlayer = () => {
 
   const executePlay = () => {
     if (isPlaybackProcessing) {
-      console.log('Already processing playback, skipping');
       return;
     }
 
     isPlaybackProcessing = true;
-    console.log('executePlay called, playing...', { paused: audioTrack.paused, muted: audioTrack.muted, readyState: audioTrack.readyState });
     
     try {
       const playPromise = audioTrack.play();
-      console.log('play() returned:', playPromise);
       
-      // Проверка на undefined страхует от падений в старых браузерах
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
             isPlaybackProcessing = false;
-            console.log('Play successful, paused:', audioTrack.paused);
             updatePlaybackUI();
           })
           .catch((error) => {
             isPlaybackProcessing = false;
-            console.error('Play promise rejected:', error.name, error.message);
+            console.warn('Playback deferred or blocked:', error.message);
             updatePlaybackUI();
           });
       } else {
         isPlaybackProcessing = false;
-        console.log('play() returned undefined');
         updatePlaybackUI();
       }
     } catch (error) {
@@ -97,7 +84,7 @@ export const initAudioPlayer = () => {
     }
 
     isPlaybackProcessing = true;
-    // Unmute и запусти синхронно в контексте user gesture
+    // Unmute и запуск в контексте жеста пользователя
     audioTrack.muted = false;
     const playPromise = audioTrack.play();
     
@@ -109,7 +96,7 @@ export const initAudioPlayer = () => {
         updatePlaybackUI();
       }).catch((error) => {
         isPlaybackProcessing = false;
-        console.warn('Play failed:', error.message);
+        console.warn('Initial autoplay gesture blocked:', error.message);
         audioTrack.muted = true; // Сбрасываем mute, чтобы попробовать при следующем жесте
       });
     } else {
@@ -130,23 +117,14 @@ export const initAudioPlayer = () => {
   const processButtonClick = (event) => {
     event.stopPropagation();
     
-    // Если еще не было жеста пользователя, помечаем его
+    // Если еще не было жеста пользователя, помечаем его и снимаем mute
     if (!isInteracted) {
       isInteracted = true;
       removeGlobalTriggers();
-      // Unmute при первом взаимодействии
       audioTrack.muted = false;
     }
     
-    // Синхронный вызов play/pause в контексте user gesture
-    if (audioTrack.paused) {
-      audioTrack.play().catch((error) => {
-        console.warn('Play failed:', error.message);
-      });
-    } else {
-      audioTrack.pause();
-    }
-    updatePlaybackUI();
+    togglePlaybackState();
   };
 
   toggleButton.addEventListener('click', processButtonClick);
@@ -156,10 +134,7 @@ export const initAudioPlayer = () => {
   document.addEventListener('pointerup', processInitialGesture);
   document.addEventListener('touchend', processInitialGesture);
 
-  // Попытка запустить аудио сразу при загрузке.
-  // Сработает на ПК, если у пользователя высокий индекс вовлеченности (MEI) для вашего сайта,
-  // либо если он уже кликал по сайту до этого и просто обновил страницу.
-  // Небольшая задержка нужна, чтобы браузер успел отрисовать DOM.
+  // Попытка запустить аудио при загрузке ( MEI / кэш пользователя )
   setTimeout(() => {
     processInitialGesture();
   }, 500);
@@ -170,3 +145,4 @@ export const initAudioPlayer = () => {
     executePause();
   };
 };
+

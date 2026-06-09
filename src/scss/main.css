@@ -1922,19 +1922,25 @@ select {
   transform: scale(0.94);
 }
 .audio-control__icon {
+  position: absolute;
   width: 18px;
   height: 18px;
   pointer-events: none;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  opacity: 1;
+  transform: scale(1);
 }
 .audio-control__icon--pause {
-  display: none;
+  opacity: 0;
+  transform: scale(0.6);
 }
 .audio-control--playing .audio-control__icon--play {
-  display: none;
+  opacity: 0;
+  transform: scale(0.6);
 }
 .audio-control--playing .audio-control__icon--pause {
-  display: block;
+  opacity: 1;
+  transform: scale(1);
 }
 .audio-control--playing .audio-control__button::after {
   animation: audioGlowRipple 2.5s infinite cubic-bezier(0.25, 1, 0.5, 1);
