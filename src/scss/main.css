@@ -591,10 +591,17 @@ select {
   z-index: -1;
 }
 .calendar__day--highlighted::before {
+  transform: translate3d(calc(-50% - 5px), -50%, 0) rotate(-45deg);
   animation: heartPulseLeft 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
 }
 .calendar__day--highlighted::after {
+  transform: translate3d(calc(-50% + 5px), -50%, 0) rotate(45deg);
   animation: heartPulseRight 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .calendar__day--highlighted::before, .calendar__day--highlighted::after {
+    animation: none;
+  }
 }
 .calendar__date-box {
   display: flex;

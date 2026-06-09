@@ -2,7 +2,7 @@
  * Инициализирует сетку интерактивного свадебного календаря
  * @param {string} targetDateString - Дата в формате ISO (например, '2026-08-17')
  */
-export function initWeddingCalendar(targetDateString) {
+export const initWeddingCalendar = (targetDateString) => {
   const targetDate = new Date(targetDateString);
   const gridContainer = document.getElementById('calendar-days-grid');
   const titleContainer = document.getElementById('calendar-month-title');
@@ -11,10 +11,11 @@ export function initWeddingCalendar(targetDateString) {
     return;
   }
 
+  const monthFormatter = new Intl.DateTimeFormat('ru-RU', { month: 'long' });
+
   // Внутренние функции рендеринга
   const renderHeader = () => {
-    const formatter = new Intl.DateTimeFormat('ru-RU', { month: 'long'});
-    titleContainer.textContent = formatter.format(targetDate);
+    titleContainer.textContent = monthFormatter.format(targetDate);
   };
 
   const renderGrid = () => {
@@ -50,6 +51,8 @@ export function initWeddingCalendar(targetDateString) {
 
       if (day === targetDay) {
         dayCell.classList.add('calendar__day--highlighted');
+        dayCell.setAttribute('aria-current', 'date');
+        dayCell.setAttribute('aria-label', `${day} ${monthFormatter.format(targetDate)}, день нашей свадьбы`);
       }
 
       fragment.appendChild(dayCell);
@@ -61,4 +64,4 @@ export function initWeddingCalendar(targetDateString) {
   // Вызов рендеринга при инициализации функции
   renderHeader();
   renderGrid();
-}
+};
