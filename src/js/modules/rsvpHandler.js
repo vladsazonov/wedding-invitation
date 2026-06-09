@@ -12,121 +12,7 @@ const GOOGLE_FORM_CONFIG = {
   }
 };
 
-function escapeHtml(unsafe) {
-  return (unsafe || '').toString()
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-export function initRsvpHandler() {
-  const form = document.getElementById('wedding-form');
-  if (!form) return;
-
-  // ОПТИМИЗАЦИЯ DOM: Единоразово кэшируем узлы, чтобы не дергать document.getElementById при каждом клике
-  const elements = {
-    introTitle: document.getElementById('rsvp-intro-title'),
-    guestNames: document.getElementById('rsvp-guest-names'),
-    submitBtn: document.getElementById('submit-btn'),
-    successMessage: document.getElementById('success-message'),
-    successText: document.getElementById('success-text'),
-    successPhoto: document.getElementById('success-photo-wrapper'),
-    editBtn: document.getElementById('edit-btn'),
-    hiddenIdInput: form.querySelector('.rsvp__hidden-id'),
-    hiddenGuestsInput: form.querySelector('.rsvp__hidden-raw-guests'),
-    alcoholCheckboxes: form.querySelectorAll('.rsvp-alcohol-item'),
-    noAlcoholCb: form.querySelector('#alcohol-absent'),
-    wishesTextarea: form.querySelector('#rsvp-wishes'),
-    labelAttendYes: document.getElementById('label-attend-yes'),
-    labelAttendNo: document.getElementById('label-attend-no'),
-    labelAttendMaybe: document.getElementById('label-attend-maybe')
-  };
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const rawId = urlParams.get('id');
-  const guestId = (rawId !== null && rawId !== undefined && rawId.trim() !== '') ? rawId.trim() : 'anonymous1';
-
-  let params = { guests: [], formattedNames: '', rawGuests: 'Не указано' };
-  try {
-    // Защита от потенциального падения внешнего парсера
-    params = parseGuestParameters() || params;
-  } catch (error) {
-    console.warn('Не удалось распарсить параметры гостей, применена заглушка', error);
-  }
-
-  if (elements.hiddenIdInput) elements.hiddenIdInput.value = guestId;
-  if (elements.hiddenGuestsInput) elements.hiddenGuestsInput.value = params.rawGuests || 'Не указано';
-
-  // Персонализация текстового узла
-  if (params.guests) {
-    if (elements.guestNames) {
-      elements.guestNames.textContent = params.formattedNames || '';
-      elements.guestNames.style.display = params.guests.length > 0 ? '' : 'none';
-    }
-
-    if (elements.introTitle) {
-      if (params.guests.length === 1) {
-        elements.introTitle.textContent = 'Наш дорогой гость';
-      } else {
-        elements.introTitle.textContent = 'Наши дорогие гости';
-      }
-    }
-
-    // Множественное число для вариантов присутствия, если гостей 2 и больше
-    if (params.guests.length > 1) {
-      if (elements.labelAttendYes) elements.labelAttendYes.textContent = 'Мы придем';
-      if (elements.labelAttendNo) elements.labelAttendNo.textContent = 'Не сможем';
-      if (elements.labelAttendMaybe) elements.labelAttendMaybe.textContent = 'Сообщим позже';
-    }
-  }
-
-  form.addEventListener('change', (event) => {
-    const target = event.target;
-
-    // Логика блокировки: если гость нажал "Не приду"
-    if (target.name === 'attendance') {
-      const isNotComing = target.value === 'Не приду';
-
-      elements.alcoholCheckboxes.forEach(cb => {
-        cb.disabled = isNotComing;
-        if (isNotComing) cb.checked = false;
-      });
-
-      if (elements.wishesTextarea) {
-        elements.wishesTextarea.disabled = isNotComing;
-        if (isNotComing) elements.wishesTextarea.value = '';
-      }
-    }
-
-    // Логика чекбокса "Не пью алкоголь"
-    if (target.classList.contains('rsvp-alcohol-item') && elements.noAlcoholCb) {
-      if (target === elements.noAlcoholCb && target.checked) {
-        elements.alcoholCheckboxes.forEach(cb => {
-          if (cb !== elements.noAlcoholCb) cb.checked = false;
-        });
-      } else if (target !== elements.noAlcoholCb && target.checked) {
-        elements.noAlcoholCb.checked = false;
-      }
-    }
-  });
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    processRsvpSubmission(form, elements);
-  });
-
-  if (elements.editBtn && elements.successMessage) {
-    elements.editBtn.addEventListener('click', () => {
-      form.classList.remove('rsvp__form--hidden');
-      elements.successMessage.classList.add('rsvp__success--hidden');
-      elements.successMessage.style.minHeight = '';
-    });
-  }
-}
-
-function processRsvpSubmission(form, elements) {
+const processRsvpSubmission = (form, elements) => {
   if (!elements.submitBtn || !elements.successMessage) return;
 
   const formData = new FormData(form);
@@ -200,4 +86,122 @@ function processRsvpSubmission(form, elements) {
     elements.submitBtn.disabled = false;
     elements.submitBtn.textContent = 'Отправить ответ';
   });
-}
+};
+
+export const initRsvpHandler = () => {
+  const form = document.getElementById('wedding-form');
+  if (!form) return () => {};
+
+  // ОПТИМИЗАЦИЯ DOM: Единоразово кэшируем узлы, чтобы не дергать document.getElementById при каждом клике
+  const elements = {
+    introTitle: document.getElementById('rsvp-intro-title'),
+    guestNames: document.getElementById('rsvp-guest-names'),
+    submitBtn: document.getElementById('submit-btn'),
+    successMessage: document.getElementById('success-message'),
+    successText: document.getElementById('success-text'),
+    successPhoto: document.getElementById('success-photo-wrapper'),
+    editBtn: document.getElementById('edit-btn'),
+    hiddenIdInput: form.querySelector('.rsvp__hidden-id'),
+    hiddenGuestsInput: form.querySelector('.rsvp__hidden-raw-guests'),
+    alcoholCheckboxes: form.querySelectorAll('.rsvp-alcohol-item'),
+    noAlcoholCb: form.querySelector('#alcohol-absent'),
+    wishesTextarea: form.querySelector('#rsvp-wishes'),
+    labelAttendYes: document.getElementById('label-attend-yes'),
+    labelAttendNo: document.getElementById('label-attend-no'),
+    labelAttendMaybe: document.getElementById('label-attend-maybe')
+  };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const rawId = urlParams.get('id');
+  const guestId = (rawId !== null && rawId !== undefined && rawId.trim() !== '') ? rawId.trim() : 'anonymous1';
+
+  let params = { guests: [], formattedNames: '', rawGuests: 'Не указано' };
+  try {
+    // Защита от потенциального падения внешнего парсера
+    params = parseGuestParameters() || params;
+  } catch (error) {
+    console.warn('Не удалось распарсить параметры гостей, применена заглушка', error);
+  }
+
+  if (elements.hiddenIdInput) elements.hiddenIdInput.value = guestId;
+  if (elements.hiddenGuestsInput) elements.hiddenGuestsInput.value = params.rawGuests || 'Не указано';
+
+  // Персонализация текстового узла
+  if (params.guests) {
+    if (elements.guestNames) {
+      elements.guestNames.textContent = params.formattedNames || '';
+      elements.guestNames.style.display = params.guests.length > 0 ? '' : 'none';
+    }
+
+    if (elements.introTitle) {
+      if (params.guests.length === 1) {
+        elements.introTitle.textContent = 'Наш дорогой гость';
+      } else {
+        elements.introTitle.textContent = 'Наши дорогие гости';
+      }
+    }
+
+    // Множественное число для вариантов присутствия, если гостей 2 и больше
+    if (params.guests.length > 1) {
+      if (elements.labelAttendYes) elements.labelAttendYes.textContent = 'Мы придем';
+      if (elements.labelAttendNo) elements.labelAttendNo.textContent = 'Не сможем';
+      if (elements.labelAttendMaybe) elements.labelAttendMaybe.textContent = 'Сообщим позже';
+    }
+  }
+
+  const handleFormChange = (event) => {
+    const target = event.target;
+
+    // Логика блокировки: если гость нажал "Не приду"
+    if (target.name === 'attendance') {
+      const isNotComing = target.value === 'Не приду';
+
+      elements.alcoholCheckboxes.forEach(cb => {
+        cb.disabled = isNotComing;
+        if (isNotComing) cb.checked = false;
+      });
+
+      if (elements.wishesTextarea) {
+        elements.wishesTextarea.disabled = isNotComing;
+        if (isNotComing) elements.wishesTextarea.value = '';
+      }
+    }
+
+    // Логика чекбокса "Не пью алкоголь"
+    if (target.classList.contains('rsvp-alcohol-item') && elements.noAlcoholCb) {
+      if (target === elements.noAlcoholCb && target.checked) {
+        elements.alcoholCheckboxes.forEach(cb => {
+          if (cb !== elements.noAlcoholCb) cb.checked = false;
+        });
+      } else if (target !== elements.noAlcoholCb && target.checked) {
+        elements.noAlcoholCb.checked = false;
+      }
+    }
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    processRsvpSubmission(form, elements);
+  };
+
+  const handleEditClick = () => {
+    form.classList.remove('rsvp__form--hidden');
+    elements.successMessage.classList.add('rsvp__success--hidden');
+    elements.successMessage.style.minHeight = '';
+  };
+
+  form.addEventListener('change', handleFormChange);
+  form.addEventListener('submit', handleFormSubmit);
+
+  if (elements.editBtn && elements.successMessage) {
+    elements.editBtn.addEventListener('click', handleEditClick);
+  }
+
+  return () => {
+    form.removeEventListener('change', handleFormChange);
+    form.removeEventListener('submit', handleFormSubmit);
+    if (elements.editBtn) {
+      elements.editBtn.removeEventListener('click', handleEditClick);
+    }
+  };
+};

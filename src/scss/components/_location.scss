@@ -138,15 +138,6 @@
         background: linear-gradient(to top, rgba($color-accent-blue, 0.75) 0%, rgba($color-accent-blue, 0) 100%);
     }
 
-    &__preview-title {
-        font-family: $font-sans;
-        font-size: 0.9rem;
-        font-weight: 500;
-        letter-spacing: 0.25em;
-        color: $color-text-light;
-        text-transform: uppercase;
-        padding-left: 0.25em;
-    }
 
     &__button {
         background-color: transparent;

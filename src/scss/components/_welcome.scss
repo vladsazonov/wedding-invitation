@@ -10,7 +10,7 @@
     padding: 24px 16px 40px; // Чуть больше сверху для "ручки" шторки, и стандартные 40px снизу
 
     // Оптимизация рендеринга для предотвращения лагов скролла
-    will-change: transform, scroll-position;
+    will-change: transform;
     transform: translate3d(0, 0, 0); // Включение аппаратного ускорения (GPU)
     backface-visibility: hidden;
     perspective: 1000px;
@@ -288,5 +288,14 @@
                 animation-range: 0 40px;
             }
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .welcome,
+    .welcome__handle,
+    .welcome__handle::before,
+    .welcome__handle::after {
+        animation: none !important;
     }
 }

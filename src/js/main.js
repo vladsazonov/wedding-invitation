@@ -64,18 +64,6 @@ const initHeaderParallax = () => {
   }
 
   // Фоллбек для старых браузеров (без поддержки CSS scroll-driven animations)
-  header.style.overflow = 'hidden';
-
-  dimmer.style.position = 'absolute';
-  dimmer.style.inset = '0';
-  dimmer.style.backgroundColor = '#000';
-  dimmer.style.pointerEvents = 'none';
-  dimmer.style.zIndex = '2';
-  dimmer.style.willChange = 'opacity';
-
-  photo.style.willChange = 'transform';
-  photo.style.transformOrigin = 'center';
-
   let ticking = false;
 
   const updateParallax = () => {
@@ -143,18 +131,11 @@ const COMPONENTS_CONFIG = [
 const loadComponents = async () => {
   // ЭТАП 1: Параллельная загрузка всех данных без изменения DOM (снижает Layout Thrashing)
   const fetchPromises = COMPONENTS_CONFIG.map(async (component) => {
-    let el = document.getElementById(component.id);
+    const el = document.getElementById(component.id);
     
-    if (!el) {
-      // Автоматически создаем контейнер стартового экрана, чтобы не менять index.html
-      if (component.id === 'start-screen-component') {
-        el = document.createElement('div');
-        el.id = 'start-screen-component';
-        document.body.prepend(el);
-      } else {
-        console.warn(`Предупреждение: Контейнер с id "${component.id}" не найден в index.html`);
-        return null;
-      }
+    if (!el && component.id !== 'start-screen-component') {
+      console.warn(`Предупреждение: Контейнер с id "${component.id}" не найден в index.html`);
+      return null;
     }
     
     try {
@@ -163,12 +144,13 @@ const loadComponents = async () => {
         throw new Error(`Не удалось загрузить файл по пути: ${component.url}`);
       }
       const html = await response.text();
-      return { el, html };
+      return { el, html, id: component.id };
     } catch (err) {
       console.error(`Ошибка сборки UI [${component.id}]:`, err);
       return { 
         el, 
-        html: `<div style="padding:20px; color:red; text-align:center;">Ошибка загрузки блока ${component.id}</div>` 
+        html: `<div style="padding:20px; color:red; text-align:center;">Ошибка загрузки блока ${component.id}</div>`,
+        id: component.id
       };
     }
   });
@@ -178,7 +160,16 @@ const loadComponents = async () => {
   // ЭТАП 2: Синхронная пакетная вставка всех блоков разом
   loadedComponents.forEach((loadedComponent) => {
     if (loadedComponent) {
-      loadedComponent.el.innerHTML = loadedComponent.html;
+      if (loadedComponent.id === 'start-screen-component') {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = loadedComponent.html;
+        const actualStartScreen = tempDiv.firstElementChild;
+        if (actualStartScreen) {
+          document.body.prepend(actualStartScreen);
+        }
+      } else if (loadedComponent.el) {
+        loadedComponent.el.innerHTML = loadedComponent.html;
+      }
     }
   });
   

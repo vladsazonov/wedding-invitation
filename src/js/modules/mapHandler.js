@@ -5,7 +5,7 @@ const MAP_CONFIG = {
     zoom: 16
 };
 
-export function initMapHandler() {
+export const initMapHandler = () => {
     const openBtn = document.getElementById('openMapAction');
     const modal = document.getElementById('mapModalComponent');
     const closeBtn = document.getElementById('closeMapButtonAction');
@@ -13,8 +13,14 @@ export function initMapHandler() {
     const mapContainer = document.getElementById('mapContainer');
 
     if (!openBtn || !modal || !closeBtn || !overlay || !mapContainer) {
-        return;
+        return () => {};
     }
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            toggleModal(false);
+        }
+    };
 
     const toggleModal = (isActive) => {
         if (isActive) {
@@ -22,11 +28,13 @@ export function initMapHandler() {
             modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden'; // Запрет скролла подложки
             injectMap();
+            document.addEventListener('keydown', handleKeyDown);
         } else {
             modal.classList.remove('map-modal--active');
             modal.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = ''; // Восстановление скролла страницы
             clearMap();
+            document.removeEventListener('keydown', handleKeyDown);
         }
     };
 
@@ -49,14 +57,17 @@ export function initMapHandler() {
         mapContainer.replaceChildren(); // Более безопасный и быстрый метод очистки DOM
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('map-modal--active')) {
-            toggleModal(false);
-        }
-    };
+    const openModal = () => toggleModal(true);
+    const closeModal = () => toggleModal(false);
 
-    openBtn.addEventListener('click', () => toggleModal(true));
-    closeBtn.addEventListener('click', () => toggleModal(false));
-    overlay.addEventListener('click', () => toggleModal(false));
-    document.addEventListener('keydown', handleKeyDown);
-}
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    return () => {
+        openBtn.removeEventListener('click', openModal);
+        closeBtn.removeEventListener('click', closeModal);
+        overlay.removeEventListener('click', closeModal);
+        document.removeEventListener('keydown', handleKeyDown);
+    };
+};

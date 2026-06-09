@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: var(--vh-height, 100vh);
-    z-index: 1;
+    z-index: $z-base;
     overflow: hidden;
     background-color: transparent;
 
@@ -23,6 +23,8 @@
         height: 100%;
         object-fit: cover;
         object-position: center center;
+        will-change: transform;
+        transform-origin: center center;
     }
 
     &__overlay {
@@ -56,6 +58,7 @@
         background-color: #000000;
         opacity: 0;
         will-change: opacity;
+        pointer-events: none;
     }
 
     &__content {
@@ -242,5 +245,12 @@
             animation-range: 0 calc(var(--vh-height, 100vh) - 54px);
             will-change: opacity;
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header__photo,
+    .header__dimmer {
+        animation: none !important;
     }
 }
