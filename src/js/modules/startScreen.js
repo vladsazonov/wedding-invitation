@@ -1,4 +1,4 @@
-export function initStartScreen() {
+export const initStartScreen = () => {
   const container = document.getElementById('start-screen-component');
   
   if (!container) {
@@ -51,18 +51,45 @@ export function initStartScreen() {
       }
     }
 
+    // Restore focus to main heading or header for accessibility
+    const restoreFocus = () => {
+      const targetFocus = document.querySelector('.header__names') || document.querySelector('#header');
+      if (targetFocus) {
+        targetFocus.setAttribute('tabindex', '-1');
+        targetFocus.focus({ preventScroll: true });
+      }
+    };
+
     // Clean up DOM on transition end to prevent memory leaks and blocking
+    let isCleanedUp = false;
     const topFlap = envelope.querySelector('.intro-envelope__flap--top');
+
+    const cleanup = () => {
+      if (isCleanedUp) return;
+      isCleanedUp = true;
+      
+      if (topFlap) {
+        topFlap.removeEventListener('transitionend', onTransitionEnd);
+      }
+      
+      container.remove();
+      restoreFocus();
+    };
+
+    const onTransitionEnd = (e) => {
+      if (e.propertyName === 'transform') {
+        cleanup();
+      }
+    };
+
     if (topFlap) {
-      const onTransitionEnd = (e) => {
-        if (e.propertyName === 'transform') {
-          topFlap.removeEventListener('transitionend', onTransitionEnd);
-          container.remove();
-        }
-      };
       topFlap.addEventListener('transitionend', onTransitionEnd);
     }
+
+    // Fallback cleanup after transition duration (2.2s + buffer)
+    setTimeout(cleanup, 2500);
   };
 
-  container.addEventListener('click', openEnvelope);
-}
+  container.addEventListener('click', openEnvelope, { once: true });
+};
+

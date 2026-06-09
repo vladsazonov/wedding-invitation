@@ -1958,6 +1958,7 @@ select {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  overflow: hidden;
   background-color: rgba(28, 61, 90, 0.3);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1968,6 +1969,12 @@ select {
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
   pointer-events: none;
+}
+.intro-overlay__svg-clip {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .intro-envelope {

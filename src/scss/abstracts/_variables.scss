@@ -9,6 +9,7 @@ $timing-time-size-mob: 3.5rem;
 $timing-time-size-desk: 5rem;
 $color-accent-blue: #1c3d5a;
 $color-accent: #bfa38a;
+$color-envelope-paper: #fbfbf9;
 
 $color-placeholder-start: #c5beb2;
 $color-placeholder-end: #a39b8c;
@@ -23,3 +24,5 @@ $z-content: 10; // Стандартный контентный слой (для 
 $z-elevated: 20; // Приподнятые элементы (например, блоки с тенью поверх соседних)
 $z-header: 50; // Шапка, навигация
 $z-modal: 100; // Модальные окна (карты, попапы)
+$z-overlay: 9999; // Стартовый экран и оверлеи поверх всего
+
