@@ -4,10 +4,10 @@ import { getPluralForm } from './pluralize.js';
  * Инициализирует независимый от таймзоны пользователя счетчик обратного отсчета.
  * Дата зафиксирована в одном месте через дефолтный параметр.
  */
-export function initWeddingTimer(targetIsoDate = '2026-08-17T12:00:00+03:00') {
+export const initWeddingTimer = (targetIsoDate = '2026-08-17T12:00:00+03:00') => {
     const targetTimestamp = new Date(targetIsoDate).getTime();
     
-    if (Number.isNaN(targetTimestamp)) return;
+    if (Number.isNaN(targetTimestamp)) return () => {};
 
     const nodes = {
         days: document.getElementById('timer-days'),
@@ -23,7 +23,7 @@ export function initWeddingTimer(targetIsoDate = '2026-08-17T12:00:00+03:00') {
         seconds: document.getElementById('label-seconds')
     };
 
-    if (!nodes.days || !nodes.hours || !nodes.minutes || !nodes.seconds) return;
+    if (!nodes.days || !nodes.hours || !nodes.minutes || !nodes.seconds) return () => {};
 
     // Словари склонений для каждой единицы времени
     const TIME_FORMS = {
@@ -34,7 +34,7 @@ export function initWeddingTimer(targetIsoDate = '2026-08-17T12:00:00+03:00') {
     };
 
     // Универсальная функция обновления блока (цифры + лейбл)
-    function updateBlock(key, rawValue) {
+    const updateBlock = (key, rawValue) => {
         const paddedValue = String(rawValue).padStart(2, '0');
         const node = nodes[key];
         const labelNode = labels[key];
@@ -53,11 +53,11 @@ export function initWeddingTimer(targetIsoDate = '2026-08-17T12:00:00+03:00') {
                 labelNode.textContent = pluralLabel;
             }
         }
-    }
+    };
 
     let intervalId;
 
-    function calculateTime() {
+    const calculateTime = () => {
         const diff = targetTimestamp - Date.now();
 
         if (diff <= 0) {
@@ -70,8 +70,14 @@ export function initWeddingTimer(targetIsoDate = '2026-08-17T12:00:00+03:00') {
         updateBlock('hours', Math.floor((diff % 86400000) / 3600000));
         updateBlock('minutes', Math.floor((diff % 3600000) / 60000));
         updateBlock('seconds', Math.floor((diff % 60000) / 1000));
-    }
+    };
 
     calculateTime();
     intervalId = setInterval(calculateTime, 1000);
-}
+
+    return () => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+    };
+};
