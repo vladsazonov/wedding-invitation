@@ -3,7 +3,7 @@
 .welcome {
     position: relative;
     z-index: 10;
-    margin-top: calc(100dvh - 54px);
+    margin-top: calc(var(--vh-height, 100vh) - 54px);
     background-color: $color-bg-light;
     border-radius: 32px 32px 0 0;
     box-shadow: 0 -20px 40px rgba($color-text-main, 0.15);
@@ -34,41 +34,54 @@
 
     &__handle {
         width: 36px;
-        height: 4px;
-        margin: 0 auto 28px;
+        height: 6px;
+        margin: 0 auto 24px;
         display: flex;
         justify-content: center;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        
+        // Увеличенная область клика для тач-устройств
+        padding: 20px 0;
+        margin-top: -20px;
+        margin-bottom: 4px;
+
         transition: opacity 0.3s ease;
         animation: handleBounce 2s infinite ease-in-out;
 
         &::before,
         &::after {
             content: '';
-            width: 50%;
-            height: 100%;
+            width: 20px;
+            height: 5px;
             background-color: $color-accent-blue;
-            border-radius: 2px;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 3px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute;
+            top: calc(50% - 2.5px);
         }
 
         &::before {
+            right: 50%;
             transform-origin: right center;
-            transform: rotate(-20deg); // Левая половинка наклонена вверх
-            margin-right: -2px; // Прячем внутреннее скругление для монолитности
+            transform: rotate(-25deg);
+            margin-right: -1.5px;
         }
 
         &::after {
+            left: 50%;
             transform-origin: left center;
-            transform: rotate(20deg); // Правая половинка наклонена вверх
-            margin-left: -2px; // Прячем внутреннее скругление для монолитности
+            transform: rotate(25deg);
+            margin-left: -1.5px;
         }
 
         .welcome--scrolled & {
-            animation: none; // При скролле останавливаем "прыжки"
+            animation: none;
 
             &::before,
             &::after {
-                transform: rotate(0deg); // Разглаживаем в прямую линию
+                transform: rotate(0deg);
             }
         }
 

@@ -5,18 +5,69 @@ import { initWeddingCalendar } from './modules/calendar.js';
 import { initAudioPlayer } from './modules/audioPlayer.js';
 import { initStartScreen } from './modules/startScreen.js';
 
-function initHeaderParallax() {
+const updateViewportHeight = () => {
+  document.documentElement.style.setProperty('--vh-height', `${window.innerHeight}px`);
+};
+
+updateViewportHeight();
+window.addEventListener('resize', updateViewportHeight, { passive: true });
+
+const initHeaderParallax = () => {
   const header = document.getElementById('header');
   const welcome = document.getElementById('welcome-block');
   const dimmer = header ? header.querySelector('.header__dimmer') : null;
   const photo = header ? header.querySelector('.header__photo') : null;
 
-  if (!header || !welcome || !dimmer || !photo) return;
+  if (!header || !welcome || !dimmer || !photo) {
+    return;
+  }
 
-  // Принудительно ограничиваем вылет картинки при увеличении (на случай если нет в CSS)
+  const welcomeHandle = welcome.querySelector('.welcome__handle');
+  const expandWelcomeBlock = () => {
+    welcome.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  if (welcomeHandle) {
+    welcomeHandle.addEventListener('click', expandWelcomeBlock);
+  }
+
+  // Кэшируем высоту скролла для предотвращения Layout Thrashing (вызова offsetTop на каждом кадре)
+  let maxScroll = welcome.offsetTop || window.innerHeight;
+
+  const updateDimensions = () => {
+    maxScroll = welcome.offsetTop || window.innerHeight;
+  };
+  window.addEventListener('resize', updateDimensions, { passive: true });
+
+  // Проверяем аппаратную поддержку Scroll-driven Animations
+  const supportsScrollAnimations = window.CSS && CSS.supports('animation-timeline', 'scroll()');
+
+  if (supportsScrollAnimations) {
+    // В браузерах с поддержкой CSS-анимаций скролла обновляем только класс состояния
+    const updateScrollState = () => {
+      const scrollY = window.scrollY;
+      
+      if (scrollY > 10) {
+        welcome.classList.add('welcome--scrolled');
+      } else {
+        welcome.classList.remove('welcome--scrolled');
+      }
+
+      if (scrollY >= maxScroll - 10) {
+        welcome.classList.add('welcome--docked');
+      } else {
+        welcome.classList.remove('welcome--docked');
+      }
+    };
+
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    updateScrollState();
+    return;
+  }
+
+  // Фоллбек для старых браузеров (без поддержки CSS scroll-driven animations)
   header.style.overflow = 'hidden';
 
-  // Подготавливаем слои для аппаратного ускорения и стилизации эффекта
   dimmer.style.position = 'absolute';
   dimmer.style.inset = '0';
   dimmer.style.backgroundColor = '#000';
@@ -27,30 +78,31 @@ function initHeaderParallax() {
   photo.style.willChange = 'transform';
   photo.style.transformOrigin = 'center';
 
+
+
   let ticking = false;
 
   const updateParallax = () => {
     const scrollY = window.scrollY;
     
-    // Управление состоянием индикатора скролла
     if (scrollY > 10) {
       welcome.classList.add('welcome--scrolled');
     } else {
       welcome.classList.remove('welcome--scrolled');
     }
 
+    if (scrollY >= maxScroll - 10) {
+      welcome.classList.add('welcome--docked');
+    } else {
+      welcome.classList.remove('welcome--docked');
+    }
+
     if (scrollY < 0) {
-      // Эксклюзивный эффект для iOS: пружинящее увеличение при оверскролле (тянем вниз)
       const scale = 1 + Math.abs(scrollY) / 500;
       photo.style.transform = `scale(${scale}) translateZ(0)`;
       dimmer.style.opacity = '0';
     } else {
-      // Точка максимального скролла - верхняя граница компонента welcome
-      const maxScroll = welcome.offsetTop || window.innerHeight;
-      // Нормализуем прогресс строго от 0 до 1
       const progress = Math.min(scrollY / maxScroll, 1);
-      
-      // Применяем эффекты: затемнение до 70%, увеличение масштаба фото до 1.15
       dimmer.style.opacity = (progress * 0.7).toString();
       photo.style.transform = `scale(${1 + progress * 0.15}) translateZ(0)`;
     }
@@ -65,9 +117,8 @@ function initHeaderParallax() {
     }
   }, { passive: true });
 
-  // Вызов при старте для установки начальных значений
   updateParallax();
-}
+};
 
 // Фиксированный массив вынесен из функции для экономии памяти (создается единожды)
 const COMPONENTS_CONFIG = [
@@ -84,7 +135,7 @@ const COMPONENTS_CONFIG = [
   { id: 'audio-component', url: './src/components/audio.html' }
 ];
 
-async function loadComponents() {
+const loadComponents = async () => {
   // ЭТАП 1: Параллельная загрузка всех данных без изменения DOM (снижает Layout Thrashing)
   const fetchPromises = COMPONENTS_CONFIG.map(async (component) => {
     let el = document.getElementById(component.id);
@@ -103,7 +154,9 @@ async function loadComponents() {
     
     try {
       const response = await fetch(component.url);
-      if (!response.ok) throw new Error(`Не удалось загрузить файл по пути: ${component.url}`);
+      if (!response.ok) {
+        throw new Error(`Не удалось загрузить файл по пути: ${component.url}`);
+      }
       const html = await response.text();
       return { el, html };
     } catch (err) {
@@ -118,8 +171,10 @@ async function loadComponents() {
   const loadedComponents = await Promise.all(fetchPromises);
   
   // ЭТАП 2: Синхронная пакетная вставка всех блоков разом
-  loadedComponents.forEach(item => {
-    if (item) item.el.innerHTML = item.html;
+  loadedComponents.forEach((loadedComponent) => {
+    if (loadedComponent) {
+      loadedComponent.el.innerHTML = loadedComponent.html;
+    }
   });
   
   // Инициализируем логику. Прямые ссылки на функции экономят память
@@ -129,7 +184,7 @@ async function loadComponents() {
     { name: 'RsvpHandler', fn: initRsvpHandler },
     { name: 'WeddingTimer', fn: initWeddingTimer },
     { name: 'MapHandler', fn: initMapHandler },
-    { name: 'WeddingCalendar', fn: () => initWeddingCalendar('2026-08-17') },
+    { name: 'WeddingCalendar', fn: () => { initWeddingCalendar('2026-08-17'); } },
     { name: 'HeaderParallax', fn: initHeaderParallax }
   ];
   
@@ -155,7 +210,7 @@ async function loadComponents() {
       }
     });
   }
-}
+};
 
 // Безопасный запуск сборщика в зависимости от состояния готовности документа
 if (document.readyState === 'loading') {

@@ -8,60 +8,96 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    background-color: transparent;
+    background-color: rgba(#1c3d5a, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background-color 2.2s ease, backdrop-filter 2.2s ease;
+
+    &:has(.intro-envelope--opened) {
+        background-color: rgba(#1c3d5a, 0);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+        pointer-events: none;
+    }
 }
 
 .intro-envelope {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 62.5vw; // 8:5 ratio (1.6)
     background-color: transparent;
+    perspective: 2000px;
+    transform-style: preserve-3d;
+    transition: transform 2.2s cubic-bezier(0.25, 1, 0.3, 1);
+
+    @media (max-aspect-ratio: 8/5) {
+        height: 100vh;
+        width: 160vh;
+    }
 
     &__back {
         position: absolute;
         inset: 0;
         background-color: darken($color-bg-light, 12%);
-        transition: opacity 1.2s cubic-bezier(0.25, 1, 0.3, 1);
+        transition: opacity 2.2s cubic-bezier(0.25, 1, 0.3, 1);
     }
 
     &__flap {
         position: absolute;
         inset: 0;
         will-change: transform, opacity;
-        transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1),
-            opacity 1.2s cubic-bezier(0.25, 1, 0.3, 1);
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
 
         &--top {
-            clip-path: polygon(-1% -1%, 101% -1%, 50% 55%);
+            clip-path: url(#flap-top-clip);
             z-index: 4;
             background-color: #fbfbf9;
-            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.05));
+            filter: drop-shadow(0 18px 25px rgba(0, 0, 0, 0.22)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.14));
+            transform-origin: top center;
+            transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 2.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         &--bottom {
-            clip-path: polygon(-1% 101%, 101% 101%, 50% 45%);
+            clip-path: url(#flap-bottom-clip);
             z-index: 3;
             background-color: #fbfbf9;
-            filter: drop-shadow(0 -15px 20px rgba(0, 0, 0, 0.02));
+            filter: drop-shadow(0 -12px 18px rgba(0, 0, 0, 0.14)) drop-shadow(0 -3px 6px rgba(0, 0, 0, 0.08));
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding-bottom: 24px;
+            padding-bottom: 100px;
+            transform-origin: bottom center;
+            transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 2.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+            @media (min-width: 768px) {
+                padding-bottom: 60px;
+            }
         }
 
         &--left {
-            clip-path: polygon(-1% -1%, -1% 101%, 52% 50%);
+            clip-path: url(#flap-left-clip);
             z-index: 2;
             background-color: darken(#fbfbf9, 2%);
-            filter: drop-shadow(5px 0 15px rgba(0, 0, 0, 0.03));
+            filter: drop-shadow(12px 0 18px rgba(0, 0, 0, 0.12)) drop-shadow(3px 0 6px rgba(0, 0, 0, 0.08));
+            transform-origin: left center;
+            transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 2.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         &--right {
-            clip-path: polygon(101% -1%, 101% 101%, 48% 50%);
+            clip-path: url(#flap-right-clip);
             z-index: 1;
             background-color: darken(#fbfbf9, 2%);
-            filter: drop-shadow(-5px 0 15px rgba(0, 0, 0, 0.03));
+            filter: drop-shadow(-12px 0 18px rgba(0, 0, 0, 0.12)) drop-shadow(-3px 0 6px rgba(0, 0, 0, 0.08));
+            transform-origin: right center;
+            transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 2.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
 
@@ -87,7 +123,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        transition: opacity 0.35s cubic-bezier(0.25, 1, 0.3, 1), transform 0.35s cubic-bezier(0.25, 1, 0.3, 1);
         width: 100%;
     }
 
@@ -145,7 +181,7 @@
 
         .intro-envelope__cta {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(0.95);
+            transform: translate(-50%, -50%) scale(0.8);
         }
 
         .intro-envelope__back {
@@ -153,7 +189,7 @@
         }
 
         .intro-envelope__flap--top {
-            transform: translateY(-100%);
+            transform: rotateX(180deg);
             opacity: 0;
         }
 
