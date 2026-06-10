@@ -13,17 +13,40 @@ const GOOGLE_FORM_CONFIG = {
 };
 
 const processRsvpSubmission = (form, elements) => {
-  if (!elements.submitBtn || !elements.successMessage) return;
+  if (!elements.submitBtn || !elements.successMessage) {
+    return;
+  }
 
   const formData = new FormData(form);
   const postData = new URLSearchParams();
 
-  const checkedAlcoholList = Array.from(elements.alcoholCheckboxes).filter(cb => cb.checked);
+  const checkedAlcoholList = Array.from(elements.alcoholCheckboxes).filter(checkbox => { return checkbox.checked; });
   const attendanceValue = formData.get('attendance');
   
-  if (checkedAlcoholList.length === 0 && attendanceValue === 'Приду') {
-    alert('Пожалуйста, выберите ваши предпочтения в напитках (или пункт "Не пью алкоголь")');
-    return; // Останавливаем отправку
+  if (!attendanceValue) {
+    if (elements.attendanceError) {
+      elements.attendanceError.textContent = 'Пожалуйста, выберите один из вариантов присутствия';
+      elements.attendanceError.classList.add('rsvp__error--visible');
+      elements.attendanceError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  } else {
+    if (elements.attendanceError) {
+      elements.attendanceError.classList.remove('rsvp__error--visible');
+    }
+  }
+
+  if (checkedAlcoholList.length === 0 && (attendanceValue === 'Приду' || attendanceValue === 'Сообщу позже')) {
+    if (elements.alcoholError) {
+      elements.alcoholError.textContent = 'Пожалуйста, выберите ваши предпочтения в напитках (или "Не пью алкоголь")';
+      elements.alcoholError.classList.add('rsvp__error--visible');
+      elements.alcoholError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  } else {
+    if (elements.alcoholError) {
+      elements.alcoholError.classList.remove('rsvp__error--visible');
+    }
   }
 
   // Динамический маппинг стандартных полей из конфигурации (name="id" -> entry.XXXXXX)
@@ -108,7 +131,9 @@ export const initRsvpHandler = () => {
     wishesTextarea: form.querySelector('#rsvp-wishes'),
     labelAttendYes: document.getElementById('label-attend-yes'),
     labelAttendNo: document.getElementById('label-attend-no'),
-    labelAttendMaybe: document.getElementById('label-attend-maybe')
+    labelAttendMaybe: document.getElementById('label-attend-maybe'),
+    attendanceError: document.getElementById('rsvp-attendance-error'),
+    alcoholError: document.getElementById('rsvp-alcohol-error')
   };
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -152,26 +177,40 @@ export const initRsvpHandler = () => {
   const handleFormChange = (event) => {
     const target = event.target;
 
+    // Скрываем ошибки при вводе/выборе
+    if (target.name === 'attendance' && elements.attendanceError) {
+      elements.attendanceError.classList.remove('rsvp__error--visible');
+    }
+    if (target.classList.contains('rsvp-alcohol-item') && elements.alcoholError) {
+      elements.alcoholError.classList.remove('rsvp__error--visible');
+    }
+
     // Логика блокировки: если гость нажал "Не приду"
     if (target.name === 'attendance') {
       const isNotComing = target.value === 'Не приду';
 
-      elements.alcoholCheckboxes.forEach(cb => {
-        cb.disabled = isNotComing;
-        if (isNotComing) cb.checked = false;
+      elements.alcoholCheckboxes.forEach(checkbox => {
+        checkbox.disabled = isNotComing;
+        if (isNotComing) {
+          checkbox.checked = false;
+        }
       });
 
       if (elements.wishesTextarea) {
         elements.wishesTextarea.disabled = isNotComing;
-        if (isNotComing) elements.wishesTextarea.value = '';
+        if (isNotComing) {
+          elements.wishesTextarea.value = '';
+        }
       }
     }
 
     // Логика чекбокса "Не пью алкоголь"
     if (target.classList.contains('rsvp-alcohol-item') && elements.noAlcoholCb) {
       if (target === elements.noAlcoholCb && target.checked) {
-        elements.alcoholCheckboxes.forEach(cb => {
-          if (cb !== elements.noAlcoholCb) cb.checked = false;
+        elements.alcoholCheckboxes.forEach(checkbox => {
+          if (checkbox !== elements.noAlcoholCb) {
+            checkbox.checked = false;
+          }
         });
       } else if (target !== elements.noAlcoholCb && target.checked) {
         elements.noAlcoholCb.checked = false;

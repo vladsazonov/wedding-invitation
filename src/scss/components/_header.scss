@@ -8,6 +8,10 @@
     overflow: hidden;
     background-color: transparent;
 
+    &:focus {
+        outline: none;
+    }
+
     &__bg {
         position: absolute;
         top: 0;
@@ -138,6 +142,10 @@
         margin: 0;
         position: relative;
         z-index: 2;
+
+        &:focus {
+            outline: none;
+        }
     }
 
     &__name {

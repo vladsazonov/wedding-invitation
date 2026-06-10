@@ -2,7 +2,7 @@
   <div class="rsvp__container" data-aos="fade-up" data-aos-duration="800">
     <h2 class="rsvp__title">Подтверждение присутствия</h2>
 
-    <form class="rsvp__form" id="wedding-form">
+    <form class="rsvp__form" id="wedding-form" novalidate>
       <input type="hidden" name="guestId" class="rsvp__hidden-id" value="" />
       <input type="hidden" name="rawGuests" class="rsvp__hidden-raw-guests" value="" />
 
@@ -38,6 +38,7 @@
             <div class="rsvp__choice-block" id="label-attend-maybe">Сообщу позже</div>
           </label>
         </div>
+        <div class="rsvp__error" id="rsvp-attendance-error" aria-live="polite"></div>
       </fieldset>
 
       <fieldset class="rsvp__fieldset">
@@ -85,6 +86,7 @@
             <div class="rsvp__choice-block">Не пью алкоголь</div>
           </label>
         </div>
+        <div class="rsvp__error" id="rsvp-alcohol-error" aria-live="polite"></div>
       </fieldset>
 
       <div class="rsvp__field">

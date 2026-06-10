@@ -217,6 +217,27 @@
         }
     }
 
+    &__error {
+        font-family: $font-sans;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #c2410c;
+        text-align: center;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        visibility: hidden;
+        width: 100%;
+        display: block;
+
+        &--visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+    }
+
     &__choice {
         display: block;
         cursor: pointer;
