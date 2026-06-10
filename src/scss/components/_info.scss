@@ -86,11 +86,14 @@
 
     &__telegram-card {
         border: 1px dashed rgba($color-accent-blue, 0.3);
-        padding: 20px;
+        padding: 24px 20px;
         border-radius: 16px;
         margin-top: 16px;
         background-color: rgba($color-bg-light, 0.5);
         max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     &__telegram-text {
@@ -99,6 +102,62 @@
         line-height: 1.6;
         color: $color-text;
         opacity: 0.9;
+        margin-bottom: 16px;
+    }
+
+    &__telegram-link {
+        color: $color-accent-blue;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &__telegram-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: transparent;
+        color: $color-accent-blue;
+        border: 1px solid $color-accent-blue;
+        border-radius: 100px;
+        padding: 12px 28px;
+        font-family: $font-sans;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
+
+        &:active {
+            transform: scale(0.97);
+        }
+
+        @media (min-width: $breakpoint-md) {
+            &:hover {
+                background-color: $color-accent-blue;
+                color: $color-text-light;
+                box-shadow: 0 4px 12px rgba($color-accent-blue, 0.15);
+            }
+        }
+    }
+
+    &__telegram-icon {
+        flex-shrink: 0;
+        transition: transform 0.25s ease;
+    }
+
+    &__telegram-btn:hover &__telegram-icon {
+        transform: translate(1px, -1px);
     }
 
     &__divider {

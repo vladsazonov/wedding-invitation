@@ -1833,11 +1833,14 @@ select {
 }
 .info__telegram-card {
   border: 1px dashed rgba(28, 61, 90, 0.3);
-  padding: 20px;
+  padding: 24px 20px;
   border-radius: 16px;
   margin-top: 16px;
   background-color: rgba(252, 251, 250, 0.5);
   max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .info__telegram-text {
   font-family: "Montserrat", sans-serif;
@@ -1845,6 +1848,55 @@ select {
   line-height: 1.6;
   color: #3d3d3d;
   opacity: 0.9;
+  margin-bottom: 16px;
+}
+.info__telegram-link {
+  color: #1c3d5a;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.2s ease;
+}
+.info__telegram-link:hover {
+  opacity: 0.8;
+}
+.info__telegram-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: transparent;
+  color: #1c3d5a;
+  border: 1px solid #1c3d5a;
+  border-radius: 100px;
+  padding: 12px 28px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.info__telegram-btn:active {
+  transform: scale(0.97);
+}
+@media (min-width: 768px) {
+  .info__telegram-btn:hover {
+    background-color: #1c3d5a;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(28, 61, 90, 0.15);
+  }
+}
+.info__telegram-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+.info__telegram-btn:hover .info__telegram-icon {
+  transform: translate(1px, -1px);
 }
 .info__divider {
   width: 60px;
