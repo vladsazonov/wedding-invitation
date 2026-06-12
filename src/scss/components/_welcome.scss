@@ -9,11 +9,8 @@
     box-shadow: 0 -20px 40px rgba($color-text-main, 0.15);
     padding: 24px 16px 40px; // Чуть больше сверху для "ручки" шторки, и стандартные 40px снизу
 
-    // Оптимизация рендеринга для предотвращения лагов скролла
-    will-change: transform;
-    transform: translate3d(0, 0, 0); // Включение аппаратного ускорения (GPU)
-    backface-visibility: hidden;
-    perspective: 1000px;
+    // Создаём stacking context для корректного z-index дочерних элементов
+    transform: translate3d(0, 0, 0);
 
     transition: border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1),
         box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -240,12 +237,7 @@
     }
 }
 
-@keyframes welcomeDock {
-    to {
-        border-radius: 0;
-        box-shadow: 0 0 0 transparent;
-    }
-}
+
 
 @keyframes handleFade {
     to {
@@ -265,12 +257,10 @@
     }
 }
 
+
+
 @supports (animation-timeline: scroll()) {
     .welcome {
-        animation: welcomeDock linear both;
-        animation-timeline: scroll(root);
-        animation-range: 0 calc(var(--vh-height, 100vh) - 54px);
-
         &__handle {
             animation: handleBounce 2s infinite ease-in-out, handleFade linear both;
             animation-timeline: auto, scroll(root);
@@ -288,11 +278,11 @@
                 animation-range: 0 40px;
             }
         }
+
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .welcome,
     .welcome__handle,
     .welcome__handle::before,
     .welcome__handle::after {

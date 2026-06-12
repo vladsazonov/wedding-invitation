@@ -179,66 +179,120 @@
         }
     }
 
-    &__contacts-grid {
+    &__contacts-layout {
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 16px;
-        max-width: 400px;
+        gap: 24px;
+        align-items: center;
+        text-align: center;
     }
 
-    &__contact-link {
+    &__media {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    &__photo {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba($color-accent-blue, 0.1);
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__content-sub {
+        font-family: $font-sans;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        color: $color-text;
+        opacity: 0.8;
+        max-width: 340px;
+    }
+
+    &__person {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
-        padding: 16px;
-        border: 1px solid rgba($color-accent-blue, 0.15);
-        border-radius: 14px;
+        gap: 6px;
+        width: 100%;
+    }
+
+    &__person-name {
+        font-family: $font-serif;
+        font-size: 1.35rem;
+        font-weight: 400;
+        color: $color-accent-blue;
+        letter-spacing: 0.04em;
+        margin: 0;
+    }
+
+    &__person-phone {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: $font-sans;
+        font-size: 0.88rem;
+        letter-spacing: 0.06em;
+        color: $color-text;
         text-decoration: none;
-        background-color: $color-bg-light;
-        transition: all 0.25s ease;
+        transition: opacity 0.2s ease;
         -webkit-tap-highlight-color: transparent;
 
+        &:hover {
+            opacity: 0.55;
+        }
+
         &:active {
-            background-color: rgba($color-bg-main, 0.3);
-            transform: scale(0.98);
+            opacity: 0.4;
         }
     }
 
-    &__contact-name {
-        font-family: $font-serif;
-        font-size: 1.25rem;
+    &__person-icon {
+        flex-shrink: 0;
         color: $color-accent-blue;
-    }
-
-    &__contact-phone {
-        font-family: $font-sans;
-        font-size: 0.9rem;
-        color: $color-text;
-        letter-spacing: 0.02em;
+        opacity: 0.7;
     }
 }
 
 @media (min-width: 768px) {
     .info {
-        padding: 60px 40px; // Исправлен баг, из-за которого блок на десктопе сужался
+        padding: 60px 40px;
 
-        &__contacts-grid {
+        &__contacts-layout {
             flex-direction: row;
-            max-width: 520px;
+            align-items: flex-start;
+            text-align: left;
+            gap: 40px;
+            max-width: 600px;
         }
 
-        &__contact-link {
-            flex: 1;
-            padding: 20px;
+        &__media {
+            max-width: 220px;
+        }
 
-            &:hover {
-                border-color: $color-accent-blue;
-                background-color: rgba($color-bg-main, 0.15);
-                transform: translateY(-2px);
-                box-shadow: 0 8px 24px rgba($color-accent-blue, 0.06);
-            }
+        &__content {
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        &__content-sub {
+            max-width: none;
+        }
+
+        &__person {
+            align-items: flex-start;
         }
     }
 }

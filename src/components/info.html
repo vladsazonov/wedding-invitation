@@ -33,16 +33,14 @@
       <div class="info__telegram-card" data-aos="fade-up">
         <p class="info__telegram-text">
           Мы открыли группу в
-          <a href="https://t.me/+XkKCIhb-1LwxMzgy" target="_blank" rel="noopener noreferrer" class="info__telegram-link">Telegram</a>
+          <a href="https://t.me/+XkKCIhb-1LwxMzgy" target="_blank" rel="noopener noreferrer"
+            class="info__telegram-link">Telegram</a>
           для всех гостей. Давайте добавлять в нее свадебные видеоролики и фотографии. А позже мы
           поделимся с вами кадрами со свадьбы, сделанными профессиональными фотографами и
           видеографами.
         </p>
         <a href="https://t.me/+XkKCIhb-1LwxMzgy" target="_blank" rel="noopener noreferrer" class="info__telegram-btn">
-          <svg class="info__telegram-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
+          <img class="info__telegram-icon" src="/src/assets/icons/telegram.svg" width="16" height="16" alt="" aria-hidden="true" />
           Войти в группу
         </a>
       </div>
@@ -53,18 +51,46 @@
     <!-- Блок Контакты -->
     <div class="info__section info__section--contacts">
       <h3 class="info__title" data-aos="fade-up">Контакты</h3>
-      <p class="info__text info__text--sub" data-aos="fade-up">
-        По всем вопросам, связанным с мероприятием, вы можете связаться с нами:
-      </p>
-      <div class="info__contacts-grid" data-aos="fade-up">
-        <a href="tel:+79054106683" class="info__contact-link">
-          <span class="info__contact-name">Владислав</span>
-          <span class="info__contact-phone">8 (905) 410-66-83</span>
-        </a>
-        <a href="tel:+79283782894" class="info__contact-link">
-          <span class="info__contact-name">Надежда</span>
-          <span class="info__contact-phone">8 (928) 378-28-94</span>
-        </a>
+
+      <div class="info__contacts-layout" data-aos="fade-up" data-aos-delay="100">
+        <div class="info__media">
+          <img
+            class="info__photo"
+            src="/src/images/contacts/contacts.webp"
+            alt="Владислав и Надежда"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="info__content">
+          <p class="info__content-sub">
+            По всем вопросам, связанным с мероприятием, вы можете связаться с нами:
+          </p>
+
+          <div class="info__person">
+            <h3 class="info__person-name">Владислав</h3>
+            <a
+              href="tel:+79054106683"
+              class="info__person-phone"
+              aria-label="Позвонить Владиславу"
+            >
+              <img class="info__person-icon" src="/src/assets/icons/phone.svg" width="14" height="14" alt="" aria-hidden="true" />
+              8 (905) 410-66-83
+            </a>
+          </div>
+
+          <div class="info__person">
+            <h3 class="info__person-name">Надежда</h3>
+            <a
+              href="tel:+79283782894"
+              class="info__person-phone"
+              aria-label="Позвонить Надежде"
+            >
+              <img class="info__person-icon" src="/src/assets/icons/phone.svg" width="14" height="14" alt="" aria-hidden="true" />
+              8 (928) 378-28-94
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
