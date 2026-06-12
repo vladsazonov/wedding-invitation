@@ -151,22 +151,33 @@ export const initRsvpHandler = () => {
   if (elements.hiddenIdInput) elements.hiddenIdInput.value = guestId;
   if (elements.hiddenGuestsInput) elements.hiddenGuestsInput.value = params.rawGuests || 'Не указано';
 
-  // Персонализация текстового узла
-  if (params.guests) {
+  const isFallbackMode = !params.guests || params.guests.length === 0;
+
+  if (isFallbackMode) {
+    // Fallback: нет данных о гостях — показываем универсальное приветствие
+    if (elements.introTitle) {
+      elements.introTitle.textContent = 'Дорогие гости!';
+    }
     if (elements.guestNames) {
-      elements.guestNames.textContent = params.formattedNames || '';
-      elements.guestNames.style.display = params.guests.length > 0 ? '' : 'none';
+      elements.guestNames.textContent = '';
+      elements.guestNames.style.display = 'none';
+    }
+    // Форма в множественном числе
+    if (elements.labelAttendYes) elements.labelAttendYes.textContent = 'Мы придем';
+    if (elements.labelAttendNo) elements.labelAttendNo.textContent = 'Не сможем';
+    if (elements.labelAttendMaybe) elements.labelAttendMaybe.textContent = 'Сообщим позже';
+  } else {
+    if (elements.guestNames) {
+      elements.guestNames.textContent = params.formattedNames;
+      elements.guestNames.style.display = '';
     }
 
     if (elements.introTitle) {
-      if (params.guests.length === 1) {
-        elements.introTitle.textContent = 'Наш дорогой гость';
-      } else {
-        elements.introTitle.textContent = 'Наши дорогие гости';
-      }
+      elements.introTitle.textContent = params.guests.length === 1
+        ? 'Наш дорогой гость'
+        : 'Наши дорогие гости';
     }
 
-    // Множественное число для вариантов присутствия, если гостей 2 и больше
     if (params.guests.length > 1) {
       if (elements.labelAttendYes) elements.labelAttendYes.textContent = 'Мы придем';
       if (elements.labelAttendNo) elements.labelAttendNo.textContent = 'Не сможем';

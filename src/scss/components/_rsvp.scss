@@ -49,39 +49,41 @@
     &__intro {
         text-align: center;
         margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
 
         @media (min-width: 768px) {
             margin-bottom: 32px;
+            gap: 8px;
         }
     }
 
     &__intro-title {
         display: block;
         font-family: $font-serif;
-        font-size: 1.05rem;
+        font-size: clamp(0.95rem, 2.5vw, 1.15rem);
         font-weight: 400;
         line-height: 1.3;
-        color: rgba($color-accent-blue, 0.7);
-        margin-bottom: 4px;
+        color: rgba($color-accent-blue, 0.6);
 
         @media (min-width: 768px) {
-            font-size: 1.25rem;
-            margin-bottom: 6px;
+            font-size: 1.2rem;
         }
     }
 
     &__intro-desc {
         font-family: $font-serif;
-        font-size: 0.95rem;
+        font-size: clamp(0.9rem, 2.2vw, 1.05rem);
         font-weight: 300;
         font-style: italic;
         line-height: 1.4;
-        color: rgba($color-text, 0.65);
-        margin: 6px 0 12px;
+        color: rgba($color-text, 0.6);
+        margin: 0;
 
         @media (min-width: 768px) {
-            font-size: 1.1rem;
-            margin: 10px 0 16px;
+            font-size: 1.05rem;
         }
     }
 
@@ -142,45 +144,52 @@
     &__highlight-name {
         display: block;
         font-family: $font-serif;
-        font-size: 1.5rem;
-        line-height: 1.2;
-        font-style: italic;
+        font-size: clamp(1.25rem, 5vw, 1.7rem);
+        line-height: 1.25;
+        font-style: normal;
         font-weight: 500;
+        letter-spacing: 0.03em;
         color: $color-accent-blue;
-        margin: 4px 0 8px;
+        margin: 2px 0 4px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        max-width: 100%;
 
         @media (min-width: 768px) {
-            font-size: 2rem;
-            margin: 8px 0 12px;
+            font-size: clamp(1.5rem, 3vw, 1.9rem);
+            margin: 4px 0 6px;
         }
     }
 
     &__deadline {
-        display: block;
-        margin: 12px auto 0;
-        padding: 8px 14px;
-        border: 1px solid rgba($color-accent-blue, 0.12);
-        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 16px auto 0;
+        padding: 10px 0;
+        border-top: 1px solid rgba($color-accent-blue, 0.12);
+        border-bottom: 1px solid rgba($color-accent-blue, 0.12);
         font-family: $font-sans;
         font-size: 0.75rem;
         font-weight: 500;
-        color: rgba($color-text, 0.7);
-        letter-spacing: 0.05em;
+        color: rgba($color-text, 0.65);
+        letter-spacing: 0.06em;
         width: fit-content;
+        width: 100%;
+        justify-content: center;
 
         @media (min-width: 768px) {
             margin-top: 24px;
-            padding: 12px 20px;
+            padding: 12px 0;
             font-size: 0.8rem;
-            border-radius: 20px;
         }
     }
 
     &__highlight-date {
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
         color: $color-accent-blue;
-        margin-left: 4px;
+        margin-left: 2px;
     }
 
     &__label {
@@ -214,6 +223,11 @@
 
         &--2col {
             grid-template-columns: repeat(2, 1fr);
+            row-gap: 10px;
+
+            @media (min-width: 768px) {
+                row-gap: 14px;
+            }
         }
     }
 
@@ -259,9 +273,9 @@
 
         &--alcohol {
             .rsvp__choice-block {
-                padding: 9px 6px;
-                min-height: 38px;
-                font-size: 0.75rem;
+                padding: 11px 8px;
+                min-height: 44px;
+                font-size: 0.78rem;
                 border-radius: 12px;
 
                 @media (min-width: 768px) {
@@ -296,12 +310,19 @@
         border-radius: 16px;
         font-family: $font-sans;
         font-size: 0.8rem;
+        font-weight: 500;
         color: $color-text;
         text-align: center;
         min-height: 44px;
         height: 100%;
         -webkit-tap-highlight-color: transparent;
-        transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        transition:
+            transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            color 0.15s ease,
+            font-weight 0s;
 
         @media (min-width: 768px) {
             padding: 16px 12px;
@@ -318,8 +339,10 @@
     &__input-hidden:checked+&__choice-block {
         background-color: $color-accent-blue;
         border-color: $color-accent-blue;
-        color: $color-text-light;
-        box-shadow: 0 8px 24px rgba($color-accent-blue, 0.2);
+        color: #ffffff;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        box-shadow: 0 6px 20px rgba($color-accent-blue, 0.25);
     }
 
     &__input-hidden:focus-visible+&__choice-block {
@@ -412,28 +435,36 @@
     &__submit {
         display: block;
         width: 100%;
-        padding: 16px;
-        background-color: $color-accent-blue;
-        color: $color-text-light;
-        border: none;
+        padding: 17px;
+        background-color: rgba($color-accent-blue, 0.06);
+        color: $color-accent-blue;
+        border: 1px solid rgba($color-accent-blue, 0.35);
         border-radius: 16px;
         font-family: $font-sans;
-        font-size: 0.85rem;
-        font-weight: 500;
-        letter-spacing: 0.05em;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
         cursor: pointer;
         appearance: none;
         -webkit-appearance: none;
         -webkit-tap-highlight-color: transparent;
-        transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        transition:
+            transform 0.1s ease,
+            background-color 0.25s ease,
+            border-color 0.25s ease,
+            color 0.25s ease,
+            box-shadow 0.25s ease;
 
         @media (min-width: 768px) {
-            padding: 18px;
+            padding: 19px;
+            font-size: 0.82rem;
         }
 
         &:hover:not(:disabled) {
-            background-color: rgba($color-accent-blue, 0.85);
+            background-color: rgba($color-accent-blue, 0.12);
+            border-color: rgba($color-accent-blue, 0.6);
+            box-shadow: 0 4px 16px rgba($color-accent-blue, 0.1);
         }
 
         &:active:not(:disabled) {
@@ -441,7 +472,9 @@
         }
 
         &:disabled {
-            background-color: rgba($color-accent-blue, 0.3);
+            background-color: rgba($color-accent-blue, 0.03);
+            border-color: rgba($color-accent-blue, 0.12);
+            color: rgba($color-accent-blue, 0.35);
             cursor: not-allowed;
         }
     }
@@ -513,7 +546,6 @@
         width: 100%;
         max-width: 300px;
         height: auto;
-        flex-grow: 1;
         flex-shrink: 1;
         min-height: 180px;
         margin: 16px auto;
@@ -626,6 +658,7 @@
         opacity: 0;
         transform: translateY(12px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -637,6 +670,7 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     100% {
         opacity: 1;
         transform: scale(1);
