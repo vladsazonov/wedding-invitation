@@ -26,6 +26,8 @@ export const initStartScreen = () => {
     isOpened = true;
 
     envelope.classList.add('intro-envelope--opened');
+    // Фоллбек для Firefox < 121: :has() не поддерживается — управляем оверлеем через JS-класс
+    container.classList.add('intro-overlay--opened');
 
     document.body.style.overflow = '';
 

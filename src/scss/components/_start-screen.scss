@@ -14,7 +14,8 @@
     -webkit-backdrop-filter: blur(10px);
     transition: background-color 2.2s ease, backdrop-filter 2.2s ease;
 
-    &:has(.intro-envelope--opened) {
+    &:has(.intro-envelope--opened),
+    &--opened {
         background-color: rgba($color-accent-blue, 0);
         backdrop-filter: blur(0px);
         -webkit-backdrop-filter: blur(0px);
